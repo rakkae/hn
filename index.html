@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>나의 특성 알아보기</title>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sky: #4aa8e8;
+  --sky-light: #e8f5fd;
+  --peach: #f07a55;
+  --peach-light: #fff0eb;
+  --mint: #3ecfc6;
+  --mint-light: #e6faf9;
+  --yellow: #ffc84a;
+  --purple: #9b7fe8;
+  --purple-light: #f3f0ff;
+  --green: #48bb78;
+  --green-light: #f0fff4;
+  --bg: #f0f6ff;
+  --card: #ffffff;
+  --border: #dde6f0;
+  --text: #263449;
+  --muted: #7a90aa;
+  --shadow: 0 4px 20px rgba(36,72,120,0.09);
+  --radius: 20px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nanum Gothic',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+.topbar{background:#fff;box-shadow:0 2px 12px rgba(36,72,120,.08);padding:13px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
+.topbar-logo{font-size:18px;font-weight:800;color:var(--sky);display:flex;align-items:center;gap:8px;}
+.mode-wrap{display:flex;background:#f0f4f8;border-radius:30px;padding:3px;gap:3px;}
+.mode-btn{padding:7px 18px;border:none;border-radius:27px;font-family:'Nanum Gothic',sans-serif;font-size:13px;font-weight:700;cursor:pointer;background:transparent;color:var(--muted);transition:all .2s;}
+.mode-btn.on{background:#fff;color:var(--sky);box-shadow:0 2px 8px rgba(36,72,120,.12);}
+
+.screen{display:none;animation:fadeIn .3s ease both;}
+.screen.on{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+.wrap{max-width:700px;margin:0 auto;padding:28px 18px 80px;}
+.wrap-wide{max-width:1080px;margin:0 auto;padding:28px 18px 80px;}
+
+.panel{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:18px;}
+.panel-title{font-size:16px;font-weight:800;margin-bottom:16px;}
+
+.step-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px;}
+.step-num{min-width:30px;height:30px;background:var(--sky);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;margin-top:2px;}
+.step-desc{font-size:14px;line-height:1.65;}
+.step-desc strong{color:var(--sky);}
+
+.class-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.class-btn,.name-btn{border:2px solid var(--border);background:#fff;border-radius:14px;padding:13px 8px;text-align:center;font-family:'Nanum Gothic',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:all .2s;color:var(--text);}
+.class-btn:hover,.name-btn:hover{border-color:var(--sky);color:var(--sky);transform:translateY(-2px);box-shadow:var(--shadow);}
+.name-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;}
+
+/* traits */
+.traits-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:7px;background:#fffdf0;border-radius:16px;padding:14px;border:2px dashed var(--yellow);}
+.trait-chip{position:relative;padding:10px 5px;border-radius:10px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;border:2px solid transparent;background:#fff;transition:all .18s;user-select:none;box-shadow:0 1px 4px rgba(0,0,0,.05);}
+.trait-chip:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.10);}
+.trait-chip.sel{background:#e8f5fd;border-color:var(--sky);color:#1a6fa0;}
+.chip-mark{position:absolute;top:-6px;right:-6px;width:17px;height:17px;border-radius:50%;background:var(--sky);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff;}
+.legend{display:flex;gap:14px;margin-top:10px;font-size:12px;color:var(--muted);}
+.leg-item{display:flex;align-items:center;gap:5px;}
+.leg-dot{width:18px;height:18px;border-radius:4px;background:var(--sky);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;}
+
+/* pick boxes */
+.pick-row{display:flex;gap:14px;flex-wrap:wrap;}
+.pick-box{flex:1;min-width:160px;border-radius:16px;padding:16px 18px;}
+.pick-box.sb{background:var(--sky-light);border:2px solid var(--sky);}
+.pick-box.fb{background:var(--peach-light);border:2px solid var(--peach);}
+.pick-title{font-size:13px;font-weight:800;margin-bottom:10px;}
+.pick-box.sb .pick-title{color:var(--sky);}
+.pick-box.fb .pick-title{color:var(--peach);}
+.pick-item{background:#fff;border-radius:9px;padding:8px 12px;font-size:13px;font-weight:700;min-height:36px;display:flex;align-items:center;color:var(--muted);border:1.5px dashed var(--border);margin-bottom:6px;transition:all .2s;}
+.pick-item.ok{color:var(--text);border-style:solid;}
+.pick-box.sb .pick-item.ok{border-color:var(--sky);background:#f0faff;}
+.pick-box.fb .pick-item.ok{border-color:var(--peach);background:#fff5f0;}
+.peer-chip{padding:2px 8px;background:#fff;border:1.5px solid var(--peach);border-radius:8px;font-size:11px;font-weight:700;color:#b84f2a;}
+.no-peer{font-size:12px;color:#ccc;font-style:italic;}
+.peer-line{display:flex;align-items:flex-start;gap:6px;margin-bottom:3px;font-size:12px;}
+.peer-who{font-weight:800;color:var(--peach);min-width:42px;}
+.peer-chips{display:flex;flex-wrap:wrap;gap:3px;}
+
+/* summary */
+.summary-row{background:linear-gradient(135deg,#f0faff,#f3f0ff);border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;border:2px solid #c4def7;}
+.sum-fix{font-size:16px;font-weight:800;white-space:nowrap;}
+.sum-input{flex:1;min-width:140px;border:none;background:transparent;border-bottom:2px solid var(--sky);padding:3px 7px;font-family:'Nanum Pen Script',cursive;font-size:20px;color:var(--text);outline:none;}
+
+/* ── AI ANALYSIS PANEL ── */
+.ai-panel{background:linear-gradient(135deg,#1a1f35,#263449);border-radius:var(--radius);padding:26px;box-shadow:0 8px 32px rgba(26,31,53,.3);margin-bottom:18px;color:#fff;position:relative;overflow:hidden;}
+.ai-panel::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(155,127,232,.25),transparent 70%);border-radius:50%;}
+.ai-panel::after{content:'';position:absolute;bottom:-30px;left:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(74,168,232,.2),transparent 70%);border-radius:50%;}
+.ai-panel-title{font-size:16px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.ai-panel-sub{font-size:12px;opacity:.6;margin-bottom:20px;}
+.ai-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--purple),#6dd5fa);color:#fff;font-family:'Nanum Gothic',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .25s;box-shadow:0 4px 16px rgba(155,127,232,.4);}
+.ai-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(155,127,232,.5);}
+.ai-btn:disabled{background:#444;box-shadow:none;cursor:not-allowed;transform:none;}
+.ai-loading{display:none;flex-direction:column;align-items:center;gap:14px;padding:20px 0;}
+.ai-loading.on{display:flex;}
+.spinner{width:40px;height:40px;border:4px solid rgba(255,255,255,.15);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.ai-result{display:none;}
+.ai-result.on{display:block;}
+
+/* RIASEC card */
+.riasec-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
+.riasec-card{flex:1;min-width:120px;border-radius:14px;padding:14px 16px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);}
+.riasec-badge{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;font-size:18px;margin-bottom:8px;}
+.riasec-type{font-size:13px;font-weight:800;margin-bottom:2px;}
+.riasec-label{font-size:11px;opacity:.6;margin-bottom:6px;}
+.riasec-bar-wrap{background:rgba(255,255,255,.1);border-radius:6px;height:6px;overflow:hidden;}
+.riasec-bar{height:6px;border-radius:6px;transition:width 1s ease;}
+
+/* jobs */
+.job-section{margin-bottom:16px;}
+.job-section-title{font-size:13px;font-weight:800;opacity:.7;margin-bottom:8px;letter-spacing:.5px;}
+.job-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.job-chip{padding:6px 13px;border-radius:20px;font-size:12px;font-weight:700;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);color:#fff;transition:all .2s;}
+.job-chip:hover{background:rgba(255,255,255,.2);}
+.job-chip.top{background:linear-gradient(135deg,rgba(155,127,232,.4),rgba(74,168,232,.3));border-color:rgba(155,127,232,.6);}
+
+/* comment */
+.ai-comment{background:rgba(255,255,255,.07);border-radius:12px;padding:14px 16px;font-size:13px;line-height:1.7;opacity:.9;border-left:3px solid var(--purple);}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:12px 22px;border-radius:14px;border:none;font-family:'Nanum Gothic',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;}
+.btn-primary{background:linear-gradient(135deg,var(--sky),var(--mint));color:#fff;box-shadow:0 4px 14px rgba(74,168,232,.35);}
+.btn-primary:hover{transform:translateY(-2px);}
+.btn-secondary{background:#fff;color:var(--sky);border:2px solid var(--sky);}
+.btn-peach{background:linear-gradient(135deg,var(--peach),#f0a070);color:#fff;box-shadow:0 4px 14px rgba(240,122,85,.3);}
+.btn-peach:hover{transform:translateY(-2px);}
+.btn-block{width:100%;justify-content:center;margin-top:20px;font-size:16px;padding:15px;}
+.btn-sm{padding:7px 14px;font-size:12px;border-radius:10px;}
+
+.back-bar{display:flex;align-items:center;gap:8px;margin-bottom:18px;}
+.back-btn{background:none;border:none;font-family:'Nanum Gothic',sans-serif;font-size:14px;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:4px;}
+.back-btn:hover{color:var(--text);}
+.page-title{font-size:19px;font-weight:800;}
+
+.friend-panel{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-top:24px;}
+.friend-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;}
+.friend-badge{min-width:30px;height:30px;background:var(--peach);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex-shrink:0;margin-top:2px;}
+.friend-desc{font-size:14px;line-height:1.65;}
+.friend-desc strong{color:var(--peach);}
+.name-btn.done{border-color:var(--mint);color:#1aaa9a;}
+
+/* teacher */
+.t-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.t-tab{padding:8px 18px;border-radius:20px;border:2px solid var(--border);background:#fff;font-family:'Nanum Gothic',sans-serif;font-size:13px;font-weight:700;cursor:pointer;color:var(--muted);transition:all .2s;}
+.t-tab.on{background:var(--sky);border-color:var(--sky);color:#fff;}
+.roster-grid{display:grid;gap:14px;}
+.class-panel{background:#fff;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);}
+.class-panel-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.class-label{font-size:15px;font-weight:800;color:var(--sky);}
+.tag-area{display:flex;flex-wrap:wrap;gap:6px;min-height:32px;padding:2px 0;}
+.name-tag{background:var(--sky-light);border:1.5px solid #b3d8f5;color:#1a6fa0;border-radius:20px;padding:4px 12px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;}
+.name-tag .del{cursor:pointer;font-size:11px;color:#6aace0;}
+.name-tag .del:hover{color:#e53e3e;}
+.name-inp-row{display:flex;gap:8px;margin-top:10px;}
+.name-inp{flex:1;border:2px solid var(--border);border-radius:11px;padding:8px 14px;font-family:'Nanum Gothic',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
+.name-inp:focus{border-color:var(--sky);}
+.res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+.res-card{background:#fff;border-radius:18px;padding:18px;box-shadow:var(--shadow);border-top:4px solid var(--sky);animation:fadeIn .35s ease both;}
+.res-card:nth-child(2n){border-top-color:var(--peach);}
+.res-card:nth-child(3n){border-top-color:var(--mint);}
+.rc-name{font-size:16px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:7px;}
+.avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--sky),var(--mint));display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800;}
+.rc-sec{margin-bottom:8px;}
+.rc-lbl{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;}
+.rc-chips{display:flex;flex-wrap:wrap;gap:4px;}
+.rc-chip{padding:3px 9px;border-radius:9px;font-size:12px;font-weight:700;}
+.rc-chip.s{background:var(--sky-light);color:#1a6fa0;border:1px solid #b3d8f5;}
+.rc-chip.p{background:var(--purple-light);color:#5b3fa0;border:1px solid #c4b0f5;}
+.rc-summ{background:linear-gradient(135deg,#f0faff,#f3f0ff);border-radius:10px;padding:9px 13px;font-family:'Nanum Pen Script',cursive;font-size:17px;border-left:3px solid var(--sky);}
+.rc-time{font-size:11px;color:var(--muted);margin-top:6px;text-align:right;}
+.fe-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:4px;}
+.fe-who{font-size:12px;font-weight:800;color:var(--peach);min-width:52px;padding-top:2px;}
+.fe-chips{display:flex;flex-wrap:wrap;gap:3px;}
+.fe-chip{padding:2px 8px;border-radius:8px;font-size:11px;font-weight:700;background:var(--peach-light);color:#b84f2a;border:1px solid #f7c4ae;}
+.wc-sec{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-bottom:16px;}
+.wc-title{font-size:15px;font-weight:800;margin-bottom:14px;}
+.word-cloud{display:flex;flex-wrap:wrap;gap:7px;align-items:center;}
+.wc-word{padding:5px 13px;border-radius:20px;font-weight:700;transition:transform .2s;}
+.wc-word:hover{transform:scale(1.06);}
+.empty{text-align:center;padding:50px 20px;color:var(--muted);}
+.empty-icon{font-size:56px;margin-bottom:14px;}
+.filter-sel{border:2px solid var(--border);border-radius:10px;padding:7px 12px;font-family:'Nanum Gothic',sans-serif;font-size:13px;outline:none;cursor:pointer;}
+.filter-sel:focus{border-color:var(--sky);}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#263449;color:#fff;padding:13px 26px;border-radius:40px;font-size:14px;font-weight:700;transition:transform .3s;z-index:999;white-space:nowrap;pointer-events:none;}
+.toast.on{transform:translateX(-50%) translateY(0);}
+
+@media(max-width:500px){
+  .pick-row{flex-direction:column;}
+  .traits-grid{grid-template-columns:repeat(auto-fill,minmax(74px,1fr));}
+  .class-grid{grid-template-columns:repeat(5,1fr);}
+  .riasec-row{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">🌸 나의 특성 알아보기</div>
+  <div class="mode-wrap">
+    <button class="mode-btn on" id="mBtn-s" onclick="gotoMode('student')">📚 학생</button>
+    <button class="mode-btn" id="mBtn-t" onclick="askTeacherPw()">🏫 교사</button>
+  </div>
+</div>
+
+<!-- S0 반 선택 -->
+<div class="screen on" id="sc-s0">
+  <div class="wrap">
+    <div class="panel" style="text-align:center;padding:44px 24px 36px;">
+      <div style="font-size:54px;margin-bottom:12px;">🌸</div>
+      <div style="font-size:23px;font-weight:800;margin-bottom:6px;">나의 특성 알아보기</div>
+      <div style="font-size:14px;color:var(--muted);margin-bottom:34px;">자신의 반을 선택해 주세요</div>
+      <div class="class-grid" id="s0-classes"></div>
+    </div>
+  </div>
+</div>
+
+<!-- S1 이름 선택 -->
+<div class="screen" id="sc-s1">
+  <div class="wrap">
+    <div class="back-bar">
+      <button class="back-btn" onclick="goBack('s1')">← 반 선택</button>
+      <span style="color:var(--border)">|</span>
+      <span class="page-title" id="s1-label"></span>
+    </div>
+    <div class="panel">
+      <div class="panel-title">👤 본인 이름을 선택하세요</div>
+      <div class="name-grid" id="s1-names"></div>
+    </div>
+  </div>
+</div>
+
+<!-- S2 메인 활동 -->
+<div class="screen" id="sc-s2">
+  <div class="wrap">
+    <div class="back-bar">
+      <button class="back-btn" onclick="goBack('s2')">← 이름 선택</button>
+      <span style="color:var(--border)">|</span>
+      <span class="page-title" id="s2-title"></span>
+    </div>
+
+    <!-- 활동 1 -->
+    <div class="panel">
+      <div class="step-head">
+        <div class="step-num">1</div>
+        <div class="step-desc">
+          아래에서 <strong>내가 생각하는 나</strong>를 표현하는 말을 클릭해서 선택해 봅시다.<br>
+          <span style="font-size:12px;color:var(--muted);">한 번 클릭→선택(○) / 다시 클릭→취소</span>
+        </div>
+      </div>
+      <div class="traits-grid" id="s2-grid"></div>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot">○</div> 내가 생각하는 나</div>
+      </div>
+    </div>
+
+    <!-- 활동 2 -->
+    <div class="panel">
+      <div class="step-head">
+        <div class="step-num">2</div>
+        <div class="step-desc">나를 가장 잘 표현하는 말을 각각 세 가지씩 골라 봅시다.</div>
+      </div>
+      <div class="pick-row">
+        <div class="pick-box sb">
+          <div class="pick-title">🪞 내가 생각하는 나는요,</div>
+          <div id="sp0" class="pick-item">선택 1</div>
+          <div id="sp1" class="pick-item">선택 2</div>
+          <div id="sp2" class="pick-item">선택 3</div>
+        </div>
+        <div class="pick-box fb">
+          <div class="pick-title">🦋 친구가 말하는 나는요,</div>
+          <div id="peer-result"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 활동 3 -->
+    <div class="panel">
+      <div class="step-head">
+        <div class="step-num">3</div>
+        <div class="step-desc">②에서 고른 말들을 종합하여 나는 어떤 사람인지 한 문장으로 써 봅시다.</div>
+      </div>
+      <div class="summary-row">
+        <span class="sum-fix">나는</span>
+        <input class="sum-input" id="s2-summary" type="text" placeholder="여기에 써 보세요">
+        <span class="sum-fix">사람입니다.</span>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-block" onclick="submitSelf()">✅ 자기 평가 저장하기</button>
+
+    <!-- ✨ AI 진로 분석 -->
+    <div class="ai-panel" style="margin-top:24px;">
+      <div class="ai-panel-title">✨ AI 진로 분석</div>
+      <div class="ai-panel-sub">선택한 낱말을 바탕으로 AI가 나의 흥미 유형과 어울리는 직업을 분석해 드려요</div>
+
+      <div id="ai-btn-wrap">
+        <button class="ai-btn" id="ai-start-btn" onclick="startAiAnalysis()">
+          🔮 AI에게 나의 진로 분석 부탁하기
+        </button>
+      </div>
+
+      <div class="ai-loading" id="ai-loading">
+        <div class="spinner"></div>
+        <div style="font-size:13px;opacity:.7;">AI가 나의 특성을 분석하고 있어요...</div>
+      </div>
+
+      <div class="ai-result" id="ai-result"></div>
+    </div>
+
+    <!-- 친구 평가하기 -->
+    <div class="friend-panel">
+      <div class="friend-head">
+        <div class="friend-badge">+</div>
+        <div class="friend-desc">
+          <strong>친구 평가하기</strong> — 평가할 친구를 선택하세요.<br>
+          <span style="font-size:12px;color:var(--muted);">평가는 익명으로 처리됩니다. 완료한 친구는 ✓로 표시됩니다.</span>
+        </div>
+      </div>
+      <div class="name-grid" id="s2-friends"></div>
+    </div>
+  </div>
+</div>
+
+<!-- S3 친구 평가 -->
+<div class="screen" id="sc-s3">
+  <div class="wrap">
+    <div class="back-bar">
+      <button class="back-btn" onclick="goBack('s3')">← 활동으로 돌아가기</button>
+      <span class="page-title" id="s3-title"></span>
+    </div>
+    <div class="panel">
+      <div class="step-head">
+        <div class="step-num" style="background:var(--peach)">△</div>
+        <div class="step-desc" id="s3-desc"></div>
+      </div>
+      <div class="traits-grid" id="s3-grid"></div>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot" style="background:var(--peach)">△</div> 이 친구를 표현하는 말</div>
+      </div>
+    </div>
+    <button class="btn btn-peach btn-block" onclick="submitFriend()">💌 친구 평가 저장하기</button>
+  </div>
+</div>
+
+<!-- TEACHER -->
+<div class="screen" id="sc-teacher">
+  <div class="wrap-wide">
+    <div class="t-tabs">
+      <button class="t-tab on" id="tt-roster"    onclick="tTab('roster')">📋 명단 관리</button>
+      <button class="t-tab"    id="tt-responses" onclick="tTab('responses')">📊 제출 현황</button>
+      <button class="t-tab"    id="tt-cloud"     onclick="tTab('cloud')">☁️ 낱말 현황</button>
+    </div>
+    <div id="tp-roster"    class="roster-grid"></div>
+    <div id="tp-responses" style="display:none;"></div>
+    <div id="tp-cloud"     style="display:none;"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════
+   CONSTANTS & STATE
+══════════════════════════════════════ */
+const TRAITS = [
+  '따뜻한','생각이 깊은','현실적인','완벽한','엄격한','모험적인',
+  '계획적인','논리적인','예술적인','성실한','즉흥적인','친절한',
+  '솔직한','감성적인','단호한','이해심 깊은','재치 있는','열정적인',
+  '상냥한','신중한','용기 있는','수줍은','정직한','끈기 있는',
+  '진지한','유쾌한','겸손한','긍정적인','참을성 있는','고집적인',
+  '창의적인','지도력 있는','단순한','책임감 있는','고집 있는','호기심 많은'
+];
+
+const RIASEC_COLORS = {
+  R: '#e67e22', C: '#3498db', I: '#27ae60',
+  E: '#e74c3c', S: '#9b59b6', A: '#f39c12'
+};
+const RIASEC_EMOJIS = { R:'🔧', C:'📋', I:'🔬', E:'📢', S:'🤝', A:'🎨' };
+const RIASEC_NAMES  = { R:'현실형', C:'관습형', I:'탐구형', E:'진취형', S:'사회형', A:'예술형' };
+
+const ROSTER_KEY = 'nateuk_roster';
+const RESP_KEY   = 'nateuk_resp';
+
+let curClass='', curName='', curFriend='';
+const selfSel   = new Set();
+const friendSel = new Set();
+
+/* ── storage ── */
+const loadRoster = ()=>{ try{return JSON.parse(localStorage.getItem(ROSTER_KEY))||{};}catch{return{};} };
+const saveRoster = r=>localStorage.setItem(ROSTER_KEY,JSON.stringify(r));
+const loadResp   = ()=>{ try{return JSON.parse(localStorage.getItem(RESP_KEY))||[];}catch{return[];} };
+const saveResp   = a=>localStorage.setItem(RESP_KEY,JSON.stringify(a));
+const getResp    = (cls,name)=>loadResp().find(r=>r.class===cls&&r.name===name)||null;
+function upsertResp(entry){
+  const all=loadResp();
+  const i=all.findIndex(r=>r.class===entry.class&&r.name===entry.name);
+  if(i>=0) all[i]=entry; else all.push(entry);
+  saveResp(all);
+}
+
+/* ══════════════════════════════════════
+   MODE / SCREEN
+══════════════════════════════════════ */
+function gotoMode(m){
+  document.getElementById('mBtn-s').classList.toggle('on',m==='student');
+  document.getElementById('mBtn-t').classList.toggle('on',m==='teacher');
+  if(m==='student'){ showScreen('sc-s0'); buildClassBtns(); }
+  else{ showScreen('sc-teacher'); tTab('roster'); }
+}
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+}
+
+/* ══════════════════════════════════════
+   S0 — 반 선택
+══════════════════════════════════════ */
+function buildClassBtns(){
+  const roster=loadRoster();
+  const wrap=document.getElementById('s0-classes');
+  wrap.innerHTML='';
+  for(let i=1;i<=10;i++){
+    const cls=i+'반';
+    const cnt=(roster[cls]||[]).length;
+    const b=document.createElement('button');
+    b.className='class-btn';
+    b.innerHTML=cls+(cnt?`<br><span style="font-size:11px;opacity:.6;font-weight:400">${cnt}명</span>`:'');
+    b.onclick=()=>gotoS1(cls);
+    wrap.appendChild(b);
+  }
+}
+
+/* ══════════════════════════════════════
+   S1 — 이름 선택
+══════════════════════════════════════ */
+function gotoS1(cls){
+  curClass=cls;
+  document.getElementById('s1-label').textContent=cls;
+  const names=(loadRoster()[cls]||[]);
+  const wrap=document.getElementById('s1-names');
+  wrap.innerHTML='';
+  if(!names.length){
+    wrap.innerHTML='<div style="color:var(--muted);font-size:14px;grid-column:1/-1">등록된 학생이 없습니다. 교사용에서 명단을 입력해 주세요.</div>';
+  } else {
+    names.forEach(n=>{
+      const b=document.createElement('button');
+      b.className='name-btn'; b.textContent=n;
+      b.onclick=()=>gotoS2(n);
+      wrap.appendChild(b);
+    });
+  }
+  showScreen('sc-s1');
+}
+
+/* ══════════════════════════════════════
+   S2 — 메인 활동
+══════════════════════════════════════ */
+function gotoS2(name){
+  curName=name;
+  document.getElementById('s2-title').textContent=name+' 학생';
+  selfSel.clear();
+
+  const ex=getResp(curClass,curName);
+  if(ex){
+    (ex.selfPicked||[]).forEach(t=>selfSel.add(t));
+    document.getElementById('s2-summary').value=ex.summary||'';
+  } else {
+    document.getElementById('s2-summary').value='';
+  }
+
+  // reset AI section
+  document.getElementById('ai-btn-wrap').style.display='block';
+  document.getElementById('ai-loading').classList.remove('on');
+  document.getElementById('ai-result').classList.remove('on');
+  document.getElementById('ai-result').innerHTML='';
+  document.getElementById('ai-start-btn').disabled=false;
+
+  buildSelfGrid();
+  updatePicks();
+  renderPeerResult();
+  buildFriendBtns();
+  showScreen('sc-s2');
+}
+
+/* ─ traits grid ─ */
+function buildSelfGrid(){
+  const grid=document.getElementById('s2-grid');
+  grid.innerHTML='';
+  TRAITS.forEach(t=>{
+    const sel=selfSel.has(t);
+    const chip=document.createElement('div');
+    chip.className='trait-chip'+(sel?' sel':'');
+    chip.id='sg__'+t;
+    chip.innerHTML=`<span>${t}</span>`+(sel?'<div class="chip-mark">○</div>':'');
+    chip.onclick=()=>toggleSelf(t);
+    grid.appendChild(chip);
+  });
+}
+function toggleSelf(t){
+  if(selfSel.has(t)) selfSel.delete(t); else selfSel.add(t);
+  const sel=selfSel.has(t);
+  const chip=document.getElementById('sg__'+t);
+  chip.className='trait-chip'+(sel?' sel':'');
+  chip.innerHTML=`<span>${t}</span>`+(sel?'<div class="chip-mark">○</div>':'');
+  updatePicks();
+}
+function updatePicks(){
+  const arr=[...selfSel].slice(0,3);
+  for(let i=0;i<3;i++){
+    const el=document.getElementById('sp'+i);
+    if(!el) continue;
+    if(arr[i]){el.textContent=arr[i];el.classList.add('ok');}
+    else{el.textContent='선택 '+(i+1);el.classList.remove('ok');}
+  }
+}
+
+/* ─ 친구 평가 결과 (익명) ─ */
+function renderPeerResult(){
+  const el=document.getElementById('peer-result');
+  const myData=getResp(curClass,curName);
+  const evals=myData&&myData.peerEvals?myData.peerEvals:[];
+
+  if(!evals.length){
+    el.innerHTML='<div class="no-peer">아직 친구 평가가 없습니다 😊</div>'; return;
+  }
+
+  // 빈도 집계
+  const freq={};
+  evals.forEach(e=>(e.words||[]).forEach(w=>freq[w]=(freq[w]||0)+1));
+  const sorted=Object.entries(freq).sort((a,b)=>b[1]-a[1]);
+  const top3=sorted.slice(0,3);
+  const rest=sorted.slice(3);
+
+  let html=top3.map(([w,c])=>`<div class="pick-item ok">${w}${c>1?` <span style="font-size:11px;color:var(--peach)">(${c}명)</span>`:''}</div>`).join('');
+  if(rest.length){
+    html+=`<div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;">${rest.map(([w,c])=>`<span class="peer-chip">${w}${c>1?` ${c}명`:''}</span>`).join('')}</div>`;
+  }
+  // ★ 익명 처리: "친구1, 친구2" 형태
+  html+=`<details style="margin-top:10px;">
+    <summary style="font-size:12px;color:var(--muted);cursor:pointer;">${evals.length}명이 평가함 ▾</summary>
+    <div style="margin-top:6px;">
+      ${evals.map((e,idx)=>`
+        <div class="peer-line">
+          <span class="peer-who">친구${idx+1}</span>
+          <div class="peer-chips">${(e.words||[]).map(w=>`<span class="peer-chip">${w}</span>`).join('')}</div>
+        </div>`).join('')}
+    </div>
+  </details>`;
+
+  el.innerHTML=html;
+}
+
+/* ─ 친구 버튼 ─ */
+function buildFriendBtns(){
+  const names=(loadRoster()[curClass]||[]).filter(n=>n!==curName);
+  const wrap=document.getElementById('s2-friends');
+  wrap.innerHTML='';
+  if(!names.length){
+    wrap.innerHTML='<div style="color:var(--muted);font-size:13px;grid-column:1/-1">같은 반 친구가 없습니다.</div>'; return;
+  }
+  names.forEach(n=>{
+    const ex=getResp(curClass,n);
+    const done=ex&&(ex.peerEvals||[]).some(e=>e.from===curName);
+    const b=document.createElement('button');
+    b.className='name-btn'+(done?' done':'');
+    b.innerHTML=n+(done?'<br><span style="font-size:11px;font-weight:700;">✓ 완료</span>':'');
+    b.onclick=()=>gotoS3(n);
+    wrap.appendChild(b);
+  });
+}
+
+/* ─ 자기 평가 저장 ─ */
+function submitSelf(){
+  const picked=[...selfSel].slice(0,3);
+  const sum=document.getElementById('s2-summary').value.trim();
+  if(!picked.length){ showToast('❗ 낱말을 하나 이상 선택해 주세요!'); return; }
+  const ex=getResp(curClass,curName)||{class:curClass,name:curName,peerEvals:[]};
+  ex.selfPicked=picked; ex.summary=sum;
+  ex.time=new Date().toLocaleString('ko-KR',{hour12:false});
+  upsertResp(ex);
+  showToast('✅ 자기 평가가 저장되었습니다!');
+}
+
+/* ══════════════════════════════════════
+   AI 진로 분석
+══════════════════════════════════════ */
+async function startAiAnalysis(){
+  const allSelf=[...selfSel];
+  const myData=getResp(curClass,curName);
+  const evals=myData&&myData.peerEvals?myData.peerEvals:[];
+  const peerWords=evals.flatMap(e=>e.words||[]);
+
+  if(allSelf.length===0){
+    showToast('❗ 먼저 낱말을 선택해 주세요!'); return;
+  }
+
+  document.getElementById('ai-start-btn').disabled=true;
+  document.getElementById('ai-loading').classList.add('on');
+  document.getElementById('ai-result').classList.remove('on');
+
+  const prompt=`초등학생 진로분석. JSON만 출력.
+자기선택: [${allSelf.join(',')}]
+친구평가: [${peerWords.length?peerWords.join(','):'없음'}]
+{"riasec":{"R":0-100,"I":0-100,"A":0-100,"S":0-100,"E":0-100,"C":0-100},"topType":"R/I/A/S/E/C중1개","topTypeName":"현실형/탐구형/예술형/사회형/진취형/관습형중1개","jobs":["직업1","직업2","직업3","직업4","직업5","직업6"],"comment":"2문장 따뜻한 설명"}`;
+
+  try {
+    const GEMINI_KEY = 'AIzaSyDWfBgtdsid6gfqmn-c3phx5QPl4-KPw_w';
+    const geminiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + GEMINI_KEY;
+    const loadMsg = document.querySelector('#ai-loading div:last-child');
+    const callGemini = async (retryCount=0) => {
+      const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + GEMINI_KEY;
+      if (loadMsg) loadMsg.textContent = retryCount === 0 ? 'AI가 나의 특성을 분석하고 있어요...' : `잠시 후 재시도합니다... (${retryCount}/5)`;
+      const r = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.7, maxOutputTokens: 512 }
+        })
+      });
+      if (r.status === 429) {
+        if (retryCount >= 5) throw new Error('요청이 너무 많습니다. 1분 후 다시 시도해 주세요.');
+        // 지수 백오프: 5초, 10초, 20초, 40초, 60초
+        const wait = Math.min(5000 * Math.pow(2, retryCount), 60000);
+        await new Promise(res => setTimeout(res, wait));
+        return callGemini(retryCount + 1);
+      }
+      if (!r.ok) {
+        const errText = await r.text();
+        throw new Error('HTTP ' + r.status + ': ' + errText.substring(0, 300));
+      }
+      return r.json();
+    };
+    const data = await callGemini();
+    const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    if (!raw) throw new Error('빈 응답: ' + JSON.stringify(data).substring(0, 200));
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('JSON 없음: ' + raw.substring(0, 200));
+    const parsed = JSON.parse(jsonMatch[0]);
+    renderAiResult(parsed);
+  } catch(e) {
+    console.error('AI 분석 오류:', e);
+    document.getElementById('ai-loading').classList.remove('on');
+    document.getElementById('ai-btn-wrap').style.display='block';
+    document.getElementById('ai-start-btn').disabled=false;
+    const resultEl=document.getElementById('ai-result');
+    resultEl.innerHTML='<div style="background:rgba(255,100,100,.15);border:1.5px solid rgba(255,100,100,.3);border-radius:12px;padding:14px;font-size:12px;color:#ffaaaa;">⚠️ 오류 상세: '+( e.message||String(e) )+'</div>';
+    resultEl.classList.add('on');
+  }
+}
+
+function renderAiResult(data){
+  document.getElementById('ai-loading').classList.remove('on');
+  document.getElementById('ai-btn-wrap').style.display='none';
+
+  const riasec=data.riasec||{};
+  const jobs=data.jobs||[];
+  const comment=data.comment||'';
+  const topType=data.topType||'';
+  const topTypeName=data.topTypeName||'';
+
+  // sort riasec
+  const sorted=Object.entries(riasec).sort((a,b)=>b[1]-a[1]);
+  const maxScore=sorted[0]?.[1]||100;
+
+  const riasecHtml=sorted.map(([k,v])=>`
+    <div class="riasec-card">
+      <div class="riasec-badge" style="background:${RIASEC_COLORS[k]}22;">${RIASEC_EMOJIS[k]}</div>
+      <div class="riasec-type" style="color:${RIASEC_COLORS[k]}">${k}</div>
+      <div class="riasec-label">${RIASEC_NAMES[k]}</div>
+      <div class="riasec-bar-wrap">
+        <div class="riasec-bar" style="width:${(v/maxScore*100).toFixed(0)}%;background:${RIASEC_COLORS[k]};"></div>
+      </div>
+      <div style="font-size:11px;opacity:.6;margin-top:4px;text-align:right">${v}점</div>
+    </div>`).join('');
+
+  const topJobs=jobs.slice(0,3);
+  const moreJobs=jobs.slice(3);
+
+  const html=`
+    <div style="background:rgba(${topType?RIASEC_COLORS[topType].replace('#','').match(/../g).map(x=>parseInt(x,16)).join(','):'155,127,232'},.15);border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
+      <div style="font-size:36px;">${RIASEC_EMOJIS[topType]||'✨'}</div>
+      <div>
+        <div style="font-size:11px;opacity:.6;margin-bottom:2px;">나의 주요 흥미 유형</div>
+        <div style="font-size:18px;font-weight:800;color:#fff;">${topType} — ${topTypeName}</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <div style="font-size:12px;opacity:.6;margin-bottom:10px;letter-spacing:.5px;font-weight:700;">RIASEC 흥미 유형 분석</div>
+      <div class="riasec-row">${riasecHtml}</div>
+    </div>
+
+    <div class="job-section">
+      <div class="job-section-title">⭐ 잘 어울리는 직업</div>
+      <div class="job-chips">
+        ${topJobs.map(j=>`<span class="job-chip top">${j}</span>`).join('')}
+        ${moreJobs.map(j=>`<span class="job-chip">${j}</span>`).join('')}
+      </div>
+    </div>
+
+    <div class="ai-comment">${comment}</div>
+
+    <button onclick="resetAi()" style="margin-top:14px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);color:#fff;padding:8px 16px;border-radius:10px;font-family:'Nanum Gothic',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">↺ 다시 분석하기</button>
+  `;
+
+  const resultEl=document.getElementById('ai-result');
+  resultEl.innerHTML=html;
+  resultEl.classList.add('on');
+}
+
+function resetAi(){
+  document.getElementById('ai-btn-wrap').style.display='block';
+  document.getElementById('ai-result').classList.remove('on');
+  document.getElementById('ai-result').innerHTML='';
+  document.getElementById('ai-start-btn').disabled=false;
+}
+
+/* ══════════════════════════════════════
+   S3 — 친구 평가
+══════════════════════════════════════ */
+function gotoS3(friendName){
+  curFriend=friendName;
+  document.getElementById('s3-title').textContent=friendName+' 친구 평가';
+  document.getElementById('s3-desc').innerHTML=
+    `<strong style="color:var(--peach)">${friendName}</strong> 친구를 잘 표현하는 말을 클릭해 주세요.<br>
+     <span style="font-size:12px;color:var(--muted);">한 번→선택(△) / 다시 클릭→취소, 여러 개 선택 가능 / 결과는 익명 처리됩니다</span>`;
+
+  friendSel.clear();
+  const ex=getResp(curClass,curFriend);
+  if(ex){ const me=(ex.peerEvals||[]).find(e=>e.from===curName); if(me) me.words.forEach(t=>friendSel.add(t)); }
+
+  buildFriendGrid();
+  showScreen('sc-s3');
+}
+
+function buildFriendGrid(){
+  const grid=document.getElementById('s3-grid');
+  grid.innerHTML='';
+  TRAITS.forEach(t=>{
+    const sel=friendSel.has(t);
+    const chip=document.createElement('div');
+    chip.className='trait-chip'+(sel?' sel':'');
+    chip.style.cssText=sel?'background:#fff0eb;border-color:var(--peach);color:#b84f2a;':'';
+    chip.id='fg__'+t;
+    chip.innerHTML=`<span>${t}</span>`+(sel?'<div class="chip-mark" style="background:var(--peach)">△</div>':'');
+    chip.onclick=()=>toggleFriend(t);
+    grid.appendChild(chip);
+  });
+}
+function toggleFriend(t){
+  if(friendSel.has(t)) friendSel.delete(t); else friendSel.add(t);
+  const sel=friendSel.has(t);
+  const chip=document.getElementById('fg__'+t);
+  chip.className='trait-chip'+(sel?' sel':'');
+  chip.style.cssText=sel?'background:#fff0eb;border-color:var(--peach);color:#b84f2a;':'';
+  chip.innerHTML=`<span>${t}</span>`+(sel?'<div class="chip-mark" style="background:var(--peach)">△</div>':'');
+}
+
+function submitFriend(){
+  const words=[...friendSel];
+  if(!words.length){ showToast('❗ 낱말을 하나 이상 선택해 주세요!'); return; }
+  const target=getResp(curClass,curFriend)||{class:curClass,name:curFriend,selfPicked:[],summary:'',peerEvals:[],time:''};
+  if(!target.peerEvals) target.peerEvals=[];
+  const idx=target.peerEvals.findIndex(e=>e.from===curName);
+  if(idx>=0) target.peerEvals[idx].words=words;
+  else target.peerEvals.push({from:curName,words});
+  upsertResp(target);
+  showToast(`💌 ${curFriend} 친구 평가 저장 완료! (익명 처리됨)`);
+  buildFriendBtns();
+  showScreen('sc-s2');
+  renderPeerResult();
+}
+
+function goBack(from){
+  if(from==='s1'){ showScreen('sc-s0'); buildClassBtns(); }
+  else if(from==='s2') gotoS1(curClass);
+  else if(from==='s3'){ buildFriendBtns(); showScreen('sc-s2'); }
+}
+
+/* ══════════════════════════════════════
+   TEACHER
+══════════════════════════════════════ */
+function tTab(tab){
+  ['roster','responses','cloud'].forEach(t=>{
+    document.getElementById('tt-'+t).classList.toggle('on',t===tab);
+    const p=document.getElementById('tp-'+t);
+    p.style.display=t===tab?(t==='roster'?'grid':'block'):'none';
+  });
+  if(tab==='roster') renderRoster();
+  else if(tab==='responses') renderResponses();
+  else renderCloud();
+}
+
+function renderRoster(){
+  const roster=loadRoster();
+  const wrap=document.getElementById('tp-roster');
+  wrap.innerHTML='';
+  for(let i=1;i<=10;i++){
+    const cls=i+'반';
+    const cp=document.createElement('div');
+    cp.className='class-panel';
+    cp.innerHTML=`
+      <div class="class-panel-hd">
+        <span class="class-label">🏫 ${cls}</span>
+        <span style="font-size:13px;color:var(--muted);">${(roster[cls]||[]).length}명 등록</span>
+      </div>
+      <div class="tag-area" id="tags-${i}"></div>
+      <div class="name-inp-row">
+        <input class="name-inp" id="ninp-${i}" type="text"
+          placeholder="이름 입력 후 Enter  (쉼표로 여러 명 동시 입력 가능)"
+          onkeydown="if(event.key==='Enter')addNames(${i})">
+        <button class="btn btn-secondary btn-sm" onclick="addNames(${i})">+ 추가</button>
+      </div>`;
+    wrap.appendChild(cp);
+    renderTags(i);
+  }
+}
+function renderTags(i){
+  const cls=i+'반';
+  const names=(loadRoster()[cls]||[]);
+  const wrap=document.getElementById('tags-'+i);
+  if(!wrap) return;
+  if(!names.length){ wrap.innerHTML='<span style="color:var(--muted);font-size:13px;">아직 학생이 없습니다</span>'; return; }
+  wrap.innerHTML='';
+  names.forEach(n=>{
+    const tag=document.createElement('div');
+    tag.className='name-tag';
+    tag.innerHTML=`${n} <span class="del" onclick="removeName(${i},'${n}')">✕</span>`;
+    wrap.appendChild(tag);
+  });
+}
+function addNames(i){
+  const cls=i+'반';
+  const inp=document.getElementById('ninp-'+i);
+  const raw=inp.value.trim();
+  if(!raw) return;
+  const newNames=raw.split(/[,，、\s\n]+/).map(s=>s.trim()).filter(Boolean);
+  const roster=loadRoster();
+  if(!roster[cls]) roster[cls]=[];
+  let added=0;
+  newNames.forEach(n=>{ if(n&&!roster[cls].includes(n)){roster[cls].push(n);added++;} });
+  saveRoster(roster);
+  inp.value=''; renderTags(i);
+  if(added) showToast(`✅ ${cls}에 ${added}명 추가됨`);
+}
+function removeName(i,name){
+  const cls=i+'반';
+  const roster=loadRoster();
+  roster[cls]=(roster[cls]||[]).filter(n=>n!==name);
+  saveRoster(roster);
+  renderTags(i);
+}
+
+function renderResponses(){
+  const wrap=document.getElementById('tp-responses');
+  wrap.innerHTML=`
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+      <div style="font-size:18px;font-weight:800;">학생 제출 현황</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <select class="filter-sel" id="rf-cls" onchange="filterRes()">
+          <option value="">전체 반</option>
+          ${Array.from({length:10},(_,k)=>`<option value="${k+1}반">${k+1}반</option>`).join('')}
+        </select>
+        <button class="btn btn-sm" style="background:#fff;border:2px solid #fc8181;color:#fc8181;" onclick="clearResponses()">🗑 전체 삭제</button>
+      </div>
+    </div>
+    <div id="res-inner"></div>`;
+  filterRes();
+}
+function filterRes(){
+  const cls=(document.getElementById('rf-cls')||{}).value||'';
+  let all=loadResp();
+  if(cls) all=all.filter(r=>r.class===cls);
+  const inner=document.getElementById('res-inner');
+  if(!all.length){ inner.innerHTML='<div class="empty"><div class="empty-icon">🌱</div><p>아직 제출 데이터가 없습니다.</p></div>'; return; }
+  inner.innerHTML=`<div class="res-grid">${all.map(r=>{
+    const peerHtml=(r.peerEvals&&r.peerEvals.length)
+      ?`<div class="rc-sec"><div class="rc-lbl">💬 친구들의 평가 (${r.peerEvals.length}명, 익명)</div>
+         <div class="rc-chips">${
+           // 교사는 빈도 집계로만 표시
+           (() => {
+             const freq={};
+             r.peerEvals.forEach(e=>(e.words||[]).forEach(w=>freq[w]=(freq[w]||0)+1));
+             return Object.entries(freq).sort((a,b)=>b[1]-a[1])
+               .map(([w,c])=>`<span class="rc-chip p">${w}${c>1?` ×${c}`:''}</span>`).join('');
+           })()
+         }</div></div>`
+      :`<div class="rc-sec"><div class="rc-lbl" style="color:#ddd;">💬 친구 평가 없음</div></div>`;
+    return `<div class="res-card">
+      <div class="rc-name"><div class="avatar">${r.name[0]}</div>${r.class} ${r.name}</div>
+      <div class="rc-sec"><div class="rc-lbl">🪞 내가 생각하는 나</div>
+        <div class="rc-chips">${(r.selfPicked||[]).map(t=>`<span class="rc-chip s">${t}</span>`).join('')||'<span style="color:#ccc;font-size:12px;">없음</span>'}</div></div>
+      ${peerHtml}
+      ${r.summary?`<div class="rc-lbl" style="margin-bottom:3px;">✍️ 한 문장 소개</div><div class="rc-summ">나는 ${r.summary} 사람입니다.</div>`:''}
+      <div class="rc-time">${r.time||''}</div>
+    </div>`;
+  }).join('')}</div>`;
+}
+function clearResponses(){
+  if(!confirm('모든 제출 데이터를 삭제할까요?')) return;
+  localStorage.removeItem(RESP_KEY); filterRes();
+  showToast('🗑 전체 삭제 완료');
+}
+
+function renderCloud(){
+  const wrap=document.getElementById('tp-cloud');
+  wrap.innerHTML=`
+    <div style="margin-bottom:16px;">
+      <select class="filter-sel" id="cf-cls" onchange="drawAllClouds()">
+        <option value="">전체 반</option>
+        ${Array.from({length:10},(_,k)=>`<option value="${k+1}반">${k+1}반</option>`).join('')}
+      </select>
+    </div>
+    <div class="wc-sec"><div class="wc-title">🪞 내가 생각하는 나 — 많이 고른 낱말</div><div class="word-cloud" id="wc-self"></div></div>
+    <div class="wc-sec"><div class="wc-title">💬 친구들이 선택해 준 낱말 (타인 평가 합산)</div><div class="word-cloud" id="wc-peer"></div></div>`;
+  drawAllClouds();
+}
+function drawAllClouds(){
+  const cls=(document.getElementById('cf-cls')||{}).value||'';
+  let all=loadResp();
+  if(cls) all=all.filter(r=>r.class===cls);
+  const sc={},pc={};
+  all.forEach(r=>{
+    (r.selfPicked||[]).forEach(t=>sc[t]=(sc[t]||0)+1);
+    (r.peerEvals||[]).forEach(e=>(e.words||[]).forEach(t=>pc[t]=(pc[t]||0)+1));
+  });
+  drawCloud('wc-self',sc,'#4aa8e8','#e8f5fd');
+  drawCloud('wc-peer',pc,'#9b7fe8','#f3f0ff');
+}
+function drawCloud(id,counts,color,bg){
+  const el=document.getElementById(id);
+  if(!el) return;
+  const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  if(!sorted.length){ el.innerHTML='<span style="color:#ccc;font-size:13px;">데이터 없음</span>'; return; }
+  const mx=sorted[0][1];
+  el.innerHTML=sorted.map(([w,c])=>{
+    const sz=12+Math.round((c/mx)*16);
+    const op=0.45+(c/mx)*0.55;
+    return `<span class="wc-word" style="font-size:${sz}px;background:${bg};color:${color};opacity:${op};border:1.5px solid ${color};">${w} <strong>${c}</strong></span>`;
+  }).join('');
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('on');
+  setTimeout(()=>t.classList.remove('on'),2800);
+}
+
+buildClassBtns();
+</script>
+
+
+<!-- TEACHER PASSWORD MODAL -->
+<div id="pw-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:20px;padding:32px 28px;max-width:340px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,.2);text-align:center;">
+    <div style="font-size:40px;margin-bottom:12px;">🔐</div>
+    <div style="font-size:18px;font-weight:800;margin-bottom:6px;">교사 전용 모드</div>
+    <div style="font-size:13px;color:#7a90aa;margin-bottom:20px;">비밀번호를 입력해 주세요</div>
+    <input id="pw-input" type="password" maxlength="10"
+      placeholder="비밀번호"
+      style="width:100%;border:2px solid #dde6f0;border-radius:12px;padding:12px 16px;font-size:16px;text-align:center;font-family:'Nanum Gothic',sans-serif;outline:none;letter-spacing:4px;margin-bottom:10px;"
+      onkeydown="if(event.key==='Enter')checkPw()"
+      oninput="document.getElementById('pw-err').textContent=''">
+    <div id="pw-err" style="font-size:12px;color:#e53e3e;min-height:18px;margin-bottom:10px;"></div>
+    <div style="display:flex;gap:8px;">
+      <button onclick="closePwModal()" style="flex:1;padding:12px;border:2px solid #dde6f0;background:#fff;border-radius:12px;font-family:'Nanum Gothic',sans-serif;font-size:14px;font-weight:700;cursor:pointer;color:#7a90aa;">취소</button>
+      <button onclick="checkPw()" style="flex:1;padding:12px;border:none;background:linear-gradient(135deg,#4aa8e8,#3ecfc6);border-radius:12px;font-family:'Nanum Gothic',sans-serif;font-size:14px;font-weight:800;cursor:pointer;color:#fff;">확인</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const TEACHER_PW = '3112';
+function askTeacherPw(){
+  const modal = document.getElementById('pw-modal');
+  modal.style.display = 'flex';
+  document.getElementById('pw-input').value = '';
+  document.getElementById('pw-err').textContent = '';
+  setTimeout(()=>document.getElementById('pw-input').focus(), 100);
+}
+function closePwModal(){
+  document.getElementById('pw-modal').style.display = 'none';
+}
+function checkPw(){
+  const val = document.getElementById('pw-input').value;
+  if(val === TEACHER_PW){
+    closePwModal();
+    gotoMode('teacher');
+  } else {
+    document.getElementById('pw-err').textContent = '❌ 비밀번호가 맞지 않습니다';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+// close on backdrop click
+document.getElementById('pw-modal').addEventListener('click', function(e){
+  if(e.target === this) closePwModal();
+});
+</script>
+
+</body>
+</html>
