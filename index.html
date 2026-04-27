@@ -447,14 +447,25 @@ async function loadNameScreen(){
     namesCache=[...new Set(d.names||[])];
     wrap.innerHTML='';
     if(!namesCache.length){wrap.innerHTML='<div style="color:var(--muted);font-size:14px;grid-column:1/-1;">아직 명단이 없습니다.<br>선생님께 말씀해 주세요.</div>';return;}
-    namesCache.forEach(n=>{const b=document.createElement('button');b.className='nb';b.textContent=n;b.onclick=()=>startActivity(n);wrap.appendChild(b);});
+    namesCache.forEach(n=>{
+      const b=document.createElement('button');b.className='nb';b.textContent=n;
+      b.onclick=()=>{
+        // 모든 버튼 즉시 비활성화 (중복 클릭 방지)
+        wrap.querySelectorAll('.nb').forEach(btn=>btn.disabled=true);
+        startActivity(n);
+      };
+      wrap.appendChild(b);
+    });
   }catch(e){wrap.innerHTML='<div style="color:#e53e3e;font-size:13px;grid-column:1/-1;">⚠️ '+e.message+'</div>';}
 }
 
 /* 활동 시작 */
 async function startActivity(name){
   curName=name; selfSel.clear(); friendSel.clear(); selRiasec.clear(); aptScores={};
-  lov(true,'데이터 불러오는 중...');
+  // 화면 먼저 전환
+  goPhase(1); show('sc-main'); resetAI();
+  buildTraitGrid(); updatePicks(); buildRiasecGrid(); buildAptGrid();
+  // 데이터는 백그라운드에서 로드
   try{
     const d=await gas({action:'getMyResp',name});
     const ex=d.data;
@@ -465,13 +476,11 @@ async function startActivity(name){
         if(ex.aptitude.scores) Object.entries(ex.aptitude.scores).forEach(([k,v])=>aptScores[k]=v);
         if(ex.aptitude.riasec) ex.aptitude.riasec.forEach(k=>selRiasec.add(k));
       }
+      buildTraitGrid(); updatePicks(); buildRiasecGrid(); buildAptGrid();
     }
   }catch(e){}
-  lov(false);
-  buildTraitGrid(); updatePicks();
-  await renderPeerBox(); await loadFriendGrid();
-  buildRiasecGrid(); buildAptGrid();
-  resetAI(); goPhase(1); show('sc-main');
+  await renderPeerBox();
+  await loadFriendGrid();
 }
 
 /* 단계 */
