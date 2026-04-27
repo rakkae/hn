@@ -805,7 +805,7 @@ async function addNames(i){
   const names=raw.split(/[,，\s\n]+/).map(s=>s.trim()).filter(Boolean);
   if(!names.length) return;
   inp.value=''; toast('⏳ 저장 중...');
-  try { await gasPost({action:'saveRoster',class:cls,names}); rosterCache=null; toast('✅ '+cls+'에 '+names.length+'명 추가됨'); renderRoster(); }
+  try { await gasGet({action:'addStudents', class:cls, names:names.join(',')}); rosterCache=null; toast('✅ '+cls+'에 '+names.length+'명 추가됨'); renderRoster(); }
   catch(e){toast('⚠️ '+e.message);}
 }
 async function delName(i,name){
