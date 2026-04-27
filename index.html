@@ -380,20 +380,14 @@ let respCache = {};
 /* ════════════════════════════════════════
    GAS API
 ════════════════════════════════════════ */
+// ── GAS 통신 (GET only, CORS 문제 없음) ──
 async function gasGet(params) {
   const url = GAS + '?' + new URLSearchParams(params);
   const r = await fetch(url);
   if (!r.ok) throw new Error('서버 오류 ' + r.status);
-  return r.json();
-}
-async function gasPost(body) {
-  const r = await fetch(GAS, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify(body)
-  });
-  if (!r.ok) throw new Error('서버 오류 ' + r.status);
-  return r.json();
+  const d = await r.json();
+  if (!d.ok && d.msg) throw new Error(d.msg);
+  return d;
 }
 
 async function getRoster() {
@@ -405,12 +399,12 @@ async function getRoster() {
 async function getMyResp(cls, name) {
   const k = cls+'__'+name;
   if (respCache[k] !== undefined) return respCache[k];
-  const d = await gasGet({action:'getMyResponse', class:cls, name});
+  const d = await gasGet({action:'getMyResp', class:cls, name});
   respCache[k] = d.data || null;
   return respCache[k];
 }
 async function getAllResp(cls) {
-  const d = await gasGet({action:'getResponses', class:cls||''});
+  const d = await gasGet({action:'getAllResp', class:cls||''});
   return d.responses || [];
 }
 
@@ -625,7 +619,7 @@ async function saveSelf() {
   if (!picked.length) { toast('❗ 낱말을 하나 이상 선택해 주세요!'); return; }
   loading(true, '저장 중...');
   try {
-    await gasPost({action:'saveResponse', class:curClass, name:curName, selfPicked:picked, summary:sum});
+    await gasGet({action:'saveResp', class:curClass, name:curName, selfPicked:picked.join(','), summary:sum});
     respCache[curClass+'__'+curName] = null;
     toast('✅ 자기 평가가 저장되었습니다!');
   } catch(e) { toast('⚠️ 저장 오류: '+e.message); }
@@ -674,7 +668,7 @@ async function saveFriend() {
   if (!words.length) { toast('❗ 낱말을 하나 이상 선택해 주세요!'); return; }
   loading(true, '저장 중...');
   try {
-    await gasPost({action:'saveResponse', class:curClass, name:curFriend, peerEval:{from:curName, words}});
+    await gasGet({action:'saveResp', class:curClass, name:curFriend, peerFrom:curName, peerWords:words.join(',')});
     respCache[curClass+'__'+curFriend] = null;
     toast('💌 '+curFriend+' 친구 평가 저장 완료! (익명 처리됨)');
     show('sc-s2');
@@ -817,7 +811,7 @@ async function addNames(i){
 async function delName(i,name){
   if(!confirm(name+' 학생을 삭제할까요?')) return;
   toast('⏳ 삭제 중...');
-  try { await gasPost({action:'deleteStudent',class:i+'반',name}); rosterCache=null; toast('🗑 '+name+' 삭제됨'); renderRoster(); }
+  try { await gasGet({action:'delStudent', class:i+'반', name}); rosterCache=null; toast('🗑 '+name+' 삭제됨'); renderRoster(); }
   catch(e){toast('⚠️ '+e.message);}
 }
 
