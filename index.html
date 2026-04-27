@@ -390,8 +390,8 @@ async function gasGet(params) {
   return d;
 }
 
-async function getRoster() {
-  if (rosterCache) return rosterCache;
+async function getRoster(fresh=false) {
+  if (!fresh && rosterCache) return rosterCache;
   const d = await gasGet({action:'getRoster'});
   rosterCache = d.roster || {};
   return rosterCache;
@@ -478,7 +478,7 @@ function initClassBtns() {
     wrap.appendChild(b);
   }
   // 명단 카운트 백그라운드 로드
-  getRoster().then(roster=>{
+  getRoster(true).then(roster=>{
     for (let i=1; i<=10; i++) {
       const cnt = (roster[i+'반']||[]).length;
       const b = document.getElementById('cb-'+i);
@@ -500,8 +500,7 @@ async function loadS1() {
   const wrap = document.getElementById('s1-grid');
   wrap.innerHTML = '<div style="color:var(--muted);font-size:13px;grid-column:1/-1">명단 불러오는 중...</div>';
   try {
-    rosterCache = null; // 항상 최신 명단
-    const roster = await getRoster();
+    const roster = await getRoster(true);
     const names = roster[curClass] || [];
     wrap.innerHTML = '';
     if (!names.length) {
@@ -596,20 +595,25 @@ async function renderPeerBox() {
 
 async function loadFriendBtns() {
   const wrap = document.getElementById('s2-friends');
-  wrap.innerHTML = '';
+  wrap.innerHTML = '<div style="color:var(--muted);font-size:13px;grid-column:1/-1">친구 목록 불러오는 중...</div>';
   try {
-    const roster = await getRoster();
+    const roster = await getRoster(true);
     const names = (roster[curClass]||[]).filter(n=>n!==curName);
     if (!names.length) { wrap.innerHTML='<div style="color:var(--muted);font-size:13px;grid-column:1/-1">같은 반 친구가 없습니다.</div>'; return; }
-    for (const n of names) {
-      const ex = await getMyResp(curClass, n);
+    // 한 번에 전체 응답 가져오기 (개별 호출 X)
+    const allResp = await getAllResp(curClass);
+    const respMap = {};
+    allResp.forEach(r => respMap[r.name] = r);
+    wrap.innerHTML = '';
+    names.forEach(n => {
+      const ex = respMap[n];
       const done = ex&&(ex.peerEvals||[]).some(e=>e.from===curName);
       const b = document.createElement('button');
       b.className = 'nb'+(done?' done':'');
       b.innerHTML = n+(done?'<br><span style="font-size:11px;font-weight:700;">✓ 완료</span>':'');
       b.onclick = () => gotoS3(n);
       wrap.appendChild(b);
-    }
+    });
   } catch(e) { wrap.innerHTML='<div style="color:#e53e3e;font-size:13px;">⚠️ '+e.message+'</div>'; }
 }
 
@@ -778,9 +782,8 @@ function tTab(t) {
 async function renderRoster() {
   const wrap=document.getElementById('tp-r');
   wrap.innerHTML='<div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--muted);">명단 불러오는 중...</div>';
-  rosterCache=null;
   let roster={};
-  try { roster=await getRoster(); } catch(e){ wrap.innerHTML='<div style="color:#e53e3e;padding:20px;">⚠️ 오류: '+e.message+'</div>'; return; }
+  try { roster=await getRoster(true); } catch(e){ wrap.innerHTML='<div style="color:#e53e3e;padding:20px;">⚠️ 오류: '+e.message+'</div>'; return; }
   wrap.innerHTML='';
   for(let i=1;i<=10;i++){
     const cls=i+'반';
