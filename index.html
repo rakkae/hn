@@ -385,24 +385,78 @@ const RIASEC_COLORS = {
 const RIASEC_EMOJIS = { R:'🔧', C:'📋', I:'🔬', E:'📢', S:'🤝', A:'🎨' };
 const RIASEC_NAMES  = { R:'현실형', C:'관습형', I:'탐구형', E:'진취형', S:'사회형', A:'예술형' };
 
-const ROSTER_KEY = 'nateuk_roster';
-const RESP_KEY   = 'nateuk_resp';
+// 구글 시트 연동으로 localStorage 키 불필요
 
 let curClass='', curName='', curFriend='';
 const selfSel   = new Set();
 const friendSel = new Set();
 
-/* ── storage ── */
-const loadRoster = ()=>{ try{return JSON.parse(localStorage.getItem(ROSTER_KEY))||{};}catch{return{};} };
-const saveRoster = r=>localStorage.setItem(ROSTER_KEY,JSON.stringify(r));
-const loadResp   = ()=>{ try{return JSON.parse(localStorage.getItem(RESP_KEY))||[];}catch{return[];} };
-const saveResp   = a=>localStorage.setItem(RESP_KEY,JSON.stringify(a));
-const getResp    = (cls,name)=>loadResp().find(r=>r.class===cls&&r.name===name)||null;
-function upsertResp(entry){
-  const all=loadResp();
-  const i=all.findIndex(r=>r.class===entry.class&&r.name===entry.name);
-  if(i>=0) all[i]=entry; else all.push(entry);
-  saveResp(all);
+/* ── Google Sheets API ── */
+const GAS = 'https://script.google.com/macros/s/AKfycbxIlnHG2enB5g9a9AFjE1Ou1Aq_gyWAcRyxfanVD7bGi3jtbuCRyOfY1HiH3fNdycL_AA/exec';
+
+// 캐시 (속도 향상)
+let _rosterCache = null;
+let _respCache = {};
+
+async function gasGet(params) {
+  const url = GAS + '?' + new URLSearchParams(params);
+  const r = await fetch(url);
+  return r.json();
+}
+async function gasPost(body) {
+  const r = await fetch(GAS, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(body)
+  });
+  return r.json();
+}
+
+// 명단 로드 (캐시 우선)
+async function loadRoster() {
+  if (_rosterCache) return _rosterCache;
+  const res = await gasGet({action:'getRoster'});
+  _rosterCache = res.roster || {};
+  return _rosterCache;
+}
+
+// 학생 추가
+async function addStudentsToRoster(cls, names) {
+  await gasPost({action:'saveRoster', class:cls, names});
+  _rosterCache = null; // 캐시 초기화
+}
+
+// 학생 삭제
+async function removeStudentFromRoster(cls, name) {
+  await gasPost({action:'deleteStudent', class:cls, name});
+  _rosterCache = null;
+}
+
+// 내 응답 로드
+async function loadMyResp(cls, name) {
+  const key = cls+'__'+name;
+  if (_respCache[key]) return _respCache[key];
+  const res = await gasGet({action:'getMyResponse', class:cls, name});
+  _respCache[key] = res.data || null;
+  return _respCache[key];
+}
+
+// 전체 응답 로드
+async function loadAllResp(cls) {
+  const res = await gasGet({action:'getResponses', class: cls||''});
+  return res.responses || [];
+}
+
+// 자기평가 저장
+async function saveMyResp(cls, name, selfPicked, summary) {
+  await gasPost({action:'saveResponse', class:cls, name, selfPicked, summary});
+  _respCache[cls+'__'+name] = null; // 캐시 초기화
+}
+
+// 친구평가 저장
+async function savePeerEval(cls, targetName, fromName, words) {
+  await gasPost({action:'saveResponse', class:cls, name:targetName, peerEval:{from:fromName, words}});
+  _respCache[cls+'__'+targetName] = null;
 }
 
 /* ══════════════════════════════════════
@@ -422,9 +476,10 @@ function showScreen(id){
 /* ══════════════════════════════════════
    S0 — 반 선택
 ══════════════════════════════════════ */
-function buildClassBtns(){
-  const roster=loadRoster();
+async function buildClassBtns(){
   const wrap=document.getElementById('s0-classes');
+  wrap.innerHTML='<div style="color:var(--muted);font-size:13px;grid-column:1/-1">명단 불러오는 중...</div>';
+  const roster=await loadRoster();
   wrap.innerHTML='';
   for(let i=1;i<=10;i++){
     const cls=i+'반';
@@ -440,11 +495,14 @@ function buildClassBtns(){
 /* ══════════════════════════════════════
    S1 — 이름 선택
 ══════════════════════════════════════ */
-function gotoS1(cls){
+async function gotoS1(cls){
   curClass=cls;
   document.getElementById('s1-label').textContent=cls;
-  const names=(loadRoster()[cls]||[]);
+  showScreen('sc-s1');
   const wrap=document.getElementById('s1-names');
+  wrap.innerHTML='<div style="color:var(--muted);font-size:13px;grid-column:1/-1">명단 불러오는 중...</div>';
+  const roster=await loadRoster();
+  const names=(roster[cls]||[]);
   wrap.innerHTML='';
   if(!names.length){
     wrap.innerHTML='<div style="color:var(--muted);font-size:14px;grid-column:1/-1">등록된 학생이 없습니다. 교사용에서 명단을 입력해 주세요.</div>';
@@ -456,37 +514,38 @@ function gotoS1(cls){
       wrap.appendChild(b);
     });
   }
-  showScreen('sc-s1');
 }
 
 /* ══════════════════════════════════════
    S2 — 메인 활동
 ══════════════════════════════════════ */
-function gotoS2(name){
+async function gotoS2(name){
   curName=name;
   document.getElementById('s2-title').textContent=name+' 학생';
+  showScreen('sc-s2');
   selfSel.clear();
 
-  const ex=getResp(curClass,curName);
-  if(ex){
-    (ex.selfPicked||[]).forEach(t=>selfSel.add(t));
-    document.getElementById('s2-summary').value=ex.summary||'';
-  } else {
-    document.getElementById('s2-summary').value='';
-  }
-
-  // reset AI section
+  // AI 섹션 초기화
   document.getElementById('ai-btn-wrap').style.display='block';
   document.getElementById('ai-loading').classList.remove('on');
   document.getElementById('ai-result').classList.remove('on');
   document.getElementById('ai-result').innerHTML='';
   document.getElementById('ai-start-btn').disabled=false;
+  document.getElementById('s2-summary').value='';
+
+  // 내 기존 응답 불러오기
+  showToast('⏳ 데이터 불러오는 중...');
+  const ex = await loadMyResp(curClass, curName);
+  if(ex){
+    (ex.selfPicked||[]).forEach(t=>selfSel.add(t));
+    document.getElementById('s2-summary').value=ex.summary||'';
+  }
 
   buildSelfGrid();
   updatePicks();
-  renderPeerResult();
-  buildFriendBtns();
-  showScreen('sc-s2');
+  await renderPeerResult();
+  await buildFriendBtns();
+  showToast('');
 }
 
 /* ─ traits grid ─ */
@@ -522,9 +581,10 @@ function updatePicks(){
 }
 
 /* ─ 친구 평가 결과 (익명) ─ */
-function renderPeerResult(){
+async function renderPeerResult(){
   const el=document.getElementById('peer-result');
-  const myData=getResp(curClass,curName);
+  el.innerHTML='<div class="no-peer">불러오는 중...</div>';
+  const myData=await loadMyResp(curClass,curName);
   const evals=myData&&myData.peerEvals?myData.peerEvals:[];
 
   if(!evals.length){
@@ -558,33 +618,32 @@ function renderPeerResult(){
 }
 
 /* ─ 친구 버튼 ─ */
-function buildFriendBtns(){
-  const names=(loadRoster()[curClass]||[]).filter(n=>n!==curName);
+async function buildFriendBtns(){
+  const roster=await loadRoster();
+  const names=(roster[curClass]||[]).filter(n=>n!==curName);
   const wrap=document.getElementById('s2-friends');
   wrap.innerHTML='';
   if(!names.length){
     wrap.innerHTML='<div style="color:var(--muted);font-size:13px;grid-column:1/-1">같은 반 친구가 없습니다.</div>'; return;
   }
-  names.forEach(n=>{
-    const ex=getResp(curClass,n);
+  for(const n of names){
+    const ex=await loadMyResp(curClass,n);
     const done=ex&&(ex.peerEvals||[]).some(e=>e.from===curName);
     const b=document.createElement('button');
     b.className='name-btn'+(done?' done':'');
     b.innerHTML=n+(done?'<br><span style="font-size:11px;font-weight:700;">✓ 완료</span>':'');
     b.onclick=()=>gotoS3(n);
     wrap.appendChild(b);
-  });
+  }
 }
 
 /* ─ 자기 평가 저장 ─ */
-function submitSelf(){
+async function submitSelf(){
   const picked=[...selfSel].slice(0,3);
   const sum=document.getElementById('s2-summary').value.trim();
   if(!picked.length){ showToast('❗ 낱말을 하나 이상 선택해 주세요!'); return; }
-  const ex=getResp(curClass,curName)||{class:curClass,name:curName,peerEvals:[]};
-  ex.selfPicked=picked; ex.summary=sum;
-  ex.time=new Date().toLocaleString('ko-KR',{hour12:false});
-  upsertResp(ex);
+  showToast('⏳ 저장 중...');
+  await saveMyResp(curClass,curName,picked,sum);
   showToast('✅ 자기 평가가 저장되었습니다!');
 }
 
@@ -593,7 +652,7 @@ function submitSelf(){
 ══════════════════════════════════════ */
 async function startAiAnalysis(){
   const allSelf=[...selfSel];
-  const myData=getResp(curClass,curName);
+  const myData=await loadMyResp(curClass,curName);
   const evals=myData&&myData.peerEvals?myData.peerEvals:[];
   const peerWords=evals.flatMap(e=>e.words||[]);
 
@@ -726,7 +785,7 @@ function resetAi(){
 /* ══════════════════════════════════════
    S3 — 친구 평가
 ══════════════════════════════════════ */
-function gotoS3(friendName){
+async function gotoS3(friendName){
   curFriend=friendName;
   document.getElementById('s3-title').textContent=friendName+' 친구 평가';
   document.getElementById('s3-desc').innerHTML=
@@ -734,7 +793,7 @@ function gotoS3(friendName){
      <span style="font-size:12px;color:var(--muted);">한 번→선택(△) / 다시 클릭→취소, 여러 개 선택 가능 / 결과는 익명 처리됩니다</span>`;
 
   friendSel.clear();
-  const ex=getResp(curClass,curFriend);
+  const ex=await loadMyResp(curClass,curFriend);
   if(ex){ const me=(ex.peerEvals||[]).find(e=>e.from===curName); if(me) me.words.forEach(t=>friendSel.add(t)); }
 
   buildFriendGrid();
@@ -764,25 +823,21 @@ function toggleFriend(t){
   chip.innerHTML=`<span>${t}</span>`+(sel?'<div class="chip-mark" style="background:var(--peach)">△</div>':'');
 }
 
-function submitFriend(){
+async function submitFriend(){
   const words=[...friendSel];
   if(!words.length){ showToast('❗ 낱말을 하나 이상 선택해 주세요!'); return; }
-  const target=getResp(curClass,curFriend)||{class:curClass,name:curFriend,selfPicked:[],summary:'',peerEvals:[],time:''};
-  if(!target.peerEvals) target.peerEvals=[];
-  const idx=target.peerEvals.findIndex(e=>e.from===curName);
-  if(idx>=0) target.peerEvals[idx].words=words;
-  else target.peerEvals.push({from:curName,words});
-  upsertResp(target);
+  showToast('⏳ 저장 중...');
+  await savePeerEval(curClass,curFriend,curName,words);
   showToast(`💌 ${curFriend} 친구 평가 저장 완료! (익명 처리됨)`);
-  buildFriendBtns();
   showScreen('sc-s2');
-  renderPeerResult();
+  await buildFriendBtns();
+  await renderPeerResult();
 }
 
 function goBack(from){
   if(from==='s1'){ showScreen('sc-s0'); buildClassBtns(); }
   else if(from==='s2') gotoS1(curClass);
-  else if(from==='s3'){ buildFriendBtns(); showScreen('sc-s2'); }
+  else if(from==='s3'){ showScreen('sc-s2'); buildFriendBtns(); }
 }
 
 /* ══════════════════════════════════════
@@ -799,18 +854,20 @@ function tTab(tab){
   else renderCloud();
 }
 
-function renderRoster(){
-  const roster=loadRoster();
+async function renderRoster(){
   const wrap=document.getElementById('tp-roster');
+  wrap.innerHTML='<div style="grid-column:1/-1;color:var(--muted);padding:20px;text-align:center;">명단 불러오는 중...</div>';
+  const roster=await loadRoster();
   wrap.innerHTML='';
   for(let i=1;i<=10;i++){
     const cls=i+'반';
+    const names=roster[cls]||[];
     const cp=document.createElement('div');
     cp.className='class-panel';
     cp.innerHTML=`
       <div class="class-panel-hd">
         <span class="class-label">🏫 ${cls}</span>
-        <span style="font-size:13px;color:var(--muted);">${(roster[cls]||[]).length}명 등록</span>
+        <span style="font-size:13px;color:var(--muted);">${names.length}명 등록</span>
       </div>
       <div class="tag-area" id="tags-${i}"></div>
       <div class="name-inp-row">
@@ -820,43 +877,39 @@ function renderRoster(){
         <button class="btn btn-secondary btn-sm" onclick="addNames(${i})">+ 추가</button>
       </div>`;
     wrap.appendChild(cp);
-    renderTags(i);
+    const tagWrap=document.getElementById('tags-'+i);
+    if(!names.length){ tagWrap.innerHTML='<span style="color:var(--muted);font-size:13px;">아직 학생이 없습니다</span>'; }
+    else {
+      names.forEach(n=>{
+        const tag=document.createElement('div');
+        tag.className='name-tag';
+        tag.innerHTML=n+' <span class="del" onclick="removeName('+i+',\''+n+'\')">✕</span>';
+        tagWrap.appendChild(tag);
+      });
+    }
   }
 }
-function renderTags(i){
-  const cls=i+'반';
-  const names=(loadRoster()[cls]||[]);
-  const wrap=document.getElementById('tags-'+i);
-  if(!wrap) return;
-  if(!names.length){ wrap.innerHTML='<span style="color:var(--muted);font-size:13px;">아직 학생이 없습니다</span>'; return; }
-  wrap.innerHTML='';
-  names.forEach(n=>{
-    const tag=document.createElement('div');
-    tag.className='name-tag';
-    tag.innerHTML=`${n} <span class="del" onclick="removeName(${i},'${n}')">✕</span>`;
-    wrap.appendChild(tag);
-  });
-}
-function addNames(i){
+
+async function addNames(i){
   const cls=i+'반';
   const inp=document.getElementById('ninp-'+i);
   const raw=inp.value.trim();
   if(!raw) return;
   const newNames=raw.split(/[,，、\s\n]+/).map(s=>s.trim()).filter(Boolean);
-  const roster=loadRoster();
-  if(!roster[cls]) roster[cls]=[];
-  let added=0;
-  newNames.forEach(n=>{ if(n&&!roster[cls].includes(n)){roster[cls].push(n);added++;} });
-  saveRoster(roster);
-  inp.value=''; renderTags(i);
-  if(added) showToast(`✅ ${cls}에 ${added}명 추가됨`);
+  if(!newNames.length) return;
+  inp.value='';
+  showToast('⏳ 저장 중...');
+  await addStudentsToRoster(cls, newNames);
+  showToast('✅ '+cls+'에 '+newNames.length+'명 추가됨');
+  renderRoster();
 }
-function removeName(i,name){
+async function removeName(i,name){
   const cls=i+'반';
-  const roster=loadRoster();
-  roster[cls]=(roster[cls]||[]).filter(n=>n!==name);
-  saveRoster(roster);
-  renderTags(i);
+  if(!confirm(name+' 학생을 삭제할까요?')) return;
+  showToast('⏳ 삭제 중...');
+  await removeStudentFromRoster(cls, name);
+  showToast('🗑 '+name+' 삭제됨');
+  renderRoster();
 }
 
 function renderResponses(){
@@ -875,10 +928,11 @@ function renderResponses(){
     <div id="res-inner"></div>`;
   filterRes();
 }
-function filterRes(){
+async function filterRes(){
   const cls=(document.getElementById('rf-cls')||{}).value||'';
-  let all=loadResp();
-  if(cls) all=all.filter(r=>r.class===cls);
+  const inner=document.getElementById('res-inner');
+  if(inner) inner.innerHTML='<div style="text-align:center;padding:30px;color:var(--muted);">데이터 불러오는 중...</div>';
+  let all=await loadAllResp(cls);
   const inner=document.getElementById('res-inner');
   if(!all.length){ inner.innerHTML='<div class="empty"><div class="empty-icon">🌱</div><p>아직 제출 데이터가 없습니다.</p></div>'; return; }
   inner.innerHTML=`<div class="res-grid">${all.map(r=>{
@@ -905,9 +959,7 @@ function filterRes(){
   }).join('')}</div>`;
 }
 function clearResponses(){
-  if(!confirm('모든 제출 데이터를 삭제할까요?')) return;
-  localStorage.removeItem(RESP_KEY); filterRes();
-  showToast('🗑 전체 삭제 완료');
+  showToast('⚠️ 구글 시트에서 직접 삭제해 주세요.');
 }
 
 function renderCloud(){
@@ -923,10 +975,9 @@ function renderCloud(){
     <div class="wc-sec"><div class="wc-title">💬 친구들이 선택해 준 낱말 (타인 평가 합산)</div><div class="word-cloud" id="wc-peer"></div></div>`;
   drawAllClouds();
 }
-function drawAllClouds(){
+async function drawAllClouds(){
   const cls=(document.getElementById('cf-cls')||{}).value||'';
-  let all=loadResp();
-  if(cls) all=all.filter(r=>r.class===cls);
+  let all=await loadAllResp(cls);
   const sc={},pc={};
   all.forEach(r=>{
     (r.selfPicked||[]).forEach(t=>sc[t]=(sc[t]||0)+1);
