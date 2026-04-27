@@ -6,369 +6,356 @@
 <title>나의 특성 알아보기</title>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
 <style>
-:root {
-  --sky: #4aa8e8;
-  --sky-light: #e8f5fd;
-  --peach: #f07a55;
-  --peach-light: #fff0eb;
-  --mint: #3ecfc6;
-  --mint-light: #e6faf9;
-  --yellow: #ffc84a;
-  --purple: #9b7fe8;
-  --purple-light: #f3f0ff;
-  --green: #48bb78;
-  --green-light: #f0fff4;
-  --bg: #f0f6ff;
-  --card: #ffffff;
-  --border: #dde6f0;
-  --text: #263449;
-  --muted: #7a90aa;
-  --shadow: 0 4px 20px rgba(36,72,120,0.09);
-  --radius: 20px;
+:root{
+  --sky:#4aa8e8;--sky-l:#e8f5fd;--peach:#f07a55;--peach-l:#fff0eb;
+  --mint:#3ecfc6;--yellow:#ffc84a;--purple:#9b7fe8;--purple-l:#f3f0ff;
+  --bg:#f0f6ff;--card:#fff;--border:#dde6f0;--text:#263449;--muted:#7a90aa;
+  --shadow:0 4px 20px rgba(36,72,120,.09);--r:20px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Nanum Gothic',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-.topbar{background:#fff;box-shadow:0 2px 12px rgba(36,72,120,.08);padding:13px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
-.topbar-logo{font-size:18px;font-weight:800;color:var(--sky);display:flex;align-items:center;gap:8px;}
-.mode-wrap{display:flex;background:#f0f4f8;border-radius:30px;padding:3px;gap:3px;}
-.mode-btn{padding:7px 18px;border:none;border-radius:27px;font-family:'Nanum Gothic',sans-serif;font-size:13px;font-weight:700;cursor:pointer;background:transparent;color:var(--muted);transition:all .2s;}
-.mode-btn.on{background:#fff;color:var(--sky);box-shadow:0 2px 8px rgba(36,72,120,.12);}
+/* topbar */
+.tb{background:#fff;box-shadow:0 2px 12px rgba(36,72,120,.08);padding:13px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
+.tb-logo{font-size:18px;font-weight:800;color:var(--sky);}
+.mw{display:flex;background:#f0f4f8;border-radius:30px;padding:3px;gap:3px;}
+.mb{padding:7px 18px;border:none;border-radius:27px;font-family:'Nanum Gothic',sans-serif;font-size:13px;font-weight:700;cursor:pointer;background:transparent;color:var(--muted);transition:all .2s;}
+.mb.on{background:#fff;color:var(--sky);box-shadow:0 2px 8px rgba(36,72,120,.12);}
 
-.screen{display:none;animation:fadeIn .3s ease both;}
-.screen.on{display:block;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+/* screens */
+.sc{display:none;} .sc.on{display:block;}
+@keyframes fi{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.sc.on{animation:fi .3s ease both;}
 
 .wrap{max-width:700px;margin:0 auto;padding:28px 18px 80px;}
-.wrap-wide{max-width:1080px;margin:0 auto;padding:28px 18px 80px;}
+.wrap-w{max-width:1080px;margin:0 auto;padding:28px 18px 80px;}
 
-.panel{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:18px;}
-.panel-title{font-size:16px;font-weight:800;margin-bottom:16px;}
+/* panels */
+.pn{background:var(--card);border-radius:var(--r);padding:24px;box-shadow:var(--shadow);margin-bottom:18px;}
+.pn-title{font-size:16px;font-weight:800;margin-bottom:16px;}
 
-.step-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px;}
-.step-num{min-width:30px;height:30px;background:var(--sky);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;margin-top:2px;}
-.step-desc{font-size:14px;line-height:1.65;}
-.step-desc strong{color:var(--sky);}
+/* step */
+.sh{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px;}
+.sn{min-width:30px;height:30px;background:var(--sky);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;margin-top:2px;}
+.sd{font-size:14px;line-height:1.65;} .sd strong{color:var(--sky);}
 
-.class-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
-.class-btn,.name-btn{border:2px solid var(--border);background:#fff;border-radius:14px;padding:13px 8px;text-align:center;font-family:'Nanum Gothic',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:all .2s;color:var(--text);}
-.class-btn:hover,.name-btn:hover{border-color:var(--sky);color:var(--sky);transform:translateY(-2px);box-shadow:var(--shadow);}
-.name-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;}
+/* class/name grid */
+.cg{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.ng{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;}
+.cb,.nb{border:2px solid var(--border);background:#fff;border-radius:14px;padding:13px 8px;text-align:center;font-family:'Nanum Gothic',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:all .2s;color:var(--text);}
+.cb:hover,.nb:hover{border-color:var(--sky);color:var(--sky);transform:translateY(-2px);box-shadow:var(--shadow);}
+.nb.done{border-color:var(--mint);color:#1aaa9a;}
 
 /* traits */
-.traits-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:7px;background:#fffdf0;border-radius:16px;padding:14px;border:2px dashed var(--yellow);}
-.trait-chip{position:relative;padding:10px 5px;border-radius:10px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;border:2px solid transparent;background:#fff;transition:all .18s;user-select:none;box-shadow:0 1px 4px rgba(0,0,0,.05);}
-.trait-chip:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.10);}
-.trait-chip.sel{background:#e8f5fd;border-color:var(--sky);color:#1a6fa0;}
-.chip-mark{position:absolute;top:-6px;right:-6px;width:17px;height:17px;border-radius:50%;background:var(--sky);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff;}
-.legend{display:flex;gap:14px;margin-top:10px;font-size:12px;color:var(--muted);}
-.leg-item{display:flex;align-items:center;gap:5px;}
-.leg-dot{width:18px;height:18px;border-radius:4px;background:var(--sky);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;}
+.tg{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:7px;background:#fffdf0;border-radius:16px;padding:14px;border:2px dashed var(--yellow);}
+.tc{position:relative;padding:10px 5px;border-radius:10px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;border:2px solid transparent;background:#fff;transition:all .18s;user-select:none;box-shadow:0 1px 4px rgba(0,0,0,.05);}
+.tc:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.10);}
+.tc.sel{background:#e8f5fd;border-color:var(--sky);color:#1a6fa0;}
+.tc.fsel{background:#fff0eb;border-color:var(--peach);color:#b84f2a;}
+.cm{position:absolute;top:-6px;right:-6px;width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff;background:var(--sky);}
+.leg{display:flex;gap:14px;margin-top:10px;font-size:12px;color:var(--muted);}
+.li{display:flex;align-items:center;gap:5px;}
+.ld{width:18px;height:18px;border-radius:4px;background:var(--sky);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;}
 
-/* pick boxes */
-.pick-row{display:flex;gap:14px;flex-wrap:wrap;}
-.pick-box{flex:1;min-width:160px;border-radius:16px;padding:16px 18px;}
-.pick-box.sb{background:var(--sky-light);border:2px solid var(--sky);}
-.pick-box.fb{background:var(--peach-light);border:2px solid var(--peach);}
-.pick-title{font-size:13px;font-weight:800;margin-bottom:10px;}
-.pick-box.sb .pick-title{color:var(--sky);}
-.pick-box.fb .pick-title{color:var(--peach);}
-.pick-item{background:#fff;border-radius:9px;padding:8px 12px;font-size:13px;font-weight:700;min-height:36px;display:flex;align-items:center;color:var(--muted);border:1.5px dashed var(--border);margin-bottom:6px;transition:all .2s;}
-.pick-item.ok{color:var(--text);border-style:solid;}
-.pick-box.sb .pick-item.ok{border-color:var(--sky);background:#f0faff;}
-.pick-box.fb .pick-item.ok{border-color:var(--peach);background:#fff5f0;}
-.peer-chip{padding:2px 8px;background:#fff;border:1.5px solid var(--peach);border-radius:8px;font-size:11px;font-weight:700;color:#b84f2a;}
-.no-peer{font-size:12px;color:#ccc;font-style:italic;}
-.peer-line{display:flex;align-items:flex-start;gap:6px;margin-bottom:3px;font-size:12px;}
-.peer-who{font-weight:800;color:var(--peach);min-width:42px;}
-.peer-chips{display:flex;flex-wrap:wrap;gap:3px;}
+/* pick */
+.pr{display:flex;gap:14px;flex-wrap:wrap;}
+.pb{flex:1;min-width:160px;border-radius:16px;padding:16px 18px;}
+.pb.sb{background:var(--sky-l);border:2px solid var(--sky);}
+.pb.fb{background:var(--peach-l);border:2px solid var(--peach);}
+.pt{font-size:13px;font-weight:800;margin-bottom:10px;}
+.pb.sb .pt{color:var(--sky);} .pb.fb .pt{color:var(--peach);}
+.pi{background:#fff;border-radius:9px;padding:8px 12px;font-size:13px;font-weight:700;min-height:36px;display:flex;align-items:center;color:var(--muted);border:1.5px dashed var(--border);margin-bottom:6px;transition:all .2s;}
+.pi.ok{color:var(--text);border-style:solid;}
+.pb.sb .pi.ok{border-color:var(--sky);background:#f0faff;}
+.pb.fb .pi.ok{border-color:var(--peach);background:#fff5f0;}
+.pchip{padding:2px 8px;background:#fff;border:1.5px solid var(--peach);border-radius:8px;font-size:11px;font-weight:700;color:#b84f2a;}
 
 /* summary */
-.summary-row{background:linear-gradient(135deg,#f0faff,#f3f0ff);border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;border:2px solid #c4def7;}
-.sum-fix{font-size:16px;font-weight:800;white-space:nowrap;}
-.sum-input{flex:1;min-width:140px;border:none;background:transparent;border-bottom:2px solid var(--sky);padding:3px 7px;font-family:'Nanum Pen Script',cursive;font-size:20px;color:var(--text);outline:none;}
+.sumr{background:linear-gradient(135deg,#f0faff,#f3f0ff);border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;border:2px solid #c4def7;}
+.sf{font-size:16px;font-weight:800;white-space:nowrap;}
+.si{flex:1;min-width:140px;border:none;background:transparent;border-bottom:2px solid var(--sky);padding:3px 7px;font-family:'Nanum Pen Script',cursive;font-size:20px;color:var(--text);outline:none;}
 
-/* ── AI ANALYSIS PANEL ── */
-.ai-panel{background:linear-gradient(135deg,#1a1f35,#263449);border-radius:var(--radius);padding:26px;box-shadow:0 8px 32px rgba(26,31,53,.3);margin-bottom:18px;color:#fff;position:relative;overflow:hidden;}
-.ai-panel::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(155,127,232,.25),transparent 70%);border-radius:50%;}
-.ai-panel::after{content:'';position:absolute;bottom:-30px;left:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(74,168,232,.2),transparent 70%);border-radius:50%;}
-.ai-panel-title{font-size:16px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
-.ai-panel-sub{font-size:12px;opacity:.6;margin-bottom:20px;}
+/* AI panel */
+.aip{background:linear-gradient(135deg,#1a1f35,#263449);border-radius:var(--r);padding:26px;box-shadow:0 8px 32px rgba(26,31,53,.3);margin-top:24px;margin-bottom:18px;color:#fff;position:relative;overflow:hidden;}
+.aip::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(155,127,232,.25),transparent 70%);border-radius:50%;}
+.ai-title{font-size:16px;font-weight:800;margin-bottom:4px;}
+.ai-sub{font-size:12px;opacity:.6;margin-bottom:20px;}
 .ai-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--purple),#6dd5fa);color:#fff;font-family:'Nanum Gothic',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .25s;box-shadow:0 4px 16px rgba(155,127,232,.4);}
-.ai-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(155,127,232,.5);}
+.ai-btn:hover{transform:translateY(-2px);}
 .ai-btn:disabled{background:#444;box-shadow:none;cursor:not-allowed;transform:none;}
-.ai-loading{display:none;flex-direction:column;align-items:center;gap:14px;padding:20px 0;}
-.ai-loading.on{display:flex;}
-.spinner{width:40px;height:40px;border:4px solid rgba(255,255,255,.15);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;}
+.ai-ld{display:none;flex-direction:column;align-items:center;gap:14px;padding:20px 0;}
+.ai-ld.on{display:flex;}
+.sp{width:40px;height:40px;border:4px solid rgba(255,255,255,.15);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.ai-result{display:none;}
-.ai-result.on{display:block;}
-
-/* RIASEC card */
-.riasec-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
-.riasec-card{flex:1;min-width:120px;border-radius:14px;padding:14px 16px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);}
-.riasec-badge{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;font-size:18px;margin-bottom:8px;}
-.riasec-type{font-size:13px;font-weight:800;margin-bottom:2px;}
-.riasec-label{font-size:11px;opacity:.6;margin-bottom:6px;}
-.riasec-bar-wrap{background:rgba(255,255,255,.1);border-radius:6px;height:6px;overflow:hidden;}
-.riasec-bar{height:6px;border-radius:6px;transition:width 1s ease;}
-
-/* jobs */
-.job-section{margin-bottom:16px;}
-.job-section-title{font-size:13px;font-weight:800;opacity:.7;margin-bottom:8px;letter-spacing:.5px;}
-.job-chips{display:flex;flex-wrap:wrap;gap:6px;}
-.job-chip{padding:6px 13px;border-radius:20px;font-size:12px;font-weight:700;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);color:#fff;transition:all .2s;}
-.job-chip:hover{background:rgba(255,255,255,.2);}
-.job-chip.top{background:linear-gradient(135deg,rgba(155,127,232,.4),rgba(74,168,232,.3));border-color:rgba(155,127,232,.6);}
-
-/* comment */
+.ai-res{display:none;} .ai-res.on{display:block;}
+.rc-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
+.rc-card{flex:1;min-width:100px;border-radius:14px;padding:14px 16px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);}
+.rc-em{font-size:18px;margin-bottom:6px;}
+.rc-type{font-size:13px;font-weight:800;margin-bottom:2px;}
+.rc-lbl{font-size:11px;opacity:.6;margin-bottom:6px;}
+.rc-bw{background:rgba(255,255,255,.1);border-radius:6px;height:6px;overflow:hidden;}
+.rc-b{height:6px;border-radius:6px;transition:width 1s ease;}
+.jc{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.jchip{padding:6px 13px;border-radius:20px;font-size:12px;font-weight:700;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);color:#fff;}
+.jchip.top{background:linear-gradient(135deg,rgba(155,127,232,.4),rgba(74,168,232,.3));border-color:rgba(155,127,232,.6);}
 .ai-comment{background:rgba(255,255,255,.07);border-radius:12px;padding:14px 16px;font-size:13px;line-height:1.7;opacity:.9;border-left:3px solid var(--purple);}
+
+/* friend panel */
+.fp{background:var(--card);border-radius:var(--r);padding:24px;box-shadow:var(--shadow);margin-top:24px;}
+.fh{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;}
+.fb2{min-width:30px;height:30px;background:var(--peach);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex-shrink:0;margin-top:2px;}
 
 /* buttons */
 .btn{display:inline-flex;align-items:center;gap:7px;padding:12px 22px;border-radius:14px;border:none;font-family:'Nanum Gothic',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;}
-.btn-primary{background:linear-gradient(135deg,var(--sky),var(--mint));color:#fff;box-shadow:0 4px 14px rgba(74,168,232,.35);}
-.btn-primary:hover{transform:translateY(-2px);}
-.btn-secondary{background:#fff;color:var(--sky);border:2px solid var(--sky);}
+.btn-pri{background:linear-gradient(135deg,var(--sky),var(--mint));color:#fff;box-shadow:0 4px 14px rgba(74,168,232,.35);}
+.btn-pri:hover{transform:translateY(-2px);}
+.btn-sec{background:#fff;color:var(--sky);border:2px solid var(--sky);}
 .btn-peach{background:linear-gradient(135deg,var(--peach),#f0a070);color:#fff;box-shadow:0 4px 14px rgba(240,122,85,.3);}
 .btn-peach:hover{transform:translateY(-2px);}
-.btn-block{width:100%;justify-content:center;margin-top:20px;font-size:16px;padding:15px;}
+.btn-blk{width:100%;justify-content:center;margin-top:20px;font-size:16px;padding:15px;}
 .btn-sm{padding:7px 14px;font-size:12px;border-radius:10px;}
 
-.back-bar{display:flex;align-items:center;gap:8px;margin-bottom:18px;}
-.back-btn{background:none;border:none;font-family:'Nanum Gothic',sans-serif;font-size:14px;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:4px;}
-.back-btn:hover{color:var(--text);}
-.page-title{font-size:19px;font-weight:800;}
-
-.friend-panel{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-top:24px;}
-.friend-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;}
-.friend-badge{min-width:30px;height:30px;background:var(--peach);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex-shrink:0;margin-top:2px;}
-.friend-desc{font-size:14px;line-height:1.65;}
-.friend-desc strong{color:var(--peach);}
-.name-btn.done{border-color:var(--mint);color:#1aaa9a;}
+/* back */
+.bb{display:flex;align-items:center;gap:8px;margin-bottom:18px;}
+.bbtn{background:none;border:none;font-family:'Nanum Gothic',sans-serif;font-size:14px;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:4px;}
+.bbtn:hover{color:var(--text);}
+.ptitle{font-size:19px;font-weight:800;}
 
 /* teacher */
-.t-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
-.t-tab{padding:8px 18px;border-radius:20px;border:2px solid var(--border);background:#fff;font-family:'Nanum Gothic',sans-serif;font-size:13px;font-weight:700;cursor:pointer;color:var(--muted);transition:all .2s;}
-.t-tab.on{background:var(--sky);border-color:var(--sky);color:#fff;}
-.roster-grid{display:grid;gap:14px;}
-.class-panel{background:#fff;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);}
-.class-panel-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.class-label{font-size:15px;font-weight:800;color:var(--sky);}
-.tag-area{display:flex;flex-wrap:wrap;gap:6px;min-height:32px;padding:2px 0;}
-.name-tag{background:var(--sky-light);border:1.5px solid #b3d8f5;color:#1a6fa0;border-radius:20px;padding:4px 12px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;}
-.name-tag .del{cursor:pointer;font-size:11px;color:#6aace0;}
-.name-tag .del:hover{color:#e53e3e;}
-.name-inp-row{display:flex;gap:8px;margin-top:10px;}
-.name-inp{flex:1;border:2px solid var(--border);border-radius:11px;padding:8px 14px;font-family:'Nanum Gothic',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
-.name-inp:focus{border-color:var(--sky);}
-.res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
-.res-card{background:#fff;border-radius:18px;padding:18px;box-shadow:var(--shadow);border-top:4px solid var(--sky);animation:fadeIn .35s ease both;}
-.res-card:nth-child(2n){border-top-color:var(--peach);}
-.res-card:nth-child(3n){border-top-color:var(--mint);}
-.rc-name{font-size:16px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:7px;}
-.avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--sky),var(--mint));display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800;}
-.rc-sec{margin-bottom:8px;}
-.rc-lbl{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;}
-.rc-chips{display:flex;flex-wrap:wrap;gap:4px;}
-.rc-chip{padding:3px 9px;border-radius:9px;font-size:12px;font-weight:700;}
-.rc-chip.s{background:var(--sky-light);color:#1a6fa0;border:1px solid #b3d8f5;}
-.rc-chip.p{background:var(--purple-light);color:#5b3fa0;border:1px solid #c4b0f5;}
-.rc-summ{background:linear-gradient(135deg,#f0faff,#f3f0ff);border-radius:10px;padding:9px 13px;font-family:'Nanum Pen Script',cursive;font-size:17px;border-left:3px solid var(--sky);}
-.rc-time{font-size:11px;color:var(--muted);margin-top:6px;text-align:right;}
-.fe-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:4px;}
-.fe-who{font-size:12px;font-weight:800;color:var(--peach);min-width:52px;padding-top:2px;}
-.fe-chips{display:flex;flex-wrap:wrap;gap:3px;}
-.fe-chip{padding:2px 8px;border-radius:8px;font-size:11px;font-weight:700;background:var(--peach-light);color:#b84f2a;border:1px solid #f7c4ae;}
-.wc-sec{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-bottom:16px;}
-.wc-title{font-size:15px;font-weight:800;margin-bottom:14px;}
-.word-cloud{display:flex;flex-wrap:wrap;gap:7px;align-items:center;}
-.wc-word{padding:5px 13px;border-radius:20px;font-weight:700;transition:transform .2s;}
-.wc-word:hover{transform:scale(1.06);}
-.empty{text-align:center;padding:50px 20px;color:var(--muted);}
-.empty-icon{font-size:56px;margin-bottom:14px;}
-.filter-sel{border:2px solid var(--border);border-radius:10px;padding:7px 12px;font-family:'Nanum Gothic',sans-serif;font-size:13px;outline:none;cursor:pointer;}
-.filter-sel:focus{border-color:var(--sky);}
+.ttabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.ttab{padding:8px 18px;border-radius:20px;border:2px solid var(--border);background:#fff;font-family:'Nanum Gothic',sans-serif;font-size:13px;font-weight:700;cursor:pointer;color:var(--muted);transition:all .2s;}
+.ttab.on{background:var(--sky);border-color:var(--sky);color:#fff;}
+.rgrid{display:grid;gap:14px;}
+.cpanel{background:#fff;border-radius:var(--r);padding:20px;box-shadow:var(--shadow);}
+.chd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.clbl{font-size:15px;font-weight:800;color:var(--sky);}
+.tags{display:flex;flex-wrap:wrap;gap:6px;min-height:32px;padding:2px 0;}
+.tag{background:var(--sky-l);border:1.5px solid #b3d8f5;color:#1a6fa0;border-radius:20px;padding:4px 12px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;}
+.tag .dl{cursor:pointer;font-size:11px;color:#6aace0;} .tag .dl:hover{color:#e53e3e;}
+.ninr{display:flex;gap:8px;margin-top:10px;}
+.nin{flex:1;border:2px solid var(--border);border-radius:11px;padding:8px 14px;font-family:'Nanum Gothic',sans-serif;font-size:14px;outline:none;}
+.nin:focus{border-color:var(--sky);}
+.resgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+.rescard{background:#fff;border-radius:18px;padding:18px;box-shadow:var(--shadow);border-top:4px solid var(--sky);animation:fi .35s ease both;}
+.rescard:nth-child(2n){border-top-color:var(--peach);}
+.rescard:nth-child(3n){border-top-color:var(--mint);}
+.rname{font-size:16px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:7px;}
+.av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--sky),var(--mint));display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800;}
+.rsec{margin-bottom:8px;}
+.rlbl{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;}
+.rchips{display:flex;flex-wrap:wrap;gap:4px;}
+.rchip{padding:3px 9px;border-radius:9px;font-size:12px;font-weight:700;}
+.rchip.s{background:var(--sky-l);color:#1a6fa0;border:1px solid #b3d8f5;}
+.rchip.p{background:var(--purple-l);color:#5b3fa0;border:1px solid #c4b0f5;}
+.rsumm{background:linear-gradient(135deg,#f0faff,#f3f0ff);border-radius:10px;padding:9px 13px;font-family:'Nanum Pen Script',cursive;font-size:17px;border-left:3px solid var(--sky);}
+.rtime{font-size:11px;color:var(--muted);margin-top:6px;text-align:right;}
+.wcsec{background:#fff;border-radius:var(--r);padding:22px;box-shadow:var(--shadow);margin-bottom:16px;}
+.wctitle{font-size:15px;font-weight:800;margin-bottom:14px;}
+.wc{display:flex;flex-wrap:wrap;gap:7px;align-items:center;}
+.wcw{padding:5px 13px;border-radius:20px;font-weight:700;transition:transform .2s;}
+.wcw:hover{transform:scale(1.06);}
+.fsel2{border:2px solid var(--border);border-radius:10px;padding:7px 12px;font-family:'Nanum Gothic',sans-serif;font-size:13px;outline:none;}
+
+/* modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:center;justify-content:center;}
+.modal-bg.on{display:flex;}
+.modal{background:#fff;border-radius:20px;padding:32px 28px;max-width:340px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,.2);text-align:center;}
+
+/* toast */
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#263449;color:#fff;padding:13px 26px;border-radius:40px;font-size:14px;font-weight:700;transition:transform .3s;z-index:999;white-space:nowrap;pointer-events:none;}
 .toast.on{transform:translateX(-50%) translateY(0);}
 
-@media(max-width:500px){
-  .pick-row{flex-direction:column;}
-  .traits-grid{grid-template-columns:repeat(auto-fill,minmax(74px,1fr));}
-  .class-grid{grid-template-columns:repeat(5,1fr);}
-  .riasec-row{flex-direction:column;}
-}
+/* loading overlay */
+.lov{display:none;position:fixed;inset:0;background:rgba(255,255,255,.7);z-index:400;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
+.lov.on{display:flex;}
+
+@media(max-width:500px){.pr{flex-direction:column;}.tg{grid-template-columns:repeat(auto-fill,minmax(74px,1fr));}.cg{grid-template-columns:repeat(5,1fr);}}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="topbar-logo">🌸 나의 특성 알아보기</div>
-  <div class="mode-wrap">
-    <button class="mode-btn on" id="mBtn-s" onclick="gotoMode('student')">📚 학생</button>
-    <button class="mode-btn" id="mBtn-t" onclick="askTeacherPw()">🏫 교사</button>
+<!-- TOPBAR -->
+<div class="tb">
+  <div class="tb-logo">🌸 나의 특성 알아보기</div>
+  <div class="mw">
+    <button class="mb on" id="mb-s" onclick="setMode('student')">📚 학생</button>
+    <button class="mb" id="mb-t" onclick="askPw()">🏫 교사</button>
   </div>
 </div>
 
-<!-- S0 반 선택 -->
-<div class="screen on" id="sc-s0">
+<!-- S0: 반 선택 -->
+<div class="sc on" id="sc-s0">
   <div class="wrap">
-    <div class="panel" style="text-align:center;padding:44px 24px 36px;">
+    <div class="pn" style="text-align:center;padding:44px 24px 36px;">
       <div style="font-size:54px;margin-bottom:12px;">🌸</div>
       <div style="font-size:23px;font-weight:800;margin-bottom:6px;">나의 특성 알아보기</div>
       <div style="font-size:14px;color:var(--muted);margin-bottom:34px;">자신의 반을 선택해 주세요</div>
-      <div class="class-grid" id="s0-classes"></div>
+      <div class="cg" id="s0-grid"></div>
     </div>
   </div>
 </div>
 
-<!-- S1 이름 선택 -->
-<div class="screen" id="sc-s1">
+<!-- S1: 이름 선택 -->
+<div class="sc" id="sc-s1">
   <div class="wrap">
-    <div class="back-bar">
-      <button class="back-btn" onclick="goBack('s1')">← 반 선택</button>
+    <div class="bb">
+      <button class="bbtn" onclick="show('sc-s0');initClassBtns()">← 반 선택</button>
       <span style="color:var(--border)">|</span>
-      <span class="page-title" id="s1-label"></span>
+      <span class="ptitle" id="s1-title"></span>
     </div>
-    <div class="panel">
-      <div class="panel-title">👤 본인 이름을 선택하세요</div>
-      <div class="name-grid" id="s1-names"></div>
+    <div class="pn">
+      <div class="pn-title">👤 본인 이름을 선택하세요</div>
+      <div class="ng" id="s1-grid"></div>
     </div>
   </div>
 </div>
 
-<!-- S2 메인 활동 -->
-<div class="screen" id="sc-s2">
+<!-- S2: 메인 활동 -->
+<div class="sc" id="sc-s2">
   <div class="wrap">
-    <div class="back-bar">
-      <button class="back-btn" onclick="goBack('s2')">← 이름 선택</button>
+    <div class="bb">
+      <button class="bbtn" onclick="show('sc-s1');loadS1()">← 이름 선택</button>
       <span style="color:var(--border)">|</span>
-      <span class="page-title" id="s2-title"></span>
+      <span class="ptitle" id="s2-title"></span>
     </div>
 
-    <!-- 활동 1 -->
-    <div class="panel">
-      <div class="step-head">
-        <div class="step-num">1</div>
-        <div class="step-desc">
-          아래에서 <strong>내가 생각하는 나</strong>를 표현하는 말을 클릭해서 선택해 봅시다.<br>
-          <span style="font-size:12px;color:var(--muted);">한 번 클릭→선택(○) / 다시 클릭→취소</span>
-        </div>
+    <!-- 활동1 -->
+    <div class="pn">
+      <div class="sh"><div class="sn">1</div>
+        <div class="sd">아래에서 <strong>내가 생각하는 나</strong>를 표현하는 말을 클릭해서 선택해 봅시다.<br>
+        <span style="font-size:12px;color:var(--muted);">한 번→선택(○) / 다시 클릭→취소</span></div>
       </div>
-      <div class="traits-grid" id="s2-grid"></div>
-      <div class="legend">
-        <div class="leg-item"><div class="leg-dot">○</div> 내가 생각하는 나</div>
-      </div>
+      <div class="tg" id="s2-traits"></div>
+      <div class="leg"><div class="li"><div class="ld">○</div>내가 생각하는 나</div></div>
     </div>
 
-    <!-- 활동 2 -->
-    <div class="panel">
-      <div class="step-head">
-        <div class="step-num">2</div>
-        <div class="step-desc">나를 가장 잘 표현하는 말을 각각 세 가지씩 골라 봅시다.</div>
+    <!-- 활동2 -->
+    <div class="pn">
+      <div class="sh"><div class="sn">2</div>
+        <div class="sd">나를 가장 잘 표현하는 말을 각각 세 가지씩 골라 봅시다.</div>
       </div>
-      <div class="pick-row">
-        <div class="pick-box sb">
-          <div class="pick-title">🪞 내가 생각하는 나는요,</div>
-          <div id="sp0" class="pick-item">선택 1</div>
-          <div id="sp1" class="pick-item">선택 2</div>
-          <div id="sp2" class="pick-item">선택 3</div>
+      <div class="pr">
+        <div class="pb sb">
+          <div class="pt">🪞 내가 생각하는 나는요,</div>
+          <div id="sp0" class="pi">선택 1</div>
+          <div id="sp1" class="pi">선택 2</div>
+          <div id="sp2" class="pi">선택 3</div>
         </div>
-        <div class="pick-box fb">
-          <div class="pick-title">🦋 친구가 말하는 나는요,</div>
-          <div id="peer-result"></div>
+        <div class="pb fb">
+          <div class="pt">🦋 친구가 말하는 나는요,</div>
+          <div id="peer-box"></div>
         </div>
       </div>
     </div>
 
-    <!-- 활동 3 -->
-    <div class="panel">
-      <div class="step-head">
-        <div class="step-num">3</div>
-        <div class="step-desc">②에서 고른 말들을 종합하여 나는 어떤 사람인지 한 문장으로 써 봅시다.</div>
+    <!-- 활동3 -->
+    <div class="pn">
+      <div class="sh"><div class="sn">3</div>
+        <div class="sd">②에서 고른 말들을 종합하여 나는 어떤 사람인지 한 문장으로 써 봅시다.</div>
       </div>
-      <div class="summary-row">
-        <span class="sum-fix">나는</span>
-        <input class="sum-input" id="s2-summary" type="text" placeholder="여기에 써 보세요">
-        <span class="sum-fix">사람입니다.</span>
+      <div class="sumr">
+        <span class="sf">나는</span>
+        <input class="si" id="summary" type="text" placeholder="여기에 써 보세요">
+        <span class="sf">사람입니다.</span>
       </div>
     </div>
 
-    <button class="btn btn-primary btn-block" onclick="submitSelf()">✅ 자기 평가 저장하기</button>
+    <button class="btn btn-pri btn-blk" onclick="saveSelf()">✅ 자기 평가 저장하기</button>
 
-    <!-- ✨ AI 진로 분석 -->
-    <div class="ai-panel" style="margin-top:24px;">
-      <div class="ai-panel-title">✨ AI 진로 분석</div>
-      <div class="ai-panel-sub">선택한 낱말을 바탕으로 AI가 나의 흥미 유형과 어울리는 직업을 분석해 드려요</div>
-
+    <!-- AI 분석 -->
+    <div class="aip">
+      <div class="ai-title">✨ AI 진로 분석</div>
+      <div class="ai-sub">선택한 낱말을 바탕으로 AI가 나의 흥미 유형과 어울리는 직업을 분석해 드려요</div>
       <div id="ai-btn-wrap">
-        <button class="ai-btn" id="ai-start-btn" onclick="startAiAnalysis()">
-          🔮 AI에게 나의 진로 분석 부탁하기
-        </button>
+        <button class="ai-btn" id="ai-btn" onclick="runAI()">🔮 AI에게 나의 진로 분석 부탁하기</button>
       </div>
-
-      <div class="ai-loading" id="ai-loading">
-        <div class="spinner"></div>
-        <div style="font-size:13px;opacity:.7;">AI가 나의 특성을 분석하고 있어요...</div>
+      <div class="ai-ld" id="ai-ld">
+        <div class="sp"></div>
+        <div id="ai-ld-msg">AI가 분석 중이에요...</div>
       </div>
-
-      <div class="ai-result" id="ai-result"></div>
+      <div class="ai-res" id="ai-res"></div>
     </div>
 
-    <!-- 친구 평가하기 -->
-    <div class="friend-panel">
-      <div class="friend-head">
-        <div class="friend-badge">+</div>
-        <div class="friend-desc">
-          <strong>친구 평가하기</strong> — 평가할 친구를 선택하세요.<br>
-          <span style="font-size:12px;color:var(--muted);">평가는 익명으로 처리됩니다. 완료한 친구는 ✓로 표시됩니다.</span>
+    <!-- 친구 평가 -->
+    <div class="fp">
+      <div class="fh">
+        <div class="fb2">+</div>
+        <div style="font-size:14px;line-height:1.65;">
+          <strong style="color:var(--peach)">친구 평가하기</strong> — 평가할 친구를 선택하세요.<br>
+          <span style="font-size:12px;color:var(--muted);">평가는 익명으로 처리됩니다.</span>
         </div>
       </div>
-      <div class="name-grid" id="s2-friends"></div>
+      <div class="ng" id="s2-friends"></div>
     </div>
   </div>
 </div>
 
-<!-- S3 친구 평가 -->
-<div class="screen" id="sc-s3">
+<!-- S3: 친구 평가 -->
+<div class="sc" id="sc-s3">
   <div class="wrap">
-    <div class="back-bar">
-      <button class="back-btn" onclick="goBack('s3')">← 활동으로 돌아가기</button>
-      <span class="page-title" id="s3-title"></span>
+    <div class="bb">
+      <button class="bbtn" onclick="show('sc-s2');loadFriendBtns()">← 활동으로 돌아가기</button>
+      <span class="ptitle" id="s3-title"></span>
     </div>
-    <div class="panel">
-      <div class="step-head">
-        <div class="step-num" style="background:var(--peach)">△</div>
-        <div class="step-desc" id="s3-desc"></div>
+    <div class="pn">
+      <div class="sh">
+        <div class="sn" style="background:var(--peach)">△</div>
+        <div class="sd" id="s3-desc"></div>
       </div>
-      <div class="traits-grid" id="s3-grid"></div>
-      <div class="legend">
-        <div class="leg-item"><div class="leg-dot" style="background:var(--peach)">△</div> 이 친구를 표현하는 말</div>
-      </div>
+      <div class="tg" id="s3-traits"></div>
+      <div class="leg"><div class="li"><div class="ld" style="background:var(--peach)">△</div>이 친구를 표현하는 말</div></div>
     </div>
-    <button class="btn btn-peach btn-block" onclick="submitFriend()">💌 친구 평가 저장하기</button>
+    <button class="btn btn-peach btn-blk" onclick="saveFriend()">💌 친구 평가 저장하기</button>
   </div>
 </div>
 
 <!-- TEACHER -->
-<div class="screen" id="sc-teacher">
-  <div class="wrap-wide">
-    <div class="t-tabs">
-      <button class="t-tab on" id="tt-roster"    onclick="tTab('roster')">📋 명단 관리</button>
-      <button class="t-tab"    id="tt-responses" onclick="tTab('responses')">📊 제출 현황</button>
-      <button class="t-tab"    id="tt-cloud"     onclick="tTab('cloud')">☁️ 낱말 현황</button>
+<div class="sc" id="sc-teacher">
+  <div class="wrap-w">
+    <div class="ttabs">
+      <button class="ttab on" id="tt-r" onclick="tTab('r')">📋 명단 관리</button>
+      <button class="ttab" id="tt-s" onclick="tTab('s')">📊 제출 현황</button>
+      <button class="ttab" id="tt-c" onclick="tTab('c')">☁️ 낱말 현황</button>
     </div>
-    <div id="tp-roster"    class="roster-grid"></div>
-    <div id="tp-responses" style="display:none;"></div>
-    <div id="tp-cloud"     style="display:none;"></div>
+    <div id="tp-r" class="rgrid"></div>
+    <div id="tp-s" style="display:none;"></div>
+    <div id="tp-c" style="display:none;"></div>
   </div>
+</div>
+
+<!-- 비밀번호 모달 -->
+<div class="modal-bg" id="pw-modal">
+  <div class="modal">
+    <div style="font-size:40px;margin-bottom:12px;">🔐</div>
+    <div style="font-size:18px;font-weight:800;margin-bottom:6px;">교사 전용 모드</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">비밀번호를 입력해 주세요</div>
+    <input id="pw-inp" type="password" maxlength="10" placeholder="비밀번호"
+      style="width:100%;border:2px solid var(--border);border-radius:12px;padding:12px 16px;font-size:18px;text-align:center;font-family:'Nanum Gothic',sans-serif;outline:none;letter-spacing:6px;margin-bottom:8px;"
+      onkeydown="if(event.key==='Enter')checkPw()">
+    <div id="pw-err" style="font-size:12px;color:#e53e3e;min-height:18px;margin-bottom:12px;"></div>
+    <div style="display:flex;gap:8px;">
+      <button onclick="closePw()" style="flex:1;padding:12px;border:2px solid var(--border);background:#fff;border-radius:12px;font-family:'Nanum Gothic',sans-serif;font-size:14px;font-weight:700;cursor:pointer;color:var(--muted);">취소</button>
+      <button onclick="checkPw()" style="flex:1;padding:12px;border:none;background:linear-gradient(135deg,var(--sky),var(--mint));border-radius:12px;font-family:'Nanum Gothic',sans-serif;font-size:14px;font-weight:800;cursor:pointer;color:#fff;">확인</button>
+    </div>
+  </div>
+</div>
+
+<!-- 로딩 오버레이 -->
+<div class="lov" id="lov">
+  <div class="sp" style="border-top-color:var(--sky);"></div>
+  <div style="font-size:14px;color:var(--muted);" id="lov-msg">불러오는 중...</div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-/* ══════════════════════════════════════
-   CONSTANTS & STATE
-══════════════════════════════════════ */
+/* ════════════════════════════════════════
+   설정
+════════════════════════════════════════ */
+const GAS = 'https://script.google.com/macros/s/AKfycbxIlnHG2enB5g9a9AFjE1Ou1Aq_gyWAcRyxfanVD7bGi3jtbuCRyOfY1HiH3fNdycL_AA/exec';
+const GEMINI_KEY = 'AIzaSyDWfBgtdsid6gfqmn-c3phx5QPl4-KPw_w';
+const TEACHER_PW = '3112';
+
 const TRAITS = [
   '따뜻한','생각이 깊은','현실적인','완벽한','엄격한','모험적인',
   '계획적인','논리적인','예술적인','성실한','즉흥적인','친절한',
@@ -377,694 +364,526 @@ const TRAITS = [
   '진지한','유쾌한','겸손한','긍정적인','참을성 있는','고집적인',
   '창의적인','지도력 있는','단순한','책임감 있는','고집 있는','호기심 많은'
 ];
+const RC={R:'#e67e22',I:'#27ae60',A:'#f39c12',S:'#9b59b6',E:'#e74c3c',C:'#3498db'};
+const RE={R:'🔧',I:'🔬',A:'🎨',S:'🤝',E:'📢',C:'📋'};
+const RN={R:'현실형',I:'탐구형',A:'예술형',S:'사회형',E:'진취형',C:'관습형'};
 
-const RIASEC_COLORS = {
-  R: '#e67e22', C: '#3498db', I: '#27ae60',
-  E: '#e74c3c', S: '#9b59b6', A: '#f39c12'
-};
-const RIASEC_EMOJIS = { R:'🔧', C:'📋', I:'🔬', E:'📢', S:'🤝', A:'🎨' };
-const RIASEC_NAMES  = { R:'현실형', C:'관습형', I:'탐구형', E:'진취형', S:'사회형', A:'예술형' };
-
-// 구글 시트 연동으로 localStorage 키 불필요
-
+/* ════════════════════════════════════════
+   상태
+════════════════════════════════════════ */
 let curClass='', curName='', curFriend='';
-const selfSel   = new Set();
+const selfSel = new Set();
 const friendSel = new Set();
+let rosterCache = null;
+let respCache = {};
 
-/* ── Google Sheets API ── */
-const GAS = 'https://script.google.com/macros/s/AKfycbxIlnHG2enB5g9a9AFjE1Ou1Aq_gyWAcRyxfanVD7bGi3jtbuCRyOfY1HiH3fNdycL_AA/exec';
-
-// 캐시 (속도 향상)
-let _rosterCache = null;
-let _respCache = {};
-
+/* ════════════════════════════════════════
+   GAS API
+════════════════════════════════════════ */
 async function gasGet(params) {
   const url = GAS + '?' + new URLSearchParams(params);
   const r = await fetch(url);
+  if (!r.ok) throw new Error('서버 오류 ' + r.status);
   return r.json();
 }
 async function gasPost(body) {
   const r = await fetch(GAS, {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify(body)
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(body)
   });
+  if (!r.ok) throw new Error('서버 오류 ' + r.status);
   return r.json();
 }
 
-// 명단 로드 (캐시 우선)
-async function loadRoster() {
-  if (_rosterCache) return _rosterCache;
-  const res = await gasGet({action:'getRoster'});
-  _rosterCache = res.roster || {};
-  return _rosterCache;
+async function getRoster() {
+  if (rosterCache) return rosterCache;
+  const d = await gasGet({action:'getRoster'});
+  rosterCache = d.roster || {};
+  return rosterCache;
+}
+async function getMyResp(cls, name) {
+  const k = cls+'__'+name;
+  if (respCache[k] !== undefined) return respCache[k];
+  const d = await gasGet({action:'getMyResponse', class:cls, name});
+  respCache[k] = d.data || null;
+  return respCache[k];
+}
+async function getAllResp(cls) {
+  const d = await gasGet({action:'getResponses', class:cls||''});
+  return d.responses || [];
 }
 
-// 학생 추가
-async function addStudentsToRoster(cls, names) {
-  await gasPost({action:'saveRoster', class:cls, names});
-  _rosterCache = null; // 캐시 초기화
-}
-
-// 학생 삭제
-async function removeStudentFromRoster(cls, name) {
-  await gasPost({action:'deleteStudent', class:cls, name});
-  _rosterCache = null;
-}
-
-// 내 응답 로드
-async function loadMyResp(cls, name) {
-  const key = cls+'__'+name;
-  if (_respCache[key]) return _respCache[key];
-  const res = await gasGet({action:'getMyResponse', class:cls, name});
-  _respCache[key] = res.data || null;
-  return _respCache[key];
-}
-
-// 전체 응답 로드
-async function loadAllResp(cls) {
-  const res = await gasGet({action:'getResponses', class: cls||''});
-  return res.responses || [];
-}
-
-// 자기평가 저장
-async function saveMyResp(cls, name, selfPicked, summary) {
-  await gasPost({action:'saveResponse', class:cls, name, selfPicked, summary});
-  _respCache[cls+'__'+name] = null; // 캐시 초기화
-}
-
-// 친구평가 저장
-async function savePeerEval(cls, targetName, fromName, words) {
-  await gasPost({action:'saveResponse', class:cls, name:targetName, peerEval:{from:fromName, words}});
-  _respCache[cls+'__'+targetName] = null;
-}
-
-/* ══════════════════════════════════════
-   MODE / SCREEN
-══════════════════════════════════════ */
-function gotoMode(m){
-  document.getElementById('mBtn-s').classList.toggle('on',m==='student');
-  document.getElementById('mBtn-t').classList.toggle('on',m==='teacher');
-  if(m==='student'){ showScreen('sc-s0'); buildClassBtns(); }
-  else{ showScreen('sc-teacher'); tTab('roster'); }
-}
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+/* ════════════════════════════════════════
+   UI 헬퍼
+════════════════════════════════════════ */
+function show(id) {
+  document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));
   document.getElementById(id).classList.add('on');
 }
+function loading(on, msg='불러오는 중...') {
+  document.getElementById('lov').classList.toggle('on', on);
+  document.getElementById('lov-msg').textContent = msg;
+}
+let toastTimer;
+function toast(msg, dur=2500) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('on');
+  clearTimeout(toastTimer);
+  if (msg) toastTimer = setTimeout(()=>el.classList.remove('on'), dur);
+  else el.classList.remove('on');
+}
 
-/* ══════════════════════════════════════
-   S0 — 반 선택
-══════════════════════════════════════ */
-async function buildClassBtns(){
-  const wrap=document.getElementById('s0-classes');
-  // 1. 반 버튼 즉시 표시 (명단 로드 기다리지 않음)
-  wrap.innerHTML='';
-  for(let i=1;i<=10;i++){
-    const cls=i+'반';
-    const b=document.createElement('button');
-    b.className='class-btn';
-    b.id='classbtn-'+i;
-    b.innerHTML=cls;
-    b.onclick=()=>gotoS1(cls);
+/* ════════════════════════════════════════
+   모드 / 비밀번호
+════════════════════════════════════════ */
+function setMode(m) {
+  document.getElementById('mb-s').classList.toggle('on', m==='student');
+  document.getElementById('mb-t').classList.toggle('on', m==='teacher');
+  if (m==='student') { show('sc-s0'); initClassBtns(); }
+  else { show('sc-teacher'); tTab('r'); }
+}
+function askPw() {
+  document.getElementById('pw-modal').classList.add('on');
+  document.getElementById('pw-inp').value = '';
+  document.getElementById('pw-err').textContent = '';
+  setTimeout(()=>document.getElementById('pw-inp').focus(), 100);
+}
+function closePw() { document.getElementById('pw-modal').classList.remove('on'); }
+function checkPw() {
+  if (document.getElementById('pw-inp').value === TEACHER_PW) {
+    closePw();
+    setMode('teacher');
+  } else {
+    document.getElementById('pw-err').textContent = '❌ 비밀번호가 맞지 않습니다';
+    document.getElementById('pw-inp').value = '';
+    document.getElementById('pw-inp').focus();
+  }
+}
+document.getElementById('pw-modal').addEventListener('click', e=>{
+  if (e.target===document.getElementById('pw-modal')) closePw();
+});
+document.getElementById('pw-inp').addEventListener('keydown', e=>{
+  if (e.key==='Enter') checkPw();
+});
+
+/* ════════════════════════════════════════
+   S0: 반 선택
+════════════════════════════════════════ */
+function initClassBtns() {
+  const wrap = document.getElementById('s0-grid');
+  wrap.innerHTML = '';
+  for (let i=1; i<=10; i++) {
+    const cls = i+'반';
+    const b = document.createElement('button');
+    b.className = 'cb';
+    b.id = 'cb-'+i;
+    b.textContent = cls;
+    b.onclick = () => gotoS1(cls);
     wrap.appendChild(b);
   }
-  // 2. 백그라운드에서 명단 로드 후 카운트 업데이트
-  try {
-    const roster=await loadRoster();
-    for(let i=1;i<=10;i++){
-      const cls=i+'반';
-      const cnt=(roster[cls]||[]).length;
-      const b=document.getElementById('classbtn-'+i);
-      if(b&&cnt) b.innerHTML=cls+`<br><span style="font-size:11px;opacity:.6;font-weight:400">${cnt}명</span>`;
+  // 명단 카운트 백그라운드 로드
+  getRoster().then(roster=>{
+    for (let i=1; i<=10; i++) {
+      const cnt = (roster[i+'반']||[]).length;
+      const b = document.getElementById('cb-'+i);
+      if (b && cnt) b.innerHTML = i+'반<br><span style="font-size:11px;opacity:.6;font-weight:400">'+cnt+'명</span>';
     }
-  } catch(e){ console.error('명단 로드 오류:', e); }
+  }).catch(()=>{});
 }
 
-/* ══════════════════════════════════════
-   S1 — 이름 선택
-══════════════════════════════════════ */
-async function gotoS1(cls){
-  curClass=cls;
-  document.getElementById('s1-label').textContent=cls;
-  showScreen('sc-s1');
-  const wrap=document.getElementById('s1-names');
-  wrap.innerHTML='<div style="color:var(--muted);font-size:13px;grid-column:1/-1">명단 불러오는 중...</div>';
-  const roster=await loadRoster();
-  const names=(roster[cls]||[]);
-  wrap.innerHTML='';
-  if(!names.length){
-    wrap.innerHTML='<div style="color:var(--muted);font-size:14px;grid-column:1/-1">등록된 학생이 없습니다. 교사용에서 명단을 입력해 주세요.</div>';
-  } else {
-    names.forEach(n=>{
-      const b=document.createElement('button');
-      b.className='name-btn'; b.textContent=n;
-      b.onclick=()=>gotoS2(n);
-      wrap.appendChild(b);
-    });
+/* ════════════════════════════════════════
+   S1: 이름 선택
+════════════════════════════════════════ */
+async function gotoS1(cls) {
+  curClass = cls;
+  document.getElementById('s1-title').textContent = cls;
+  show('sc-s1');
+  await loadS1();
+}
+async function loadS1() {
+  const wrap = document.getElementById('s1-grid');
+  wrap.innerHTML = '<div style="color:var(--muted);font-size:13px;grid-column:1/-1">명단 불러오는 중...</div>';
+  try {
+    rosterCache = null; // 항상 최신 명단
+    const roster = await getRoster();
+    const names = roster[curClass] || [];
+    wrap.innerHTML = '';
+    if (!names.length) {
+      wrap.innerHTML = '<div style="color:var(--muted);font-size:14px;grid-column:1/-1">등록된 학생이 없습니다.<br>교사 메뉴에서 명단을 입력해 주세요.</div>';
+    } else {
+      names.forEach(n => {
+        const b = document.createElement('button');
+        b.className = 'nb'; b.textContent = n;
+        b.onclick = () => gotoS2(n);
+        wrap.appendChild(b);
+      });
+    }
+  } catch(e) {
+    wrap.innerHTML = '<div style="color:#e53e3e;font-size:13px;grid-column:1/-1">⚠️ 명단을 불러올 수 없습니다: '+e.message+'</div>';
   }
 }
 
-/* ══════════════════════════════════════
-   S2 — 메인 활동
-══════════════════════════════════════ */
-async function gotoS2(name){
-  curName=name;
-  document.getElementById('s2-title').textContent=name+' 학생';
-  showScreen('sc-s2');
+/* ════════════════════════════════════════
+   S2: 메인 활동
+════════════════════════════════════════ */
+async function gotoS2(name) {
+  curName = name;
+  document.getElementById('s2-title').textContent = name+' 학생';
+  show('sc-s2');
   selfSel.clear();
+  resetAI();
+  document.getElementById('summary').value = '';
 
-  // AI 섹션 초기화
-  document.getElementById('ai-btn-wrap').style.display='block';
-  document.getElementById('ai-loading').classList.remove('on');
-  document.getElementById('ai-result').classList.remove('on');
-  document.getElementById('ai-result').innerHTML='';
-  document.getElementById('ai-start-btn').disabled=false;
-  document.getElementById('s2-summary').value='';
+  loading(true, '이전 데이터 불러오는 중...');
+  try {
+    respCache[curClass+'__'+curName] = null; // 최신 데이터
+    const ex = await getMyResp(curClass, curName);
+    if (ex) {
+      (ex.selfPicked||[]).forEach(t=>selfSel.add(t));
+      document.getElementById('summary').value = ex.summary||'';
+    }
+  } catch(e) { toast('⚠️ 데이터 로드 오류: '+e.message); }
+  loading(false);
 
-  // 내 기존 응답 불러오기
-  showToast('⏳ 데이터 불러오는 중...');
-  const ex = await loadMyResp(curClass, curName);
-  if(ex){
-    (ex.selfPicked||[]).forEach(t=>selfSel.add(t));
-    document.getElementById('s2-summary').value=ex.summary||'';
-  }
-
-  buildSelfGrid();
+  buildSelfTraits();
   updatePicks();
-  await renderPeerResult();
-  await buildFriendBtns();
-  showToast('');
+  await renderPeerBox();
+  await loadFriendBtns();
 }
 
-/* ─ traits grid ─ */
-function buildSelfGrid(){
-  const grid=document.getElementById('s2-grid');
-  grid.innerHTML='';
-  TRAITS.forEach(t=>{
-    const sel=selfSel.has(t);
-    const chip=document.createElement('div');
-    chip.className='trait-chip'+(sel?' sel':'');
-    chip.id='sg__'+t;
-    chip.innerHTML=`<span>${t}</span>`+(sel?'<div class="chip-mark">○</div>':'');
-    chip.onclick=()=>toggleSelf(t);
-    grid.appendChild(chip);
+function buildSelfTraits() {
+  const g = document.getElementById('s2-traits');
+  g.innerHTML = '';
+  TRAITS.forEach(t => {
+    const c = document.createElement('div');
+    const sel = selfSel.has(t);
+    c.className = 'tc' + (sel?' sel':'');
+    c.innerHTML = '<span>'+t+'</span>' + (sel?'<div class="cm">○</div>':'');
+    c.onclick = () => {
+      if (selfSel.has(t)) selfSel.delete(t); else selfSel.add(t);
+      const s = selfSel.has(t);
+      c.className = 'tc'+(s?' sel':'');
+      c.innerHTML = '<span>'+t+'</span>'+(s?'<div class="cm">○</div>':'');
+      updatePicks();
+    };
+    g.appendChild(c);
   });
 }
-function toggleSelf(t){
-  if(selfSel.has(t)) selfSel.delete(t); else selfSel.add(t);
-  const sel=selfSel.has(t);
-  const chip=document.getElementById('sg__'+t);
-  chip.className='trait-chip'+(sel?' sel':'');
-  chip.innerHTML=`<span>${t}</span>`+(sel?'<div class="chip-mark">○</div>':'');
-  updatePicks();
-}
-function updatePicks(){
-  const arr=[...selfSel].slice(0,3);
-  for(let i=0;i<3;i++){
-    const el=document.getElementById('sp'+i);
-    if(!el) continue;
-    if(arr[i]){el.textContent=arr[i];el.classList.add('ok');}
-    else{el.textContent='선택 '+(i+1);el.classList.remove('ok');}
+
+function updatePicks() {
+  const arr = [...selfSel].slice(0,3);
+  for (let i=0; i<3; i++) {
+    const el = document.getElementById('sp'+i);
+    if (!el) continue;
+    if (arr[i]) { el.textContent=arr[i]; el.classList.add('ok'); }
+    else { el.textContent='선택 '+(i+1); el.classList.remove('ok'); }
   }
 }
 
-/* ─ 친구 평가 결과 (익명) ─ */
-async function renderPeerResult(){
-  const el=document.getElementById('peer-result');
-  el.innerHTML='<div class="no-peer">불러오는 중...</div>';
-  const myData=await loadMyResp(curClass,curName);
-  const evals=myData&&myData.peerEvals?myData.peerEvals:[];
-
-  if(!evals.length){
-    el.innerHTML='<div class="no-peer">아직 친구 평가가 없습니다 😊</div>'; return;
-  }
-
-  // 빈도 집계
-  const freq={};
-  evals.forEach(e=>(e.words||[]).forEach(w=>freq[w]=(freq[w]||0)+1));
-  const sorted=Object.entries(freq).sort((a,b)=>b[1]-a[1]);
-  const top3=sorted.slice(0,3);
-  const rest=sorted.slice(3);
-
-  let html=top3.map(([w,c])=>`<div class="pick-item ok">${w}${c>1?` <span style="font-size:11px;color:var(--peach)">(${c}명)</span>`:''}</div>`).join('');
-  if(rest.length){
-    html+=`<div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;">${rest.map(([w,c])=>`<span class="peer-chip">${w}${c>1?` ${c}명`:''}</span>`).join('')}</div>`;
-  }
-  // ★ 익명 처리: "친구1, 친구2" 형태
-  html+=`<details style="margin-top:10px;">
-    <summary style="font-size:12px;color:var(--muted);cursor:pointer;">${evals.length}명이 평가함 ▾</summary>
-    <div style="margin-top:6px;">
-      ${evals.map((e,idx)=>`
-        <div class="peer-line">
-          <span class="peer-who">친구${idx+1}</span>
-          <div class="peer-chips">${(e.words||[]).map(w=>`<span class="peer-chip">${w}</span>`).join('')}</div>
-        </div>`).join('')}
-    </div>
-  </details>`;
-
-  el.innerHTML=html;
+async function renderPeerBox() {
+  const box = document.getElementById('peer-box');
+  box.innerHTML = '<div style="font-size:12px;color:#ccc;">불러오는 중...</div>';
+  try {
+    const ex = await getMyResp(curClass, curName);
+    const evals = ex&&ex.peerEvals ? ex.peerEvals : [];
+    if (!evals.length) { box.innerHTML='<div style="font-size:12px;color:#ccc;font-style:italic;">아직 친구 평가가 없습니다 😊</div>'; return; }
+    const freq={};
+    evals.forEach(e=>(e.words||[]).forEach(w=>freq[w]=(freq[w]||0)+1));
+    const sorted=Object.entries(freq).sort((a,b)=>b[1]-a[1]);
+    const top3=sorted.slice(0,3), rest=sorted.slice(3);
+    let html = top3.map(([w,c])=>`<div class="pi ok">${w}${c>1?' <span style="font-size:11px;color:var(--peach)">('+c+'명)</span>':''}</div>`).join('');
+    if (rest.length) html+=`<div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;">${rest.map(([w,c])=>`<span class="pchip">${w}${c>1?' '+c+'명':''}</span>`).join('')}</div>`;
+    html+=`<details style="margin-top:10px;"><summary style="font-size:12px;color:var(--muted);cursor:pointer;">${evals.length}명이 평가함 ▾</summary><div style="margin-top:6px;">${evals.map((e,i)=>`<div style="display:flex;align-items:flex-start;gap:6px;margin-bottom:3px;font-size:12px;"><span style="font-weight:800;color:var(--peach);min-width:42px;">친구${i+1}</span><div style="display:flex;flex-wrap:wrap;gap:3px;">${(e.words||[]).map(w=>`<span class="pchip">${w}</span>`).join('')}</div></div>`).join('')}</div></details>`;
+    box.innerHTML = html;
+  } catch(e) { box.innerHTML='<div style="font-size:12px;color:#e53e3e;">⚠️ 오류: '+e.message+'</div>'; }
 }
 
-/* ─ 친구 버튼 ─ */
-async function buildFriendBtns(){
-  const roster=await loadRoster();
-  const names=(roster[curClass]||[]).filter(n=>n!==curName);
-  const wrap=document.getElementById('s2-friends');
-  wrap.innerHTML='';
-  if(!names.length){
-    wrap.innerHTML='<div style="color:var(--muted);font-size:13px;grid-column:1/-1">같은 반 친구가 없습니다.</div>'; return;
-  }
-  for(const n of names){
-    const ex=await loadMyResp(curClass,n);
-    const done=ex&&(ex.peerEvals||[]).some(e=>e.from===curName);
-    const b=document.createElement('button');
-    b.className='name-btn'+(done?' done':'');
-    b.innerHTML=n+(done?'<br><span style="font-size:11px;font-weight:700;">✓ 완료</span>':'');
-    b.onclick=()=>gotoS3(n);
-    wrap.appendChild(b);
-  }
+async function loadFriendBtns() {
+  const wrap = document.getElementById('s2-friends');
+  wrap.innerHTML = '';
+  try {
+    const roster = await getRoster();
+    const names = (roster[curClass]||[]).filter(n=>n!==curName);
+    if (!names.length) { wrap.innerHTML='<div style="color:var(--muted);font-size:13px;grid-column:1/-1">같은 반 친구가 없습니다.</div>'; return; }
+    for (const n of names) {
+      const ex = await getMyResp(curClass, n);
+      const done = ex&&(ex.peerEvals||[]).some(e=>e.from===curName);
+      const b = document.createElement('button');
+      b.className = 'nb'+(done?' done':'');
+      b.innerHTML = n+(done?'<br><span style="font-size:11px;font-weight:700;">✓ 완료</span>':'');
+      b.onclick = () => gotoS3(n);
+      wrap.appendChild(b);
+    }
+  } catch(e) { wrap.innerHTML='<div style="color:#e53e3e;font-size:13px;">⚠️ '+e.message+'</div>'; }
 }
 
-/* ─ 자기 평가 저장 ─ */
-async function submitSelf(){
-  const picked=[...selfSel].slice(0,3);
-  const sum=document.getElementById('s2-summary').value.trim();
-  if(!picked.length){ showToast('❗ 낱말을 하나 이상 선택해 주세요!'); return; }
-  showToast('⏳ 저장 중...');
-  await saveMyResp(curClass,curName,picked,sum);
-  showToast('✅ 자기 평가가 저장되었습니다!');
+async function saveSelf() {
+  const picked = [...selfSel].slice(0,3);
+  const sum = document.getElementById('summary').value.trim();
+  if (!picked.length) { toast('❗ 낱말을 하나 이상 선택해 주세요!'); return; }
+  loading(true, '저장 중...');
+  try {
+    await gasPost({action:'saveResponse', class:curClass, name:curName, selfPicked:picked, summary:sum});
+    respCache[curClass+'__'+curName] = null;
+    toast('✅ 자기 평가가 저장되었습니다!');
+  } catch(e) { toast('⚠️ 저장 오류: '+e.message); }
+  loading(false);
 }
 
-/* ══════════════════════════════════════
+/* ════════════════════════════════════════
+   S3: 친구 평가
+════════════════════════════════════════ */
+async function gotoS3(friendName) {
+  curFriend = friendName;
+  document.getElementById('s3-title').textContent = friendName+' 친구 평가';
+  document.getElementById('s3-desc').innerHTML = `<strong style="color:var(--peach)">${friendName}</strong> 친구를 잘 표현하는 말을 클릭해 주세요.<br><span style="font-size:12px;color:var(--muted);">한 번→선택 / 다시 클릭→취소  |  익명 처리됩니다</span>`;
+  friendSel.clear();
+  show('sc-s3');
+
+  loading(true, '기존 평가 불러오는 중...');
+  try {
+    const ex = await getMyResp(curClass, curFriend);
+    if (ex) { const me=(ex.peerEvals||[]).find(e=>e.from===curName); if(me) me.words.forEach(t=>friendSel.add(t)); }
+  } catch(e) {}
+  loading(false);
+  buildFriendTraits();
+}
+
+function buildFriendTraits() {
+  const g = document.getElementById('s3-traits');
+  g.innerHTML = '';
+  TRAITS.forEach(t => {
+    const c = document.createElement('div');
+    const sel = friendSel.has(t);
+    c.className = 'tc'+(sel?' fsel':'');
+    c.innerHTML = '<span>'+t+'</span>'+(sel?'<div class="cm" style="background:var(--peach)">△</div>':'');
+    c.onclick = () => {
+      if (friendSel.has(t)) friendSel.delete(t); else friendSel.add(t);
+      const s = friendSel.has(t);
+      c.className = 'tc'+(s?' fsel':'');
+      c.innerHTML = '<span>'+t+'</span>'+(s?'<div class="cm" style="background:var(--peach)">△</div>':'');
+    };
+    g.appendChild(c);
+  });
+}
+
+async function saveFriend() {
+  const words = [...friendSel];
+  if (!words.length) { toast('❗ 낱말을 하나 이상 선택해 주세요!'); return; }
+  loading(true, '저장 중...');
+  try {
+    await gasPost({action:'saveResponse', class:curClass, name:curFriend, peerEval:{from:curName, words}});
+    respCache[curClass+'__'+curFriend] = null;
+    toast('💌 '+curFriend+' 친구 평가 저장 완료! (익명 처리됨)');
+    show('sc-s2');
+    await loadFriendBtns();
+    await renderPeerBox();
+  } catch(e) { toast('⚠️ 저장 오류: '+e.message); }
+  loading(false);
+}
+
+/* ════════════════════════════════════════
    AI 진로 분석
-══════════════════════════════════════ */
-async function startAiAnalysis(){
-  const allSelf=[...selfSel];
-  const myData=await loadMyResp(curClass,curName);
-  const evals=myData&&myData.peerEvals?myData.peerEvals:[];
-  const peerWords=evals.flatMap(e=>e.words||[]);
+════════════════════════════════════════ */
+function resetAI() {
+  document.getElementById('ai-btn-wrap').style.display='block';
+  document.getElementById('ai-ld').classList.remove('on');
+  document.getElementById('ai-res').classList.remove('on');
+  document.getElementById('ai-res').innerHTML='';
+  document.getElementById('ai-btn').disabled=false;
+}
 
-  if(allSelf.length===0){
-    showToast('❗ 먼저 낱말을 선택해 주세요!'); return;
-  }
+async function runAI() {
+  const allSelf = [...selfSel];
+  if (!allSelf.length) { toast('❗ 먼저 낱말을 선택해 주세요!'); return; }
+  document.getElementById('ai-btn').disabled=true;
+  document.getElementById('ai-ld').classList.add('on');
+  document.getElementById('ai-res').classList.remove('on');
 
-  document.getElementById('ai-start-btn').disabled=true;
-  document.getElementById('ai-loading').classList.add('on');
-  document.getElementById('ai-result').classList.remove('on');
+  let peerWords=[];
+  try { const ex=await getMyResp(curClass,curName); peerWords=(ex&&ex.peerEvals?ex.peerEvals:[]).flatMap(e=>e.words||[]); } catch(e){}
 
   const prompt=`초등학생 진로분석. JSON만 출력.
-자기선택: [${allSelf.join(',')}]
-친구평가: [${peerWords.length?peerWords.join(','):'없음'}]
-{"riasec":{"R":0-100,"I":0-100,"A":0-100,"S":0-100,"E":0-100,"C":0-100},"topType":"R/I/A/S/E/C중1개","topTypeName":"현실형/탐구형/예술형/사회형/진취형/관습형중1개","jobs":["직업1","직업2","직업3","직업4","직업5","직업6"],"comment":"2문장 따뜻한 설명"}`;
+자기선택:[${allSelf.join(',')}]
+친구평가:[${peerWords.length?peerWords.join(','):'없음'}]
+{"riasec":{"R":0~100,"I":0~100,"A":0~100,"S":0~100,"E":0~100,"C":0~100},"topType":"R/I/A/S/E/C중1개","topTypeName":"현실형/탐구형/예술형/사회형/진취형/관습형중1개","jobs":["직업1","직업2","직업3","직업4","직업5","직업6"],"comment":"따뜻한 2문장 설명"}`;
 
   try {
-    const GEMINI_KEY = 'AIzaSyDWfBgtdsid6gfqmn-c3phx5QPl4-KPw_w';
-    const geminiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + GEMINI_KEY;
-    const loadMsg = document.querySelector('#ai-loading div:last-child');
-    const callGemini = async (retryCount=0) => {
-      const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + GEMINI_KEY;
-      if (loadMsg) loadMsg.textContent = retryCount === 0 ? 'AI가 나의 특성을 분석하고 있어요...' : `잠시 후 재시도합니다... (${retryCount}/5)`;
-      const r = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.7, maxOutputTokens: 512 }
-        })
-      });
-      if (r.status === 429) {
-        if (retryCount >= 5) throw new Error('요청이 너무 많습니다. 1분 후 다시 시도해 주세요.');
-        // 지수 백오프: 5초, 10초, 20초, 40초, 60초
-        const wait = Math.min(5000 * Math.pow(2, retryCount), 60000);
-        await new Promise(res => setTimeout(res, wait));
-        return callGemini(retryCount + 1);
+    const msg = document.getElementById('ai-ld-msg');
+    const call = async (retry=0) => {
+      if(msg) msg.textContent = retry===0?'AI가 분석 중이에요...':'잠시 후 재시도합니다... ('+retry+'/5)';
+      const url='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+GEMINI_KEY;
+      const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:.7,maxOutputTokens:512}})});
+      if(r.status===429){
+        if(retry>=5) throw new Error('요청이 많습니다. 1분 후 다시 시도해 주세요.');
+        await new Promise(res=>setTimeout(res,Math.min(5000*Math.pow(2,retry),60000)));
+        return call(retry+1);
       }
-      if (!r.ok) {
-        const errText = await r.text();
-        throw new Error('HTTP ' + r.status + ': ' + errText.substring(0, 300));
-      }
+      if(!r.ok){const t=await r.text();throw new Error('HTTP '+r.status+': '+t.substring(0,200));}
       return r.json();
     };
-    const data = await callGemini();
-    const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    if (!raw) throw new Error('빈 응답: ' + JSON.stringify(data).substring(0, 200));
-    const jsonMatch = raw.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error('JSON 없음: ' + raw.substring(0, 200));
-    const parsed = JSON.parse(jsonMatch[0]);
-    renderAiResult(parsed);
+    const data=await call();
+    const raw=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
+    const m=raw.match(/\{[\s\S]*\}/);
+    if(!m) throw new Error('분석 결과를 읽을 수 없습니다.');
+    const p=JSON.parse(m[0]);
+    renderAI(p);
   } catch(e) {
-    console.error('AI 분석 오류:', e);
-    document.getElementById('ai-loading').classList.remove('on');
+    document.getElementById('ai-ld').classList.remove('on');
     document.getElementById('ai-btn-wrap').style.display='block';
-    document.getElementById('ai-start-btn').disabled=false;
-    const resultEl=document.getElementById('ai-result');
-    resultEl.innerHTML='<div style="background:rgba(255,100,100,.15);border:1.5px solid rgba(255,100,100,.3);border-radius:12px;padding:14px;font-size:12px;color:#ffaaaa;">⚠️ 오류 상세: '+( e.message||String(e) )+'</div>';
-    resultEl.classList.add('on');
+    document.getElementById('ai-btn').disabled=false;
+    const res=document.getElementById('ai-res');
+    res.innerHTML=`<div style="background:rgba(255,100,100,.15);border:1.5px solid rgba(255,100,100,.3);border-radius:12px;padding:14px;font-size:12px;color:#ffaaaa;">⚠️ ${e.message}</div>`;
+    res.classList.add('on');
   }
 }
 
-function renderAiResult(data){
-  document.getElementById('ai-loading').classList.remove('on');
+function renderAI(d) {
+  document.getElementById('ai-ld').classList.remove('on');
   document.getElementById('ai-btn-wrap').style.display='none';
-
-  const riasec=data.riasec||{};
-  const jobs=data.jobs||[];
-  const comment=data.comment||'';
-  const topType=data.topType||'';
-  const topTypeName=data.topTypeName||'';
-
-  // sort riasec
-  const sorted=Object.entries(riasec).sort((a,b)=>b[1]-a[1]);
-  const maxScore=sorted[0]?.[1]||100;
-
-  const riasecHtml=sorted.map(([k,v])=>`
-    <div class="riasec-card">
-      <div class="riasec-badge" style="background:${RIASEC_COLORS[k]}22;">${RIASEC_EMOJIS[k]}</div>
-      <div class="riasec-type" style="color:${RIASEC_COLORS[k]}">${k}</div>
-      <div class="riasec-label">${RIASEC_NAMES[k]}</div>
-      <div class="riasec-bar-wrap">
-        <div class="riasec-bar" style="width:${(v/maxScore*100).toFixed(0)}%;background:${RIASEC_COLORS[k]};"></div>
-      </div>
-      <div style="font-size:11px;opacity:.6;margin-top:4px;text-align:right">${v}점</div>
-    </div>`).join('');
-
-  const topJobs=jobs.slice(0,3);
-  const moreJobs=jobs.slice(3);
-
+  const rs=d.riasec||{}, jobs=d.jobs||[], tt=d.topType||'S';
+  const sorted=Object.entries(rs).sort((a,b)=>b[1]-a[1]);
+  const mx=sorted[0]?.[1]||100;
+  const rcHtml=sorted.map(([k,v])=>`<div class="rc-card"><div class="rc-em">${RE[k]||'?'}</div><div class="rc-type" style="color:${RC[k]}">${k}</div><div class="rc-lbl">${RN[k]}</div><div class="rc-bw"><div class="rc-b" style="width:${(v/mx*100).toFixed(0)}%;background:${RC[k]};"></div></div><div style="font-size:11px;opacity:.6;margin-top:4px;text-align:right">${v}점</div></div>`).join('');
+  const topJ=jobs.slice(0,3), moreJ=jobs.slice(3);
   const html=`
-    <div style="background:rgba(${topType?RIASEC_COLORS[topType].replace('#','').match(/../g).map(x=>parseInt(x,16)).join(','):'155,127,232'},.15);border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
-      <div style="font-size:36px;">${RIASEC_EMOJIS[topType]||'✨'}</div>
-      <div>
-        <div style="font-size:11px;opacity:.6;margin-bottom:2px;">나의 주요 흥미 유형</div>
-        <div style="font-size:18px;font-weight:800;color:#fff;">${topType} — ${topTypeName}</div>
-      </div>
+    <div style="background:rgba(255,255,255,.1);border-radius:12px;padding:14px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
+      <div style="font-size:36px;">${RE[tt]||'✨'}</div>
+      <div><div style="font-size:11px;opacity:.6;margin-bottom:2px;">나의 주요 흥미 유형</div>
+      <div style="font-size:18px;font-weight:800;">${tt} — ${d.topTypeName||RN[tt]}</div></div>
     </div>
-
-    <div style="margin-bottom:16px;">
-      <div style="font-size:12px;opacity:.6;margin-bottom:10px;letter-spacing:.5px;font-weight:700;">RIASEC 흥미 유형 분석</div>
-      <div class="riasec-row">${riasecHtml}</div>
-    </div>
-
-    <div class="job-section">
-      <div class="job-section-title">⭐ 잘 어울리는 직업</div>
-      <div class="job-chips">
-        ${topJobs.map(j=>`<span class="job-chip top">${j}</span>`).join('')}
-        ${moreJobs.map(j=>`<span class="job-chip">${j}</span>`).join('')}
-      </div>
-    </div>
-
-    <div class="ai-comment">${comment}</div>
-
-    <button onclick="resetAi()" style="margin-top:14px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);color:#fff;padding:8px 16px;border-radius:10px;font-family:'Nanum Gothic',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">↺ 다시 분석하기</button>
-  `;
-
-  const resultEl=document.getElementById('ai-result');
-  resultEl.innerHTML=html;
-  resultEl.classList.add('on');
+    <div style="font-size:12px;opacity:.6;margin-bottom:10px;font-weight:700;">RIASEC 흥미 유형 분석</div>
+    <div class="rc-row">${rcHtml}</div>
+    <div style="font-size:13px;font-weight:800;opacity:.7;margin-bottom:8px;">⭐ 잘 어울리는 직업</div>
+    <div class="jc">${topJ.map(j=>`<span class="jchip top">${j}</span>`).join('')}${moreJ.map(j=>`<span class="jchip">${j}</span>`).join('')}</div>
+    <div class="ai-comment">${d.comment||''}</div>
+    <button onclick="resetAI()" style="margin-top:14px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);color:#fff;padding:8px 16px;border-radius:10px;font-family:'Nanum Gothic',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">↺ 다시 분석하기</button>`;
+  const res=document.getElementById('ai-res');
+  res.innerHTML=html; res.classList.add('on');
 }
 
-function resetAi(){
-  document.getElementById('ai-btn-wrap').style.display='block';
-  document.getElementById('ai-result').classList.remove('on');
-  document.getElementById('ai-result').innerHTML='';
-  document.getElementById('ai-start-btn').disabled=false;
-}
-
-/* ══════════════════════════════════════
-   S3 — 친구 평가
-══════════════════════════════════════ */
-async function gotoS3(friendName){
-  curFriend=friendName;
-  document.getElementById('s3-title').textContent=friendName+' 친구 평가';
-  document.getElementById('s3-desc').innerHTML=
-    `<strong style="color:var(--peach)">${friendName}</strong> 친구를 잘 표현하는 말을 클릭해 주세요.<br>
-     <span style="font-size:12px;color:var(--muted);">한 번→선택(△) / 다시 클릭→취소, 여러 개 선택 가능 / 결과는 익명 처리됩니다</span>`;
-
-  friendSel.clear();
-  const ex=await loadMyResp(curClass,curFriend);
-  if(ex){ const me=(ex.peerEvals||[]).find(e=>e.from===curName); if(me) me.words.forEach(t=>friendSel.add(t)); }
-
-  buildFriendGrid();
-  showScreen('sc-s3');
-}
-
-function buildFriendGrid(){
-  const grid=document.getElementById('s3-grid');
-  grid.innerHTML='';
-  TRAITS.forEach(t=>{
-    const sel=friendSel.has(t);
-    const chip=document.createElement('div');
-    chip.className='trait-chip'+(sel?' sel':'');
-    chip.style.cssText=sel?'background:#fff0eb;border-color:var(--peach);color:#b84f2a;':'';
-    chip.id='fg__'+t;
-    chip.innerHTML=`<span>${t}</span>`+(sel?'<div class="chip-mark" style="background:var(--peach)">△</div>':'');
-    chip.onclick=()=>toggleFriend(t);
-    grid.appendChild(chip);
+/* ════════════════════════════════════════
+   교사: 탭
+════════════════════════════════════════ */
+function tTab(t) {
+  ['r','s','c'].forEach(x=>{
+    document.getElementById('tt-'+x).classList.toggle('on',x===t);
+    const p=document.getElementById('tp-'+x);
+    p.style.display=x===t?(x==='r'?'grid':'block'):'none';
   });
-}
-function toggleFriend(t){
-  if(friendSel.has(t)) friendSel.delete(t); else friendSel.add(t);
-  const sel=friendSel.has(t);
-  const chip=document.getElementById('fg__'+t);
-  chip.className='trait-chip'+(sel?' sel':'');
-  chip.style.cssText=sel?'background:#fff0eb;border-color:var(--peach);color:#b84f2a;':'';
-  chip.innerHTML=`<span>${t}</span>`+(sel?'<div class="chip-mark" style="background:var(--peach)">△</div>':'');
-}
-
-async function submitFriend(){
-  const words=[...friendSel];
-  if(!words.length){ showToast('❗ 낱말을 하나 이상 선택해 주세요!'); return; }
-  showToast('⏳ 저장 중...');
-  await savePeerEval(curClass,curFriend,curName,words);
-  showToast(`💌 ${curFriend} 친구 평가 저장 완료! (익명 처리됨)`);
-  showScreen('sc-s2');
-  await buildFriendBtns();
-  await renderPeerResult();
-}
-
-function goBack(from){
-  if(from==='s1'){ showScreen('sc-s0'); buildClassBtns(); }
-  else if(from==='s2') gotoS1(curClass);
-  else if(from==='s3'){ showScreen('sc-s2'); buildFriendBtns(); }
-}
-
-/* ══════════════════════════════════════
-   TEACHER
-══════════════════════════════════════ */
-function tTab(tab){
-  ['roster','responses','cloud'].forEach(t=>{
-    document.getElementById('tt-'+t).classList.toggle('on',t===tab);
-    const p=document.getElementById('tp-'+t);
-    p.style.display=t===tab?(t==='roster'?'grid':'block'):'none';
-  });
-  if(tab==='roster') renderRoster();
-  else if(tab==='responses') renderResponses();
+  if(t==='r') renderRoster();
+  else if(t==='s') renderResponses();
   else renderCloud();
 }
 
-async function renderRoster(){
-  const wrap=document.getElementById('tp-roster');
-  wrap.innerHTML='<div style="grid-column:1/-1;color:var(--muted);padding:20px;text-align:center;">명단 불러오는 중...</div>';
-  const roster=await loadRoster();
+/* ════════════════════════════════════════
+   교사: 명단 관리
+════════════════════════════════════════ */
+async function renderRoster() {
+  const wrap=document.getElementById('tp-r');
+  wrap.innerHTML='<div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--muted);">명단 불러오는 중...</div>';
+  rosterCache=null;
+  let roster={};
+  try { roster=await getRoster(); } catch(e){ wrap.innerHTML='<div style="color:#e53e3e;padding:20px;">⚠️ 오류: '+e.message+'</div>'; return; }
   wrap.innerHTML='';
   for(let i=1;i<=10;i++){
     const cls=i+'반';
     const names=roster[cls]||[];
     const cp=document.createElement('div');
-    cp.className='class-panel';
-    cp.innerHTML=`
-      <div class="class-panel-hd">
-        <span class="class-label">🏫 ${cls}</span>
-        <span style="font-size:13px;color:var(--muted);">${names.length}명 등록</span>
-      </div>
-      <div class="tag-area" id="tags-${i}"></div>
-      <div class="name-inp-row">
-        <input class="name-inp" id="ninp-${i}" type="text"
-          placeholder="이름 입력 후 Enter  (쉼표로 여러 명 동시 입력 가능)"
-          onkeydown="if(event.key==='Enter')addNames(${i})">
-        <button class="btn btn-secondary btn-sm" onclick="addNames(${i})">+ 추가</button>
-      </div>`;
+    cp.className='cpanel';
+    cp.innerHTML=`<div class="chd"><span class="clbl">🏫 ${cls}</span><span style="font-size:13px;color:var(--muted);">${names.length}명</span></div>
+      <div class="tags" id="tags-${i}"></div>
+      <div class="ninr"><input class="nin" id="nin-${i}" type="text" placeholder="이름 입력 후 Enter (쉼표로 여러 명 동시 입력)" onkeydown="if(event.key==='Enter')addNames(${i})">
+      <button class="btn btn-sec btn-sm" onclick="addNames(${i})">+ 추가</button></div>`;
     wrap.appendChild(cp);
     const tagWrap=document.getElementById('tags-'+i);
-    if(!names.length){ tagWrap.innerHTML='<span style="color:var(--muted);font-size:13px;">아직 학생이 없습니다</span>'; }
-    else {
-      names.forEach(n=>{
-        const tag=document.createElement('div');
-        tag.className='name-tag';
-        tag.innerHTML=n+' <span class="del" onclick="removeName('+i+',\''+n+'\')">✕</span>';
-        tagWrap.appendChild(tag);
-      });
-    }
+    if(!names.length){tagWrap.innerHTML='<span style="color:var(--muted);font-size:13px;">아직 학생이 없습니다</span>';}
+    else names.forEach(n=>{const tg=document.createElement('div');tg.className='tag';tg.innerHTML=n+' <span class="dl" onclick="delName('+i+',\''+n+'\')">✕</span>';tagWrap.appendChild(tg);});
   }
 }
 
 async function addNames(i){
   const cls=i+'반';
-  const inp=document.getElementById('ninp-'+i);
-  const raw=inp.value.trim();
-  if(!raw) return;
-  const newNames=raw.split(/[,，、\s\n]+/).map(s=>s.trim()).filter(Boolean);
-  if(!newNames.length) return;
-  inp.value='';
-  showToast('⏳ 저장 중...');
-  await addStudentsToRoster(cls, newNames);
-  showToast('✅ '+cls+'에 '+newNames.length+'명 추가됨');
-  renderRoster();
+  const inp=document.getElementById('nin-'+i);
+  const raw=inp.value.trim(); if(!raw) return;
+  const names=raw.split(/[,，\s\n]+/).map(s=>s.trim()).filter(Boolean);
+  if(!names.length) return;
+  inp.value=''; toast('⏳ 저장 중...');
+  try { await gasPost({action:'saveRoster',class:cls,names}); rosterCache=null; toast('✅ '+cls+'에 '+names.length+'명 추가됨'); renderRoster(); }
+  catch(e){toast('⚠️ '+e.message);}
 }
-async function removeName(i,name){
-  const cls=i+'반';
+async function delName(i,name){
   if(!confirm(name+' 학생을 삭제할까요?')) return;
-  showToast('⏳ 삭제 중...');
-  await removeStudentFromRoster(cls, name);
-  showToast('🗑 '+name+' 삭제됨');
-  renderRoster();
+  toast('⏳ 삭제 중...');
+  try { await gasPost({action:'deleteStudent',class:i+'반',name}); rosterCache=null; toast('🗑 '+name+' 삭제됨'); renderRoster(); }
+  catch(e){toast('⚠️ '+e.message);}
 }
 
-function renderResponses(){
-  const wrap=document.getElementById('tp-responses');
-  wrap.innerHTML=`
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
-      <div style="font-size:18px;font-weight:800;">학생 제출 현황</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-        <select class="filter-sel" id="rf-cls" onchange="filterRes()">
-          <option value="">전체 반</option>
-          ${Array.from({length:10},(_,k)=>`<option value="${k+1}반">${k+1}반</option>`).join('')}
-        </select>
-        <button class="btn btn-sm" style="background:#fff;border:2px solid #fc8181;color:#fc8181;" onclick="clearResponses()">🗑 전체 삭제</button>
-      </div>
-    </div>
-    <div id="res-inner"></div>`;
+/* ════════════════════════════════════════
+   교사: 제출 현황
+════════════════════════════════════════ */
+async function renderResponses(){
+  const wrap=document.getElementById('tp-s');
+  wrap.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+    <div style="font-size:18px;font-weight:800;">학생 제출 현황</div>
+    <select class="fsel2" id="rf-cls" onchange="filterRes()">
+      <option value="">전체 반</option>${Array.from({length:10},(_,k)=>`<option value="${k+1}반">${k+1}반</option>`).join('')}
+    </select></div><div id="res-inner"><div style="text-align:center;padding:30px;color:var(--muted);">불러오는 중...</div></div>`;
   filterRes();
 }
 async function filterRes(){
   const cls=(document.getElementById('rf-cls')||{}).value||'';
   const inner=document.getElementById('res-inner');
-  if(inner) inner.innerHTML='<div style="text-align:center;padding:30px;color:var(--muted);">데이터 불러오는 중...</div>';
-  let all=await loadAllResp(cls);
-  const inner=document.getElementById('res-inner');
-  if(!all.length){ inner.innerHTML='<div class="empty"><div class="empty-icon">🌱</div><p>아직 제출 데이터가 없습니다.</p></div>'; return; }
-  inner.innerHTML=`<div class="res-grid">${all.map(r=>{
-    const peerHtml=(r.peerEvals&&r.peerEvals.length)
-      ?`<div class="rc-sec"><div class="rc-lbl">💬 친구들의 평가 (${r.peerEvals.length}명, 익명)</div>
-         <div class="rc-chips">${
-           // 교사는 빈도 집계로만 표시
-           (() => {
-             const freq={};
-             r.peerEvals.forEach(e=>(e.words||[]).forEach(w=>freq[w]=(freq[w]||0)+1));
-             return Object.entries(freq).sort((a,b)=>b[1]-a[1])
-               .map(([w,c])=>`<span class="rc-chip p">${w}${c>1?` ×${c}`:''}</span>`).join('');
-           })()
-         }</div></div>`
-      :`<div class="rc-sec"><div class="rc-lbl" style="color:#ddd;">💬 친구 평가 없음</div></div>`;
-    return `<div class="res-card">
-      <div class="rc-name"><div class="avatar">${r.name[0]}</div>${r.class} ${r.name}</div>
-      <div class="rc-sec"><div class="rc-lbl">🪞 내가 생각하는 나</div>
-        <div class="rc-chips">${(r.selfPicked||[]).map(t=>`<span class="rc-chip s">${t}</span>`).join('')||'<span style="color:#ccc;font-size:12px;">없음</span>'}</div></div>
-      ${peerHtml}
-      ${r.summary?`<div class="rc-lbl" style="margin-bottom:3px;">✍️ 한 문장 소개</div><div class="rc-summ">나는 ${r.summary} 사람입니다.</div>`:''}
-      <div class="rc-time">${r.time||''}</div>
-    </div>`;
-  }).join('')}</div>`;
-}
-function clearResponses(){
-  showToast('⚠️ 구글 시트에서 직접 삭제해 주세요.');
+  if(!inner) return;
+  inner.innerHTML='<div style="text-align:center;padding:30px;color:var(--muted);">불러오는 중...</div>';
+  try {
+    const all=await getAllResp(cls);
+    if(!all.length){inner.innerHTML='<div style="text-align:center;padding:50px;color:var(--muted);"><div style="font-size:56px;margin-bottom:14px;">🌱</div><p>아직 제출 데이터가 없습니다.</p></div>';return;}
+    inner.innerHTML=`<div class="resgrid">${all.map(r=>{
+      const peerHtml=(r.peerEvals&&r.peerEvals.length)?`<div class="rsec"><div class="rlbl">💬 친구들의 평가 (${r.peerEvals.length}명, 익명)</div><div class="rchips">${(()=>{const f={};r.peerEvals.forEach(e=>(e.words||[]).forEach(w=>f[w]=(f[w]||0)+1));return Object.entries(f).sort((a,b)=>b[1]-a[1]).map(([w,c])=>`<span class="rchip p">${w}${c>1?' ×'+c:''}</span>`).join('');})()}</div></div>`:`<div class="rsec"><div class="rlbl" style="color:#ddd;">💬 친구 평가 없음</div></div>`;
+      return `<div class="rescard"><div class="rname"><div class="av">${r.name[0]}</div>${r.class} ${r.name}</div>
+        <div class="rsec"><div class="rlbl">🪞 내가 생각하는 나</div><div class="rchips">${(r.selfPicked||[]).map(t=>`<span class="rchip s">${t}</span>`).join('')||'<span style="color:#ccc;font-size:12px;">없음</span>'}</div></div>
+        ${peerHtml}
+        ${r.summary?`<div class="rlbl" style="margin-bottom:3px;">✍️ 한 문장 소개</div><div class="rsumm">나는 ${r.summary} 사람입니다.</div>`:''}
+        <div class="rtime">${r.time||''}</div></div>`;
+    }).join('')}</div>`;
+  } catch(e){inner.innerHTML='<div style="color:#e53e3e;padding:20px;">⚠️ 오류: '+e.message+'</div>';}
 }
 
-function renderCloud(){
-  const wrap=document.getElementById('tp-cloud');
-  wrap.innerHTML=`
-    <div style="margin-bottom:16px;">
-      <select class="filter-sel" id="cf-cls" onchange="drawAllClouds()">
-        <option value="">전체 반</option>
-        ${Array.from({length:10},(_,k)=>`<option value="${k+1}반">${k+1}반</option>`).join('')}
-      </select>
-    </div>
-    <div class="wc-sec"><div class="wc-title">🪞 내가 생각하는 나 — 많이 고른 낱말</div><div class="word-cloud" id="wc-self"></div></div>
-    <div class="wc-sec"><div class="wc-title">💬 친구들이 선택해 준 낱말 (타인 평가 합산)</div><div class="word-cloud" id="wc-peer"></div></div>`;
-  drawAllClouds();
+/* ════════════════════════════════════════
+   교사: 낱말 현황
+════════════════════════════════════════ */
+async function renderCloud(){
+  const wrap=document.getElementById('tp-c');
+  wrap.innerHTML=`<div style="margin-bottom:16px;"><select class="fsel2" id="cf-cls" onchange="drawCloud()"><option value="">전체 반</option>${Array.from({length:10},(_,k)=>`<option value="${k+1}반">${k+1}반</option>`).join('')}</select></div>
+    <div class="wcsec"><div class="wctitle">🪞 내가 생각하는 나</div><div class="wc" id="wc-s"></div></div>
+    <div class="wcsec"><div class="wctitle">💬 친구들이 선택해 준 낱말</div><div class="wc" id="wc-p"></div></div>`;
+  drawCloud();
 }
-async function drawAllClouds(){
+async function drawCloud(){
   const cls=(document.getElementById('cf-cls')||{}).value||'';
-  let all=await loadAllResp(cls);
-  const sc={},pc={};
-  all.forEach(r=>{
-    (r.selfPicked||[]).forEach(t=>sc[t]=(sc[t]||0)+1);
-    (r.peerEvals||[]).forEach(e=>(e.words||[]).forEach(t=>pc[t]=(pc[t]||0)+1));
-  });
-  drawCloud('wc-self',sc,'#4aa8e8','#e8f5fd');
-  drawCloud('wc-peer',pc,'#9b7fe8','#f3f0ff');
+  try {
+    const all=await getAllResp(cls);
+    const sc={},pc={};
+    all.forEach(r=>{(r.selfPicked||[]).forEach(t=>sc[t]=(sc[t]||0)+1);(r.peerEvals||[]).forEach(e=>(e.words||[]).forEach(t=>pc[t]=(pc[t]||0)+1));});
+    wc('wc-s',sc,'#4aa8e8','#e8f5fd');
+    wc('wc-p',pc,'#9b7fe8','#f3f0ff');
+  } catch(e){ document.getElementById('wc-s').innerHTML='<span style="color:#e53e3e;">오류: '+e.message+'</span>'; }
 }
-function drawCloud(id,counts,color,bg){
-  const el=document.getElementById(id);
-  if(!el) return;
+function wc(id,counts,color,bg){
+  const el=document.getElementById(id); if(!el) return;
   const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
-  if(!sorted.length){ el.innerHTML='<span style="color:#ccc;font-size:13px;">데이터 없음</span>'; return; }
+  if(!sorted.length){el.innerHTML='<span style="color:#ccc;font-size:13px;">데이터 없음</span>';return;}
   const mx=sorted[0][1];
-  el.innerHTML=sorted.map(([w,c])=>{
-    const sz=12+Math.round((c/mx)*16);
-    const op=0.45+(c/mx)*0.55;
-    return `<span class="wc-word" style="font-size:${sz}px;background:${bg};color:${color};opacity:${op};border:1.5px solid ${color};">${w} <strong>${c}</strong></span>`;
-  }).join('');
+  el.innerHTML=sorted.map(([w,c])=>`<span class="wcw" style="font-size:${12+Math.round(c/mx*16)}px;background:${bg};color:${color};opacity:${0.45+c/mx*0.55};border:1.5px solid ${color};">${w} <strong>${c}</strong></span>`).join('');
 }
 
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('on');
-  setTimeout(()=>t.classList.remove('on'),2800);
-}
-
-buildClassBtns();
+/* ════════════════════════════════════════
+   초기화
+════════════════════════════════════════ */
+initClassBtns();
 </script>
-
-
-<!-- TEACHER PASSWORD MODAL -->
-<div id="pw-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:center;justify-content:center;">
-  <div style="background:#fff;border-radius:20px;padding:32px 28px;max-width:340px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,.2);text-align:center;">
-    <div style="font-size:40px;margin-bottom:12px;">🔐</div>
-    <div style="font-size:18px;font-weight:800;margin-bottom:6px;">교사 전용 모드</div>
-    <div style="font-size:13px;color:#7a90aa;margin-bottom:20px;">비밀번호를 입력해 주세요</div>
-    <input id="pw-input" type="password" maxlength="10"
-      placeholder="비밀번호"
-      style="width:100%;border:2px solid #dde6f0;border-radius:12px;padding:12px 16px;font-size:16px;text-align:center;font-family:'Nanum Gothic',sans-serif;outline:none;letter-spacing:4px;margin-bottom:10px;"
-      onkeydown="if(event.key==='Enter')checkPw()"
-      oninput="document.getElementById('pw-err').textContent=''">
-    <div id="pw-err" style="font-size:12px;color:#e53e3e;min-height:18px;margin-bottom:10px;"></div>
-    <div style="display:flex;gap:8px;">
-      <button onclick="closePwModal()" style="flex:1;padding:12px;border:2px solid #dde6f0;background:#fff;border-radius:12px;font-family:'Nanum Gothic',sans-serif;font-size:14px;font-weight:700;cursor:pointer;color:#7a90aa;">취소</button>
-      <button onclick="checkPw()" style="flex:1;padding:12px;border:none;background:linear-gradient(135deg,#4aa8e8,#3ecfc6);border-radius:12px;font-family:'Nanum Gothic',sans-serif;font-size:14px;font-weight:800;cursor:pointer;color:#fff;">확인</button>
-    </div>
-  </div>
-</div>
-
-<script>
-const TEACHER_PW = '3112';
-function askTeacherPw(){
-  const modal = document.getElementById('pw-modal');
-  modal.style.display = 'flex';
-  document.getElementById('pw-input').value = '';
-  document.getElementById('pw-err').textContent = '';
-  setTimeout(()=>document.getElementById('pw-input').focus(), 100);
-}
-function closePwModal(){
-  document.getElementById('pw-modal').style.display = 'none';
-}
-function checkPw(){
-  const val = document.getElementById('pw-input').value;
-  if(val === TEACHER_PW){
-    closePwModal();
-    gotoMode('teacher');
-  } else {
-    document.getElementById('pw-err').textContent = '❌ 비밀번호가 맞지 않습니다';
-    document.getElementById('pw-input').value = '';
-    document.getElementById('pw-input').focus();
-  }
-}
-// close on backdrop click
-document.getElementById('pw-modal').addEventListener('click', function(e){
-  if(e.target === this) closePwModal();
-});
-</script>
-
 </body>
 </html>
