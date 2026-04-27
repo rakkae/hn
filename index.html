@@ -478,19 +478,27 @@ function showScreen(id){
 ══════════════════════════════════════ */
 async function buildClassBtns(){
   const wrap=document.getElementById('s0-classes');
-  wrap.innerHTML='<div style="color:var(--muted);font-size:13px;grid-column:1/-1;padding:10px;">명단 불러오는 중...</div>';
-  let roster={};
-  try { roster=await loadRoster(); } catch(e){ console.error('명단 로드 오류:', e); }
+  // 1. 반 버튼 즉시 표시 (명단 로드 기다리지 않음)
   wrap.innerHTML='';
   for(let i=1;i<=10;i++){
     const cls=i+'반';
-    const cnt=(roster[cls]||[]).length;
     const b=document.createElement('button');
     b.className='class-btn';
-    b.innerHTML=cls+(cnt?`<br><span style="font-size:11px;opacity:.6;font-weight:400">${cnt}명</span>`:'');
+    b.id='classbtn-'+i;
+    b.innerHTML=cls;
     b.onclick=()=>gotoS1(cls);
     wrap.appendChild(b);
   }
+  // 2. 백그라운드에서 명단 로드 후 카운트 업데이트
+  try {
+    const roster=await loadRoster();
+    for(let i=1;i<=10;i++){
+      const cls=i+'반';
+      const cnt=(roster[cls]||[]).length;
+      const b=document.getElementById('classbtn-'+i);
+      if(b&&cnt) b.innerHTML=cls+`<br><span style="font-size:11px;opacity:.6;font-weight:400">${cnt}명</span>`;
+    }
+  } catch(e){ console.error('명단 로드 오류:', e); }
 }
 
 /* ══════════════════════════════════════
