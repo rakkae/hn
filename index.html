@@ -478,8 +478,9 @@ function showScreen(id){
 ══════════════════════════════════════ */
 async function buildClassBtns(){
   const wrap=document.getElementById('s0-classes');
-  wrap.innerHTML='<div style="color:var(--muted);font-size:13px;grid-column:1/-1">명단 불러오는 중...</div>';
-  const roster=await loadRoster();
+  wrap.innerHTML='<div style="color:var(--muted);font-size:13px;grid-column:1/-1;padding:10px;">명단 불러오는 중...</div>';
+  let roster={};
+  try { roster=await loadRoster(); } catch(e){ console.error('명단 로드 오류:', e); }
   wrap.innerHTML='';
   for(let i=1;i<=10;i++){
     const cls=i+'반';
