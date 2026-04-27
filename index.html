@@ -178,7 +178,14 @@ body{font-family:'Nanum Gothic',sans-serif;background:var(--bg);color:var(--text
 <body>
 
 <div class="tb">
-  <div class="tb-logo">🌸 나의 특성 알아보기</div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="tb-logo">🌸 나의 특성 알아보기</div>
+    <div id="tb-student" style="display:none;align-items:center;gap:6px;">
+      <span style="color:var(--border);">|</span>
+      <span id="tb-name" style="font-size:14px;font-weight:800;color:var(--text);"></span>
+      <button id="tb-home" onclick="loadNameScreen()" style="background:var(--sky-l);border:none;border-radius:20px;padding:5px 12px;font-family:'Nanum Gothic',sans-serif;font-size:12px;font-weight:700;color:var(--sky);cursor:pointer;transition:all .2s;">⬅ 첫화면</button>
+    </div>
+  </div>
   <div class="mw">
     <button class="mb on" id="mb-s" onclick="goStudent()">📚 학생</button>
     <button class="mb" id="mb-t" onclick="askPw()">🏫 교사</button>
@@ -435,10 +442,12 @@ function checkPw(){
 document.getElementById('pw-modal').addEventListener('click',e=>{if(e.target===document.getElementById('pw-modal'))closePw();});
 document.getElementById('pw-inp').addEventListener('keydown',e=>{if(e.key==='Enter')checkPw();});
 
-function goStudent(){document.getElementById('mb-s').classList.add('on');document.getElementById('mb-t').classList.remove('on');loadNameScreen();}
+function goStudent(){document.getElementById('mb-s').classList.add('on');document.getElementById('mb-t').classList.remove('on');document.getElementById('tb-student').style.display='none';loadNameScreen();}
 
 /* 이름 화면 */
 async function loadNameScreen(){
+  document.getElementById('tb-student').style.display = 'none';
+  document.getElementById('tb-name').textContent = '';
   show('sc-name');
   const wrap=document.getElementById('name-grid');
   wrap.innerHTML='<div style="color:var(--muted);font-size:13px;grid-column:1/-1;">불러오는 중...</div>';
@@ -462,6 +471,9 @@ async function loadNameScreen(){
 /* 활동 시작 */
 async function startActivity(name){
   curName=name; selfSel.clear(); friendSel.clear(); selRiasec.clear(); aptScores={};
+  // 이름 topbar 표시
+  document.getElementById('tb-name').textContent = name;
+  document.getElementById('tb-student').style.display = 'flex';
   // 화면 먼저 전환
   goPhase(1); show('sc-main'); resetAI();
   buildTraitGrid(); updatePicks(); buildRiasecGrid(); buildAptGrid();
