@@ -8,54 +8,48 @@
 <style>
 :root{
   --sky:#4aa8e8;--sky-l:#e8f5fd;--peach:#f07a55;--peach-l:#fff0eb;
-  --mint:#3ecfc6;--yellow:#ffc84a;--purple:#9b7fe8;--purple-l:#f3f0ff;
+  --mint:#3ecfc6;--mint-l:#e6faf9;--yellow:#ffc84a;--yellow-l:#fffbe8;
+  --purple:#9b7fe8;--purple-l:#f3f0ff;--green:#48bb78;--green-l:#f0fff4;
   --bg:#f0f6ff;--card:#fff;--border:#dde6f0;--text:#263449;--muted:#7a90aa;
   --shadow:0 4px 20px rgba(36,72,120,.09);--r:20px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Nanum Gothic',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
-
-/* topbar */
 .tb{background:#fff;box-shadow:0 2px 12px rgba(36,72,120,.08);padding:13px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
-.tb-logo{font-size:18px;font-weight:800;color:var(--sky);}
+.tb-logo{font-size:17px;font-weight:800;color:var(--sky);}
 .mw{display:flex;background:#f0f4f8;border-radius:30px;padding:3px;gap:3px;}
-.mb{padding:7px 18px;border:none;border-radius:27px;font-family:'Nanum Gothic',sans-serif;font-size:13px;font-weight:700;cursor:pointer;background:transparent;color:var(--muted);transition:all .2s;}
+.mb{padding:7px 16px;border:none;border-radius:27px;font-family:'Nanum Gothic',sans-serif;font-size:13px;font-weight:700;cursor:pointer;background:transparent;color:var(--muted);transition:all .2s;}
 .mb.on{background:#fff;color:var(--sky);box-shadow:0 2px 8px rgba(36,72,120,.12);}
-
-/* screens */
-.sc{display:none;} .sc.on{display:block;}
+.sc{display:none;} .sc.on{display:block;animation:fi .3s ease both;}
 @keyframes fi{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
-.sc.on{animation:fi .3s ease both;}
+.wrap{max-width:720px;margin:0 auto;padding:28px 18px 100px;}
+.wrap-w{max-width:1100px;margin:0 auto;padding:28px 18px 80px;}
+.card{background:var(--card);border-radius:var(--r);padding:24px;box-shadow:var(--shadow);margin-bottom:18px;}
 
-.wrap{max-width:700px;margin:0 auto;padding:28px 18px 80px;}
-.wrap-w{max-width:1080px;margin:0 auto;padding:28px 18px 80px;}
+/* 진행 단계 */
+.steps{display:flex;margin-bottom:28px;}
+.si{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;}
+.si:not(:last-child)::after{content:'';position:absolute;top:16px;left:60%;width:80%;height:2px;background:var(--border);}
+.si.done::after,.si.cur::after{background:var(--sky);}
+.sd{width:32px;height:32px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;z-index:1;transition:all .3s;}
+.si.done .sd{background:var(--mint);}
+.si.cur .sd{background:var(--sky);box-shadow:0 0 0 4px rgba(74,168,232,.2);}
+.sl{font-size:11px;font-weight:700;color:var(--muted);}
+.si.cur .sl{color:var(--sky);} .si.done .sl{color:var(--mint);}
 
-/* panels */
-.pn{background:var(--card);border-radius:var(--r);padding:24px;box-shadow:var(--shadow);margin-bottom:18px;}
-.pn-title{font-size:16px;font-weight:800;margin-bottom:16px;}
-
-/* step */
-.sh{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px;}
-.sn{min-width:30px;height:30px;background:var(--sky);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;margin-top:2px;}
-.sd{font-size:14px;line-height:1.65;} .sd strong{color:var(--sky);}
-
-/* class/name grid */
-.cg{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
-.ng{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;}
-.cb,.nb{border:2px solid var(--border);background:#fff;border-radius:14px;padding:13px 8px;text-align:center;font-family:'Nanum Gothic',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:all .2s;color:var(--text);}
-.cb:hover,.nb:hover{border-color:var(--sky);color:var(--sky);transform:translateY(-2px);box-shadow:var(--shadow);}
+/* 이름 그리드 */
+.ng{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;}
+.nb{border:2px solid var(--border);background:#fff;border-radius:14px;padding:13px 8px;text-align:center;font-family:'Nanum Gothic',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:all .2s;color:var(--text);}
+.nb:hover{border-color:var(--sky);color:var(--sky);transform:translateY(-2px);box-shadow:var(--shadow);}
 .nb.done{border-color:var(--mint);color:#1aaa9a;}
 
-/* traits */
+/* 낱말 그리드 */
 .tg{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:7px;background:#fffdf0;border-radius:16px;padding:14px;border:2px dashed var(--yellow);}
 .tc{position:relative;padding:10px 5px;border-radius:10px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;border:2px solid transparent;background:#fff;transition:all .18s;user-select:none;box-shadow:0 1px 4px rgba(0,0,0,.05);}
 .tc:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.10);}
 .tc.sel{background:#e8f5fd;border-color:var(--sky);color:#1a6fa0;}
 .tc.fsel{background:#fff0eb;border-color:var(--peach);color:#b84f2a;}
 .cm{position:absolute;top:-6px;right:-6px;width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff;background:var(--sky);}
-.leg{display:flex;gap:14px;margin-top:10px;font-size:12px;color:var(--muted);}
-.li{display:flex;align-items:center;gap:5px;}
-.ld{width:18px;height:18px;border-radius:4px;background:var(--sky);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;}
 
 /* pick */
 .pr{display:flex;gap:14px;flex-wrap:wrap;}
@@ -64,81 +58,99 @@ body{font-family:'Nanum Gothic',sans-serif;background:var(--bg);color:var(--text
 .pb.fb{background:var(--peach-l);border:2px solid var(--peach);}
 .pt{font-size:13px;font-weight:800;margin-bottom:10px;}
 .pb.sb .pt{color:var(--sky);} .pb.fb .pt{color:var(--peach);}
-.pi{background:#fff;border-radius:9px;padding:8px 12px;font-size:13px;font-weight:700;min-height:36px;display:flex;align-items:center;color:var(--muted);border:1.5px dashed var(--border);margin-bottom:6px;transition:all .2s;}
+.pi{background:#fff;border-radius:9px;padding:8px 12px;font-size:13px;font-weight:700;min-height:36px;display:flex;align-items:center;color:var(--muted);border:1.5px dashed var(--border);margin-bottom:6px;}
 .pi.ok{color:var(--text);border-style:solid;}
 .pb.sb .pi.ok{border-color:var(--sky);background:#f0faff;}
 .pb.fb .pi.ok{border-color:var(--peach);background:#fff5f0;}
-.pchip{padding:2px 8px;background:#fff;border:1.5px solid var(--peach);border-radius:8px;font-size:11px;font-weight:700;color:#b84f2a;}
+.pchip{padding:2px 8px;background:#fff;border:1.5px solid var(--peach);border-radius:8px;font-size:11px;font-weight:700;color:#b84f2a;display:inline-block;margin:2px;}
 
 /* summary */
 .sumr{background:linear-gradient(135deg,#f0faff,#f3f0ff);border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;border:2px solid #c4def7;}
 .sf{font-size:16px;font-weight:800;white-space:nowrap;}
-.si{flex:1;min-width:140px;border:none;background:transparent;border-bottom:2px solid var(--sky);padding:3px 7px;font-family:'Nanum Pen Script',cursive;font-size:20px;color:var(--text);outline:none;}
+.si2{flex:1;min-width:140px;border:none;background:transparent;border-bottom:2px solid var(--sky);padding:3px 7px;font-family:'Nanum Pen Script',cursive;font-size:20px;color:var(--text);outline:none;}
 
-/* AI panel */
-.aip{background:linear-gradient(135deg,#1a1f35,#263449);border-radius:var(--r);padding:26px;box-shadow:0 8px 32px rgba(26,31,53,.3);margin-top:24px;margin-bottom:18px;color:#fff;position:relative;overflow:hidden;}
-.aip::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(155,127,232,.25),transparent 70%);border-radius:50%;}
-.ai-title{font-size:16px;font-weight:800;margin-bottom:4px;}
-.ai-sub{font-size:12px;opacity:.6;margin-bottom:20px;}
-.ai-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--purple),#6dd5fa);color:#fff;font-family:'Nanum Gothic',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .25s;box-shadow:0 4px 16px rgba(155,127,232,.4);}
-.ai-btn:hover{transform:translateY(-2px);}
-.ai-btn:disabled{background:#444;box-shadow:none;cursor:not-allowed;transform:none;}
-.ai-ld{display:none;flex-direction:column;align-items:center;gap:14px;padding:20px 0;}
+/* AI */
+.aip{background:linear-gradient(135deg,#1a1f35,#263449);border-radius:var(--r);padding:24px;color:#fff;margin-top:18px;margin-bottom:18px;}
+.ai-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+.ai-sub{font-size:12px;opacity:.6;margin-bottom:16px;}
+.ai-run{width:100%;padding:13px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--purple),#6dd5fa);color:#fff;font-family:'Nanum Gothic',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .25s;}
+.ai-run:hover{transform:translateY(-2px);}
+.ai-run:disabled{background:#444;cursor:not-allowed;transform:none;}
+.ai-ld{display:none;flex-direction:column;align-items:center;gap:10px;padding:16px 0;}
 .ai-ld.on{display:flex;}
-.sp{width:40px;height:40px;border:4px solid rgba(255,255,255,.15);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;}
+.sp{width:36px;height:36px;border:4px solid rgba(255,255,255,.15);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .ai-res{display:none;} .ai-res.on{display:block;}
-.rc-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
-.rc-card{flex:1;min-width:100px;border-radius:14px;padding:14px 16px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);}
-.rc-em{font-size:18px;margin-bottom:6px;}
-.rc-type{font-size:13px;font-weight:800;margin-bottom:2px;}
-.rc-lbl{font-size:11px;opacity:.6;margin-bottom:6px;}
-.rc-bw{background:rgba(255,255,255,.1);border-radius:6px;height:6px;overflow:hidden;}
-.rc-b{height:6px;border-radius:6px;transition:width 1s ease;}
-.jc{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
-.jchip{padding:6px 13px;border-radius:20px;font-size:12px;font-weight:700;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);color:#fff;}
-.jchip.top{background:linear-gradient(135deg,rgba(155,127,232,.4),rgba(74,168,232,.3));border-color:rgba(155,127,232,.6);}
-.ai-comment{background:rgba(255,255,255,.07);border-radius:12px;padding:14px 16px;font-size:13px;line-height:1.7;opacity:.9;border-left:3px solid var(--purple);}
+.type-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.12);border-radius:12px;padding:12px 16px;margin-bottom:14px;}
+.rc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.rc-card{border-radius:12px;padding:10px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);text-align:center;}
+.rc-bw{background:rgba(255,255,255,.1);border-radius:4px;height:5px;margin-top:5px;}
+.rc-bar{height:5px;border-radius:4px;}
+.jobs-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.jc{padding:5px 12px;border-radius:16px;font-size:12px;font-weight:700;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.18);color:#fff;}
+.jc.top{background:linear-gradient(135deg,rgba(155,127,232,.5),rgba(74,168,232,.3));border-color:rgba(155,127,232,.7);}
+.ai-comment{background:rgba(255,255,255,.07);border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.7;border-left:3px solid var(--purple);}
 
-/* friend panel */
-.fp{background:var(--card);border-radius:var(--r);padding:24px;box-shadow:var(--shadow);margin-top:24px;}
-.fh{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;}
-.fb2{min-width:30px;height:30px;background:var(--peach);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex-shrink:0;margin-top:2px;}
+/* 흥미 */
+.career-link{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:12px;padding:14px 18px;text-decoration:none;color:var(--sky);font-weight:800;font-size:14px;box-shadow:var(--shadow);transition:all .2s;margin-bottom:14px;border:2px solid var(--sky-l);}
+.career-link:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(74,168,232,.25);}
+.upload-area{border:2px dashed var(--border);border-radius:14px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;background:#fff;}
+.upload-area:hover{border-color:var(--sky);background:var(--sky-l);}
+.upload-area.has-img{border:2px solid var(--mint);}
+.upload-preview{max-width:100%;max-height:280px;border-radius:10px;display:none;margin:0 auto;}
+.riasec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.riasec-btn{border-radius:14px;padding:12px;text-align:center;cursor:pointer;border:2px solid var(--border);background:#fff;transition:all .2s;}
+.riasec-btn:hover{transform:translateY(-1px);}
 
-/* buttons */
-.btn{display:inline-flex;align-items:center;gap:7px;padding:12px 22px;border-radius:14px;border:none;font-family:'Nanum Gothic',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;}
+/* 적성 */
+.apt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px;}
+.apt-card{background:#fff;border-radius:16px;padding:18px;box-shadow:var(--shadow);border-left:4px solid var(--sky);}
+.apt-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.apt-desc{font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5;}
+.stars{display:flex;gap:4px;}
+.star{font-size:24px;cursor:pointer;transition:all .15s;color:#ddd;line-height:1;}
+.star.on{color:var(--yellow);}
+.star:hover{transform:scale(1.2);}
+
+/* 버튼 */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:13px 22px;border-radius:14px;border:none;font-family:'Nanum Gothic',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;flex:1;}
 .btn-pri{background:linear-gradient(135deg,var(--sky),var(--mint));color:#fff;box-shadow:0 4px 14px rgba(74,168,232,.35);}
 .btn-pri:hover{transform:translateY(-2px);}
 .btn-sec{background:#fff;color:var(--sky);border:2px solid var(--sky);}
-.btn-peach{background:linear-gradient(135deg,var(--peach),#f0a070);color:#fff;box-shadow:0 4px 14px rgba(240,122,85,.3);}
+.btn-ghost{background:transparent;color:var(--muted);border:2px solid var(--border);}
+.btn-sm{padding:8px 16px;font-size:12px;border-radius:10px;flex:none;}
+.btn-peach{background:linear-gradient(135deg,var(--peach),#f0a070);color:#fff;}
 .btn-peach:hover{transform:translateY(-2px);}
-.btn-blk{width:100%;justify-content:center;margin-top:20px;font-size:16px;padding:15px;}
-.btn-sm{padding:7px 14px;font-size:12px;border-radius:10px;}
+.btn-green{background:linear-gradient(135deg,var(--green),var(--mint));color:#fff;}
+.nav-row{display:flex;gap:10px;margin-top:20px;}
 
-/* back */
-.bb{display:flex;align-items:center;gap:8px;margin-bottom:18px;}
-.bbtn{background:none;border:none;font-family:'Nanum Gothic',sans-serif;font-size:14px;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:4px;}
-.bbtn:hover{color:var(--text);}
-.ptitle{font-size:19px;font-weight:800;}
+/* sec header */
+.sh{display:flex;align-items:flex-start;gap:10px;margin-bottom:16px;}
+.sn{min-width:28px;height:28px;border-radius:50%;background:var(--sky);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;margin-top:2px;}
+.sdesc{font-size:14px;line-height:1.6;}
+.sdesc strong{color:var(--sky);}
+
+/* 친구 섹션 */
+.friend-sec{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-top:18px;}
+
+/* 결과 */
+.res-card{background:linear-gradient(135deg,#f0faff,#f3f0ff);border-radius:16px;padding:20px;border:2px solid #c4def7;margin-bottom:14px;}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;margin:2px;}
+.badge-sky{background:var(--sky-l);color:var(--sky);}
+.badge-mint{background:var(--mint-l);color:#1aaa9a;}
+.badge-peach{background:var(--peach-l);color:var(--peach);}
 
 /* teacher */
-.ttabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.ttabs{display:flex;gap:8px;margin-bottom:20px;}
 .ttab{padding:8px 18px;border-radius:20px;border:2px solid var(--border);background:#fff;font-family:'Nanum Gothic',sans-serif;font-size:13px;font-weight:700;cursor:pointer;color:var(--muted);transition:all .2s;}
 .ttab.on{background:var(--sky);border-color:var(--sky);color:#fff;}
-.rgrid{display:grid;gap:14px;}
-.cpanel{background:#fff;border-radius:var(--r);padding:20px;box-shadow:var(--shadow);}
-.chd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.clbl{font-size:15px;font-weight:800;color:var(--sky);}
-.tags{display:flex;flex-wrap:wrap;gap:6px;min-height:32px;padding:2px 0;}
-.tag{background:var(--sky-l);border:1.5px solid #b3d8f5;color:#1a6fa0;border-radius:20px;padding:4px 12px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;}
-.tag .dl{cursor:pointer;font-size:11px;color:#6aace0;} .tag .dl:hover{color:#e53e3e;}
-.ninr{display:flex;gap:8px;margin-top:10px;}
-.nin{flex:1;border:2px solid var(--border);border-radius:11px;padding:8px 14px;font-family:'Nanum Gothic',sans-serif;font-size:14px;outline:none;}
+.nin{width:100%;border:2px solid var(--border);border-radius:12px;padding:12px 16px;font-family:'Nanum Gothic',sans-serif;font-size:14px;outline:none;resize:vertical;min-height:120px;}
 .nin:focus{border-color:var(--sky);}
-.resgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
-.rescard{background:#fff;border-radius:18px;padding:18px;box-shadow:var(--shadow);border-top:4px solid var(--sky);animation:fi .35s ease both;}
-.rescard:nth-child(2n){border-top-color:var(--peach);}
-.rescard:nth-child(3n){border-top-color:var(--mint);}
+.t-ntag{background:var(--sky-l);border:1.5px solid #b3d8f5;color:#1a6fa0;border-radius:20px;padding:4px 12px;font-size:13px;font-weight:700;display:inline-block;margin:3px;}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;}
+.rcard{background:#fff;border-radius:18px;padding:18px;box-shadow:var(--shadow);border-top:4px solid var(--sky);}
+.rcard:nth-child(2n){border-top-color:var(--peach);}
+.rcard:nth-child(3n){border-top-color:var(--mint);}
 .rname{font-size:16px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:7px;}
 .av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--sky),var(--mint));display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800;}
 .rsec{margin-bottom:8px;}
@@ -147,740 +159,610 @@ body{font-family:'Nanum Gothic',sans-serif;background:var(--bg);color:var(--text
 .rchip{padding:3px 9px;border-radius:9px;font-size:12px;font-weight:700;}
 .rchip.s{background:var(--sky-l);color:#1a6fa0;border:1px solid #b3d8f5;}
 .rchip.p{background:var(--purple-l);color:#5b3fa0;border:1px solid #c4b0f5;}
-.rsumm{background:linear-gradient(135deg,#f0faff,#f3f0ff);border-radius:10px;padding:9px 13px;font-family:'Nanum Pen Script',cursive;font-size:17px;border-left:3px solid var(--sky);}
+.rchip.a{background:var(--yellow-l);color:#b07800;border:1px solid #ffd166;}
+.rsumm{font-family:'Nanum Pen Script',cursive;font-size:17px;background:linear-gradient(135deg,#f0faff,#f3f0ff);border-radius:10px;padding:8px 12px;border-left:3px solid var(--sky);}
 .rtime{font-size:11px;color:var(--muted);margin-top:6px;text-align:right;}
-.wcsec{background:#fff;border-radius:var(--r);padding:22px;box-shadow:var(--shadow);margin-bottom:16px;}
-.wctitle{font-size:15px;font-weight:800;margin-bottom:14px;}
-.wc{display:flex;flex-wrap:wrap;gap:7px;align-items:center;}
-.wcw{padding:5px 13px;border-radius:20px;font-weight:700;transition:transform .2s;}
-.wcw:hover{transform:scale(1.06);}
-.fsel2{border:2px solid var(--border);border-radius:10px;padding:7px 12px;font-family:'Nanum Gothic',sans-serif;font-size:13px;outline:none;}
 
 /* modal */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:center;justify-content:center;}
 .modal-bg.on{display:flex;}
 .modal{background:#fff;border-radius:20px;padding:32px 28px;max-width:340px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,.2);text-align:center;}
-
-/* toast */
-.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#263449;color:#fff;padding:13px 26px;border-radius:40px;font-size:14px;font-weight:700;transition:transform .3s;z-index:999;white-space:nowrap;pointer-events:none;}
-.toast.on{transform:translateX(-50%) translateY(0);}
-
-/* loading overlay */
-.lov{display:none;position:fixed;inset:0;background:rgba(255,255,255,.7);z-index:400;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
+.lov{display:none;position:fixed;inset:0;background:rgba(255,255,255,.8);z-index:400;align-items:center;justify-content:center;flex-direction:column;gap:12px;}
 .lov.on{display:flex;}
-
-@media(max-width:500px){.pr{flex-direction:column;}.tg{grid-template-columns:repeat(auto-fill,minmax(74px,1fr));}.cg{grid-template-columns:repeat(5,1fr);}}
+.lsp{width:44px;height:44px;border:4px solid var(--border);border-top-color:var(--sky);border-radius:50%;animation:spin .8s linear infinite;}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#263449;color:#fff;padding:12px 24px;border-radius:40px;font-size:14px;font-weight:700;transition:transform .3s;z-index:999;pointer-events:none;}
+.toast.on{transform:translateX(-50%) translateY(0);}
+@media(max-width:500px){.pr{flex-direction:column;}.tg{grid-template-columns:repeat(auto-fill,minmax(74px,1fr));}.apt-grid{grid-template-columns:1fr;}.rc-grid,.riasec-grid{grid-template-columns:repeat(2,1fr);}}
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
 <div class="tb">
   <div class="tb-logo">🌸 나의 특성 알아보기</div>
   <div class="mw">
-    <button class="mb on" id="mb-s" onclick="setMode('student')">📚 학생</button>
+    <button class="mb on" id="mb-s" onclick="goStudent()">📚 학생</button>
     <button class="mb" id="mb-t" onclick="askPw()">🏫 교사</button>
   </div>
 </div>
 
-<!-- S0: 반 선택 -->
-<div class="sc on" id="sc-s0">
+<!-- 이름 선택 -->
+<div class="sc on" id="sc-name">
   <div class="wrap">
-    <div class="pn" style="text-align:center;padding:44px 24px 36px;">
-      <div style="font-size:54px;margin-bottom:12px;">🌸</div>
-      <div style="font-size:23px;font-weight:800;margin-bottom:6px;">나의 특성 알아보기</div>
-      <div style="font-size:14px;color:var(--muted);margin-bottom:34px;">자신의 반을 선택해 주세요</div>
-      <div class="cg" id="s0-grid"></div>
+    <div class="card" style="text-align:center;padding:40px 24px 32px;">
+      <div style="font-size:50px;margin-bottom:12px;">🌸</div>
+      <div style="font-size:22px;font-weight:800;margin-bottom:6px;">나의 특성 알아보기</div>
+      <div style="font-size:14px;color:var(--muted);margin-bottom:28px;">본인 이름을 선택하세요</div>
+      <div class="ng" id="name-grid"></div>
     </div>
   </div>
 </div>
 
-<!-- S1: 이름 선택 -->
-<div class="sc" id="sc-s1">
+<!-- 메인 활동 -->
+<div class="sc" id="sc-main">
   <div class="wrap">
-    <div class="bb">
-      <button class="bbtn" onclick="show('sc-s0');initClassBtns()">← 반 선택</button>
-      <span style="color:var(--border)">|</span>
-      <span class="ptitle" id="s1-title"></span>
-    </div>
-    <div class="pn">
-      <div class="pn-title">👤 본인 이름을 선택하세요</div>
-      <div class="ng" id="s1-grid"></div>
-    </div>
-  </div>
-</div>
-
-<!-- S2: 메인 활동 -->
-<div class="sc" id="sc-s2">
-  <div class="wrap">
-    <div class="bb">
-      <button class="bbtn" onclick="show('sc-s1');loadS1()">← 이름 선택</button>
-      <span style="color:var(--border)">|</span>
-      <span class="ptitle" id="s2-title"></span>
+    <div class="steps">
+      <div class="si cur" id="st1"><div class="sd">1</div><div class="sl">성격</div></div>
+      <div class="si" id="st2"><div class="sd">2</div><div class="sl">흥미</div></div>
+      <div class="si" id="st3"><div class="sd">3</div><div class="sl">적성</div></div>
     </div>
 
-    <!-- 활동1 -->
-    <div class="pn">
-      <div class="sh"><div class="sn">1</div>
-        <div class="sd">아래에서 <strong>내가 생각하는 나</strong>를 표현하는 말을 클릭해서 선택해 봅시다.<br>
-        <span style="font-size:12px;color:var(--muted);">한 번→선택(○) / 다시 클릭→취소</span></div>
-      </div>
-      <div class="tg" id="s2-traits"></div>
-      <div class="leg"><div class="li"><div class="ld">○</div>내가 생각하는 나</div></div>
-    </div>
-
-    <!-- 활동2 -->
-    <div class="pn">
-      <div class="sh"><div class="sn">2</div>
-        <div class="sd">나를 가장 잘 표현하는 말을 각각 세 가지씩 골라 봅시다.</div>
-      </div>
-      <div class="pr">
-        <div class="pb sb">
-          <div class="pt">🪞 내가 생각하는 나는요,</div>
-          <div id="sp0" class="pi">선택 1</div>
-          <div id="sp1" class="pi">선택 2</div>
-          <div id="sp2" class="pi">선택 3</div>
+    <!-- 단계1 성격 -->
+    <div id="ph1">
+      <div class="card">
+        <div class="sh"><div class="sn">1</div>
+          <div class="sdesc"><strong>내가 생각하는 나</strong>를 표현하는 말을 선택해 봅시다.<br>
+          <span style="font-size:12px;color:var(--muted);">클릭→선택(○) / 다시 클릭→취소</span></div>
         </div>
-        <div class="pb fb">
-          <div class="pt">🦋 친구가 말하는 나는요,</div>
-          <div id="peer-box"></div>
+        <div class="tg" id="trait-grid"></div>
+      </div>
+
+      <div class="card">
+        <div class="sh"><div class="sn">2</div>
+          <div class="sdesc">나를 가장 잘 표현하는 말 <strong>3가지</strong>를 골라 봅시다.</div>
+        </div>
+        <div class="pr">
+          <div class="pb sb">
+            <div class="pt">🪞 내가 생각하는 나는요,</div>
+            <div id="sp0" class="pi">선택 1</div>
+            <div id="sp1" class="pi">선택 2</div>
+            <div id="sp2" class="pi">선택 3</div>
+          </div>
+          <div class="pb fb">
+            <div class="pt">🦋 친구가 말하는 나는요,</div>
+            <div id="peer-box"><div style="font-size:12px;color:#ccc;font-style:italic;">아직 친구 평가가 없습니다 😊</div></div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- 활동3 -->
-    <div class="pn">
-      <div class="sh"><div class="sn">3</div>
-        <div class="sd">②에서 고른 말들을 종합하여 나는 어떤 사람인지 한 문장으로 써 봅시다.</div>
-      </div>
-      <div class="sumr">
-        <span class="sf">나는</span>
-        <input class="si" id="summary" type="text" placeholder="여기에 써 보세요">
-        <span class="sf">사람입니다.</span>
-      </div>
-    </div>
-
-    <button class="btn btn-pri btn-blk" onclick="saveSelf()">✅ 자기 평가 저장하기</button>
-
-    <!-- AI 분석 -->
-    <div class="aip">
-      <div class="ai-title">✨ AI 진로 분석</div>
-      <div class="ai-sub">선택한 낱말을 바탕으로 AI가 나의 흥미 유형과 어울리는 직업을 분석해 드려요</div>
-      <div id="ai-btn-wrap">
-        <button class="ai-btn" id="ai-btn" onclick="runAI()">🔮 AI에게 나의 진로 분석 부탁하기</button>
-      </div>
-      <div class="ai-ld" id="ai-ld">
-        <div class="sp"></div>
-        <div id="ai-ld-msg">AI가 분석 중이에요...</div>
-      </div>
-      <div class="ai-res" id="ai-res"></div>
-    </div>
-
-    <!-- 친구 평가 -->
-    <div class="fp">
-      <div class="fh">
-        <div class="fb2">+</div>
-        <div style="font-size:14px;line-height:1.65;">
-          <strong style="color:var(--peach)">친구 평가하기</strong> — 평가할 친구를 선택하세요.<br>
-          <span style="font-size:12px;color:var(--muted);">평가는 익명으로 처리됩니다.</span>
+      <div class="card">
+        <div class="sh"><div class="sn">3</div>
+          <div class="sdesc">②에서 고른 말들을 종합하여 나는 어떤 사람인지 한 문장으로 써 봅시다.</div>
+        </div>
+        <div class="sumr">
+          <span class="sf">나는</span>
+          <input class="si2" id="summary" type="text" placeholder="여기에 써 보세요">
+          <span class="sf">사람입니다.</span>
         </div>
       </div>
-      <div class="ng" id="s2-friends"></div>
-    </div>
-  </div>
-</div>
 
-<!-- S3: 친구 평가 -->
-<div class="sc" id="sc-s3">
-  <div class="wrap">
-    <div class="bb">
-      <button class="bbtn" onclick="show('sc-s2');loadFriendBtns()">← 활동으로 돌아가기</button>
-      <span class="ptitle" id="s3-title"></span>
-    </div>
-    <div class="pn">
-      <div class="sh">
-        <div class="sn" style="background:var(--peach)">△</div>
-        <div class="sd" id="s3-desc"></div>
+      <div class="aip">
+        <div class="ai-title">✨ AI 성격 분석</div>
+        <div class="ai-sub">선택한 낱말을 바탕으로 AI가 나의 성격 특성을 분석해 드려요</div>
+        <div id="ai-bw"><button class="ai-run" id="ai-btn" onclick="runAI()">🔮 AI에게 성격 분석 부탁하기</button></div>
+        <div class="ai-ld" id="ai-ld"><div class="sp"></div><div id="ai-msg" style="font-size:13px;opacity:.7;">분석 중...</div></div>
+        <div class="ai-res" id="ai-res"></div>
       </div>
-      <div class="tg" id="s3-traits"></div>
-      <div class="leg"><div class="li"><div class="ld" style="background:var(--peach)">△</div>이 친구를 표현하는 말</div></div>
+
+      <div class="friend-sec">
+        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;">
+          <div style="min-width:28px;height:28px;background:var(--peach);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;">+</div>
+          <div style="font-size:14px;line-height:1.65;">
+            <strong style="color:var(--peach);">친구 평가하기</strong> — 평가할 친구를 선택하세요.<br>
+            <span style="font-size:12px;color:var(--muted);">결과는 익명으로 처리됩니다.</span>
+          </div>
+        </div>
+        <div class="ng" id="friend-grid"></div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn btn-pri" onclick="saveP1()">저장하고 다음 단계 →</button>
+      </div>
     </div>
-    <button class="btn btn-peach btn-blk" onclick="saveFriend()">💌 친구 평가 저장하기</button>
+
+    <!-- 단계2 흥미 -->
+    <div id="ph2" style="display:none;">
+      <div class="card">
+        <div class="sh">
+          <div class="sn" style="background:var(--purple)">2</div>
+          <div class="sdesc"><strong style="color:var(--purple)">나의 흥미 유형</strong>을 알아봅시다.</div>
+        </div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:10px;">① 아래 링크에서 주니어 커리어넷 흥미 검사를 하고 결과를 캡처해 주세요</div>
+        <a class="career-link" href="https://www.career.go.kr/jr/jrnew/test/testGuidance.do?QESTNR_SEQ=7" target="_blank">
+          🔗 주니어 커리어넷 흥미 검사하러 가기 <span style="font-size:20px;">→</span>
+        </a>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:10px;">② 검사 결과 이미지를 업로드해 주세요</div>
+        <div class="upload-area" id="upload-area" onclick="document.getElementById('img-inp').click()">
+          <input type="file" id="img-inp" accept="image/*" style="display:none" onchange="handleImg(this)">
+          <div id="upload-ph"><div style="font-size:36px;margin-bottom:8px;">📷</div>
+            <div style="font-size:14px;font-weight:700;color:var(--muted);">클릭해서 결과 이미지 올리기</div>
+            <div style="font-size:12px;color:#aaa;margin-top:4px;">캡처 이미지를 업로드해 주세요</div>
+          </div>
+          <img id="upload-img" class="upload-preview">
+        </div>
+        <div style="font-size:13px;color:var(--muted);margin-top:16px;margin-bottom:10px;">③ 나의 흥미 유형을 선택해 주세요 (복수 선택 가능)</div>
+        <div class="riasec-grid" id="riasec-grid"></div>
+      </div>
+      <div class="nav-row">
+        <button class="btn btn-ghost" onclick="goPhase(1)">← 이전</button>
+        <button class="btn btn-pri" onclick="saveP2()">저장하고 다음 단계 →</button>
+      </div>
+    </div>
+
+    <!-- 단계3 적성 -->
+    <div id="ph3" style="display:none;">
+      <div class="card">
+        <div class="sh">
+          <div class="sn" style="background:var(--green)">3</div>
+          <div class="sdesc"><strong style="color:var(--green)">나의 적성</strong>을 알아봅시다.<br>
+          <span style="font-size:12px;color:var(--muted);">각 항목에 해당하는 만큼 별을 눌러 색칠해 보세요<br>★★★ 매우 잘함 &nbsp;|&nbsp; ★★ 잘함 &nbsp;|&nbsp; ★ 보통</span></div>
+        </div>
+        <div class="apt-grid" id="apt-grid"></div>
+      </div>
+      <div class="nav-row">
+        <button class="btn btn-ghost" onclick="goPhase(2)">← 이전</button>
+        <button class="btn btn-green" onclick="saveP3()">✅ 모두 완료!</button>
+      </div>
+    </div>
+
+    <!-- 완료 -->
+    <div id="ph4" style="display:none;">
+      <div class="card" style="text-align:center;padding:36px 24px;">
+        <div style="font-size:56px;margin-bottom:14px;">🎉</div>
+        <div style="font-size:22px;font-weight:800;margin-bottom:8px;">활동 완료!</div>
+        <div style="font-size:14px;color:var(--muted);margin-bottom:24px;">나의 특성 알아보기 활동을 모두 마쳤습니다.</div>
+        <div id="final-sum"></div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- TEACHER -->
+<!-- 친구 평가 화면 -->
+<div class="sc" id="sc-friend">
+  <div class="wrap">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;">
+      <button onclick="show('sc-main');loadFriendGrid()" style="background:none;border:none;font-family:'Nanum Gothic',sans-serif;font-size:14px;color:var(--muted);cursor:pointer;">← 돌아가기</button>
+      <span style="font-size:19px;font-weight:800;" id="ft"></span>
+    </div>
+    <div class="card">
+      <div class="sh"><div class="sn" style="background:var(--peach)">△</div>
+        <div class="sdesc" id="fd"></div>
+      </div>
+      <div class="tg" id="ft-grid"></div>
+      <div style="margin-top:10px;font-size:12px;color:var(--muted);">한 번→선택 / 다시 클릭→취소</div>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-peach" onclick="saveFriend()">💌 친구 평가 저장하기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 교사 화면 -->
 <div class="sc" id="sc-teacher">
   <div class="wrap-w">
     <div class="ttabs">
       <button class="ttab on" id="tt-r" onclick="tTab('r')">📋 명단 관리</button>
       <button class="ttab" id="tt-s" onclick="tTab('s')">📊 제출 현황</button>
-      <button class="ttab" id="tt-c" onclick="tTab('c')">☁️ 낱말 현황</button>
     </div>
-    <div id="tp-r" class="rgrid"></div>
+    <div id="tp-r"></div>
     <div id="tp-s" style="display:none;"></div>
-    <div id="tp-c" style="display:none;"></div>
   </div>
 </div>
 
 <!-- 비밀번호 모달 -->
 <div class="modal-bg" id="pw-modal">
   <div class="modal">
-    <div style="font-size:40px;margin-bottom:12px;">🔐</div>
-    <div style="font-size:18px;font-weight:800;margin-bottom:6px;">교사 전용 모드</div>
-    <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">비밀번호를 입력해 주세요</div>
-    <input id="pw-inp" type="password" maxlength="10" placeholder="비밀번호"
-      style="width:100%;border:2px solid var(--border);border-radius:12px;padding:12px 16px;font-size:18px;text-align:center;font-family:'Nanum Gothic',sans-serif;outline:none;letter-spacing:6px;margin-bottom:8px;"
+    <div style="font-size:40px;margin-bottom:10px;">🔐</div>
+    <div style="font-size:18px;font-weight:800;margin-bottom:6px;">교사 전용</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:18px;">비밀번호를 입력해 주세요</div>
+    <input id="pw-inp" type="password" maxlength="10"
+      style="width:100%;border:2px solid var(--border);border-radius:12px;padding:12px;font-size:18px;text-align:center;font-family:'Nanum Gothic',sans-serif;outline:none;letter-spacing:6px;margin-bottom:8px;"
       onkeydown="if(event.key==='Enter')checkPw()">
     <div id="pw-err" style="font-size:12px;color:#e53e3e;min-height:18px;margin-bottom:12px;"></div>
     <div style="display:flex;gap:8px;">
-      <button onclick="closePw()" style="flex:1;padding:12px;border:2px solid var(--border);background:#fff;border-radius:12px;font-family:'Nanum Gothic',sans-serif;font-size:14px;font-weight:700;cursor:pointer;color:var(--muted);">취소</button>
-      <button onclick="checkPw()" style="flex:1;padding:12px;border:none;background:linear-gradient(135deg,var(--sky),var(--mint));border-radius:12px;font-family:'Nanum Gothic',sans-serif;font-size:14px;font-weight:800;cursor:pointer;color:#fff;">확인</button>
+      <button onclick="closePw()" style="flex:1;padding:11px;border:2px solid var(--border);background:#fff;border-radius:11px;font-family:'Nanum Gothic',sans-serif;font-size:14px;font-weight:700;cursor:pointer;color:var(--muted);">취소</button>
+      <button onclick="checkPw()" style="flex:1;padding:11px;border:none;background:linear-gradient(135deg,var(--sky),var(--mint));border-radius:11px;font-family:'Nanum Gothic',sans-serif;font-size:14px;font-weight:800;cursor:pointer;color:#fff;">확인</button>
     </div>
   </div>
 </div>
 
-<!-- 로딩 오버레이 -->
-<div class="lov" id="lov">
-  <div class="sp" style="border-top-color:var(--sky);"></div>
-  <div style="font-size:14px;color:var(--muted);" id="lov-msg">불러오는 중...</div>
-</div>
-
+<div class="lov" id="lov"><div class="lsp"></div><div id="lmsg" style="font-size:13px;color:var(--muted);">불러오는 중...</div></div>
 <div class="toast" id="toast"></div>
 
 <script>
-/* ════════════════════════════════════════
-   설정
-════════════════════════════════════════ */
 const GAS = 'https://script.google.com/macros/s/AKfycbxIlnHG2enB5g9a9AFjE1Ou1Aq_gyWAcRyxfanVD7bGi3jtbuCRyOfY1HiH3fNdycL_AA/exec';
-const GEMINI_KEY = 'AIzaSyDWfBgtdsid6gfqmn-c3phx5QPl4-KPw_w';
-const TEACHER_PW = '3112';
+const GEMINI = 'AIzaSyDWfBgtdsid6gfqmn-c3phx5QPl4-KPw_w';
+const PW = '3112';
 
-const TRAITS = [
-  '따뜻한','생각이 깊은','현실적인','완벽한','엄격한','모험적인',
-  '계획적인','논리적인','예술적인','성실한','즉흥적인','친절한',
-  '솔직한','감성적인','단호한','이해심 깊은','재치 있는','열정적인',
-  '상냥한','신중한','용기 있는','수줍은','정직한','끈기 있는',
-  '진지한','유쾌한','겸손한','긍정적인','참을성 있는','고집적인',
-  '창의적인','지도력 있는','단순한','책임감 있는','고집 있는','호기심 많은'
+const TRAITS=['따뜻한','생각이 깊은','현실적인','완벽한','엄격한','모험적인','계획적인','논리적인','예술적인','성실한','즉흥적인','친절한','솔직한','감성적인','단호한','이해심 깊은','재치 있는','열정적인','상냥한','신중한','용기 있는','수줍은','정직한','끈기 있는','진지한','유쾌한','겸손한','긍정적인','참을성 있는','고집적인','창의적인','지도력 있는','단순한','책임감 있는','고집 있는','호기심 많은'];
+
+const RIASEC=[
+  {k:'R',n:'현실형',e:'🔧',c:'#e67e22',d:'도구·기계 조작'},
+  {k:'I',n:'탐구형',e:'🔬',c:'#27ae60',d:'분석·연구'},
+  {k:'A',n:'예술형',e:'🎨',c:'#f39c12',d:'창의·표현'},
+  {k:'S',n:'사회형',e:'🤝',c:'#9b59b6',d:'사람 돕기'},
+  {k:'E',n:'진취형',e:'📢',c:'#e74c3c',d:'리더십·설득'},
+  {k:'C',n:'관습형',e:'📋',c:'#3498db',d:'정확·꼼꼼'}
 ];
-const RC={R:'#e67e22',I:'#27ae60',A:'#f39c12',S:'#9b59b6',E:'#e74c3c',C:'#3498db'};
-const RE={R:'🔧',I:'🔬',A:'🎨',S:'🤝',E:'📢',C:'📋'};
-const RN={R:'현실형',I:'탐구형',A:'예술형',S:'사회형',E:'진취형',C:'관습형'};
 
-/* ════════════════════════════════════════
-   상태
-════════════════════════════════════════ */
-let curClass='', curName='', curFriend='';
-const selfSel = new Set();
-const friendSel = new Set();
-let rosterCache = null;
-let respCache = {};
+const APTS=[
+  {k:'신체운동',e:'💪',c:'#e74c3c',j:'소방관, 경찰관, 무용가',ds:['처음 하는 운동이나 무용 동작을 잘 따라해요.','한 발로 몸의 균형을 잘 잡을 수 있어요.']},
+  {k:'공간지각',e:'🗺️',c:'#e67e22',j:'무대감독, 건축가, 조종사',ds:['지도를 보고 길을 잘 찾아가요.','전개도를 보고 입체 도형을 생각할 수 있어요.']},
+  {k:'손재능',e:'✂️',c:'#f39c12',j:'미용사, 요리사, 정비원',ds:['복잡한 종이접기 작품을 잘 만들어요.','필요한 물건을 직접 만들 수 있어요.']},
+  {k:'창의력',e:'💡',c:'#9b59b6',j:'연기자, 작가, 광고 기획자',ds:['모둠 활동할 때 특별한 의견을 내요.','여러 방법으로 문제를 해결해요.']},
+  {k:'음악',e:'🎵',c:'#3498db',j:'성악가, 지휘자, 음반 기획자',ds:['처음 듣는 노래를 쉽게 따라 불러요.','간단한 곡을 악기로 연주할 수 있어요.']},
+  {k:'수리논리',e:'🔢',c:'#27ae60',j:'회계사, 변리사, 투자 분석가',ds:['수학 용어나 기호를 잘 이해해요.','복잡한 계산도 잘해요.']},
+  {k:'언어',e:'📝',c:'#e91e63',j:'기자, 변호사, 통역가',ds:['말이나 글로 생각을 잘 표현해요.','책 읽을 때 모르는 단어가 거의 없어요.']},
+  {k:'대인관계',e:'🤗',c:'#00bcd4',j:'간호사, 영업원, 승무원',ds:['다른 사람의 마음을 잘 이해해요.','처음 보는 사람과 쉽게 친해져요.']},
+  {k:'자기성찰',e:'🧘',c:'#795548',j:'교사, 사회 복지사, 상담가',ds:['감정을 잘 조절해요.','해야 할 일을 미루지 않고 제때 해요.']},
+  {k:'예술시각',e:'🖼️',c:'#ff5722',j:'사진작가, 시각 디자이너',ds:['생각을 그림으로 생생하게 표현해요.','예술 작품을 보면 다양한 느낌이 들어요.']},
+  {k:'자연친화',e:'🌿',c:'#4caf50',j:'동물 조련사, 수의사, 농업 기술자',ds:['환경을 위해 절약하는 생활을 실천해요.','동물에 관심이 많고 잘 돌봐요.']}
+];
 
-/* ════════════════════════════════════════
-   GAS API
-════════════════════════════════════════ */
-// ── GAS 통신 (GET only, CORS 문제 없음) ──
-async function gasGet(params) {
-  const url = GAS + '?' + new URLSearchParams(params);
-  const r = await fetch(url);
-  if (!r.ok) throw new Error('서버 오류 ' + r.status);
-  const d = await r.json();
-  if (!d.ok && d.msg) throw new Error(d.msg);
-  return d;
-}
+/* 상태 */
+let curName='', curFriend='', curPhase=1;
+const selfSel=new Set(), friendSel=new Set(), selRiasec=new Set();
+let aptScores={}, namesCache=null;
 
-async function getRoster(fresh=false) {
-  if (!fresh && rosterCache) return rosterCache;
-  const d = await gasGet({action:'getRoster'});
-  rosterCache = d.roster || {};
-  return rosterCache;
-}
-async function getMyResp(cls, name) {
-  const k = cls+'__'+name;
-  if (respCache[k] !== undefined) return respCache[k];
-  const d = await gasGet({action:'getMyResp', class:cls, name});
-  respCache[k] = d.data || null;
-  return respCache[k];
-}
-async function getAllResp(cls) {
-  const d = await gasGet({action:'getAllResp', class:cls||''});
-  return d.responses || [];
+/* GAS */
+async function gas(p){
+  const r=await fetch(GAS+'?'+new URLSearchParams(p));
+  return r.json();
 }
 
-/* ════════════════════════════════════════
-   UI 헬퍼
-════════════════════════════════════════ */
-function show(id) {
-  document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));
-  document.getElementById(id).classList.add('on');
+/* UI */
+function show(id){document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');}
+function lov(on,msg='불러오는 중...'){document.getElementById('lov').classList.toggle('on',on);document.getElementById('lmsg').textContent=msg;}
+let _tt;
+function toast(msg,dur=2500){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('on');clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('on'),dur);}
+
+/* 비번 */
+function askPw(){document.getElementById('pw-modal').classList.add('on');document.getElementById('pw-inp').value='';document.getElementById('pw-err').textContent='';setTimeout(()=>document.getElementById('pw-inp').focus(),100);}
+function closePw(){document.getElementById('pw-modal').classList.remove('on');}
+function checkPw(){
+  if(document.getElementById('pw-inp').value===PW){closePw();document.getElementById('mb-s').classList.remove('on');document.getElementById('mb-t').classList.add('on');show('sc-teacher');tTab('r');}
+  else{document.getElementById('pw-err').textContent='❌ 비밀번호가 맞지 않습니다';document.getElementById('pw-inp').value='';}
 }
-function loading(on, msg='불러오는 중...') {
-  document.getElementById('lov').classList.toggle('on', on);
-  document.getElementById('lov-msg').textContent = msg;
-}
-let toastTimer;
-function toast(msg, dur=2500) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('on');
-  clearTimeout(toastTimer);
-  if (msg) toastTimer = setTimeout(()=>el.classList.remove('on'), dur);
-  else el.classList.remove('on');
+document.getElementById('pw-modal').addEventListener('click',e=>{if(e.target===document.getElementById('pw-modal'))closePw();});
+document.getElementById('pw-inp').addEventListener('keydown',e=>{if(e.key==='Enter')checkPw();});
+
+function goStudent(){document.getElementById('mb-s').classList.add('on');document.getElementById('mb-t').classList.remove('on');loadNameScreen();}
+
+/* 이름 화면 */
+async function loadNameScreen(){
+  show('sc-name');
+  const wrap=document.getElementById('name-grid');
+  wrap.innerHTML='<div style="color:var(--muted);font-size:13px;grid-column:1/-1;">불러오는 중...</div>';
+  try{
+    const d=await gas({action:'getNames'});
+    namesCache=[...new Set(d.names||[])];
+    wrap.innerHTML='';
+    if(!namesCache.length){wrap.innerHTML='<div style="color:var(--muted);font-size:14px;grid-column:1/-1;">아직 명단이 없습니다.<br>선생님께 말씀해 주세요.</div>';return;}
+    namesCache.forEach(n=>{const b=document.createElement('button');b.className='nb';b.textContent=n;b.onclick=()=>startActivity(n);wrap.appendChild(b);});
+  }catch(e){wrap.innerHTML='<div style="color:#e53e3e;font-size:13px;grid-column:1/-1;">⚠️ '+e.message+'</div>';}
 }
 
-/* ════════════════════════════════════════
-   모드 / 비밀번호
-════════════════════════════════════════ */
-function setMode(m) {
-  document.getElementById('mb-s').classList.toggle('on', m==='student');
-  document.getElementById('mb-t').classList.toggle('on', m==='teacher');
-  if (m==='student') { show('sc-s0'); initClassBtns(); }
-  else { show('sc-teacher'); tTab('r'); }
-}
-function askPw() {
-  document.getElementById('pw-modal').classList.add('on');
-  document.getElementById('pw-inp').value = '';
-  document.getElementById('pw-err').textContent = '';
-  setTimeout(()=>document.getElementById('pw-inp').focus(), 100);
-}
-function closePw() { document.getElementById('pw-modal').classList.remove('on'); }
-function checkPw() {
-  if (document.getElementById('pw-inp').value === TEACHER_PW) {
-    closePw();
-    setMode('teacher');
-  } else {
-    document.getElementById('pw-err').textContent = '❌ 비밀번호가 맞지 않습니다';
-    document.getElementById('pw-inp').value = '';
-    document.getElementById('pw-inp').focus();
-  }
-}
-document.getElementById('pw-modal').addEventListener('click', e=>{
-  if (e.target===document.getElementById('pw-modal')) closePw();
-});
-document.getElementById('pw-inp').addEventListener('keydown', e=>{
-  if (e.key==='Enter') checkPw();
-});
-
-/* ════════════════════════════════════════
-   S0: 반 선택
-════════════════════════════════════════ */
-function initClassBtns() {
-  const wrap = document.getElementById('s0-grid');
-  wrap.innerHTML = '';
-  for (let i=1; i<=10; i++) {
-    const cls = i+'반';
-    const b = document.createElement('button');
-    b.className = 'cb';
-    b.id = 'cb-'+i;
-    b.textContent = cls;
-    b.onclick = () => gotoS1(cls);
-    wrap.appendChild(b);
-  }
-  // 명단 카운트 백그라운드 로드
-  getRoster(true).then(roster=>{
-    for (let i=1; i<=10; i++) {
-      const cnt = (roster[i+'반']||[]).length;
-      const b = document.getElementById('cb-'+i);
-      if (b && cnt) b.innerHTML = i+'반<br><span style="font-size:11px;opacity:.6;font-weight:400">'+cnt+'명</span>';
-    }
-  }).catch(()=>{});
-}
-
-/* ════════════════════════════════════════
-   S1: 이름 선택
-════════════════════════════════════════ */
-async function gotoS1(cls) {
-  curClass = cls;
-  document.getElementById('s1-title').textContent = cls;
-  show('sc-s1');
-  await loadS1();
-}
-async function loadS1() {
-  const wrap = document.getElementById('s1-grid');
-  wrap.innerHTML = '<div style="color:var(--muted);font-size:13px;grid-column:1/-1">명단 불러오는 중...</div>';
-  try {
-    const roster = await getRoster(true);
-    const names = roster[curClass] || [];
-    wrap.innerHTML = '';
-    if (!names.length) {
-      wrap.innerHTML = '<div style="color:var(--muted);font-size:14px;grid-column:1/-1">등록된 학생이 없습니다.<br>교사 메뉴에서 명단을 입력해 주세요.</div>';
-    } else {
-      names.forEach(n => {
-        const b = document.createElement('button');
-        b.className = 'nb'; b.textContent = n;
-        b.onclick = () => gotoS2(n);
-        wrap.appendChild(b);
-      });
-    }
-  } catch(e) {
-    wrap.innerHTML = '<div style="color:#e53e3e;font-size:13px;grid-column:1/-1">⚠️ 명단을 불러올 수 없습니다: '+e.message+'</div>';
-  }
-}
-
-/* ════════════════════════════════════════
-   S2: 메인 활동
-════════════════════════════════════════ */
-async function gotoS2(name) {
-  curName = name;
-  document.getElementById('s2-title').textContent = name+' 학생';
-  show('sc-s2');
-  selfSel.clear();
-  resetAI();
-  document.getElementById('summary').value = '';
-
-  loading(true, '이전 데이터 불러오는 중...');
-  try {
-    respCache[curClass+'__'+curName] = null; // 최신 데이터
-    const ex = await getMyResp(curClass, curName);
-    if (ex) {
+/* 활동 시작 */
+async function startActivity(name){
+  curName=name; selfSel.clear(); friendSel.clear(); selRiasec.clear(); aptScores={};
+  lov(true,'데이터 불러오는 중...');
+  try{
+    const d=await gas({action:'getMyResp',name});
+    const ex=d.data;
+    if(ex){
       (ex.selfPicked||[]).forEach(t=>selfSel.add(t));
-      document.getElementById('summary').value = ex.summary||'';
+      document.getElementById('summary').value=ex.summary||'';
+      if(ex.aptitude){
+        if(ex.aptitude.scores) Object.entries(ex.aptitude.scores).forEach(([k,v])=>aptScores[k]=v);
+        if(ex.aptitude.riasec) ex.aptitude.riasec.forEach(k=>selRiasec.add(k));
+      }
     }
-  } catch(e) { toast('⚠️ 데이터 로드 오류: '+e.message); }
-  loading(false);
-
-  buildSelfTraits();
-  updatePicks();
-  await renderPeerBox();
-  await loadFriendBtns();
+  }catch(e){}
+  lov(false);
+  buildTraitGrid(); updatePicks();
+  await renderPeerBox(); await loadFriendGrid();
+  buildRiasecGrid(); buildAptGrid();
+  resetAI(); goPhase(1); show('sc-main');
 }
 
-function buildSelfTraits() {
-  const g = document.getElementById('s2-traits');
-  g.innerHTML = '';
-  TRAITS.forEach(t => {
-    const c = document.createElement('div');
-    const sel = selfSel.has(t);
-    c.className = 'tc' + (sel?' sel':'');
-    c.innerHTML = '<span>'+t+'</span>' + (sel?'<div class="cm">○</div>':'');
-    c.onclick = () => {
-      if (selfSel.has(t)) selfSel.delete(t); else selfSel.add(t);
-      const s = selfSel.has(t);
-      c.className = 'tc'+(s?' sel':'');
-      c.innerHTML = '<span>'+t+'</span>'+(s?'<div class="cm">○</div>':'');
+/* 단계 */
+function goPhase(n){
+  curPhase=n;
+  [1,2,3,4].forEach(i=>{const p=document.getElementById('ph'+i);if(p)p.style.display=i===n?'block':'none';});
+  [1,2,3].forEach(i=>{const s=document.getElementById('st'+i);if(!s)return;s.className='si'+(i<n?' done':i===n?' cur':'');});
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* 낱말 */
+function buildTraitGrid(){
+  const g=document.getElementById('trait-grid');g.innerHTML='';
+  TRAITS.forEach(t=>{
+    const sel=selfSel.has(t);const c=document.createElement('div');
+    c.className='tc'+(sel?' sel':'');
+    c.innerHTML='<span>'+t+'</span>'+(sel?'<div class="cm">○</div>':'');
+    c.onclick=()=>{
+      if(selfSel.has(t))selfSel.delete(t);else selfSel.add(t);
+      const s=selfSel.has(t);c.className='tc'+(s?' sel':'');c.innerHTML='<span>'+t+'</span>'+(s?'<div class="cm">○</div>':'');
       updatePicks();
     };
     g.appendChild(c);
   });
 }
-
-function updatePicks() {
-  const arr = [...selfSel].slice(0,3);
-  for (let i=0; i<3; i++) {
-    const el = document.getElementById('sp'+i);
-    if (!el) continue;
-    if (arr[i]) { el.textContent=arr[i]; el.classList.add('ok'); }
-    else { el.textContent='선택 '+(i+1); el.classList.remove('ok'); }
-  }
+function updatePicks(){
+  const arr=[...selfSel].slice(0,3);
+  for(let i=0;i<3;i++){const el=document.getElementById('sp'+i);if(!el)continue;if(arr[i]){el.textContent=arr[i];el.classList.add('ok');}else{el.textContent='선택 '+(i+1);el.classList.remove('ok');}}
 }
 
-async function renderPeerBox() {
-  const box = document.getElementById('peer-box');
-  box.innerHTML = '<div style="font-size:12px;color:#ccc;">불러오는 중...</div>';
-  try {
-    const ex = await getMyResp(curClass, curName);
-    const evals = ex&&ex.peerEvals ? ex.peerEvals : [];
-    if (!evals.length) { box.innerHTML='<div style="font-size:12px;color:#ccc;font-style:italic;">아직 친구 평가가 없습니다 😊</div>'; return; }
-    const freq={};
-    evals.forEach(e=>(e.words||[]).forEach(w=>freq[w]=(freq[w]||0)+1));
+async function renderPeerBox(){
+  const box=document.getElementById('peer-box');
+  try{
+    const d=await gas({action:'getMyResp',name:curName});
+    const evals=d.data&&d.data.peerEvals?d.data.peerEvals:[];
+    if(!evals.length){box.innerHTML='<div style="font-size:12px;color:#ccc;font-style:italic;">아직 친구 평가가 없습니다 😊</div>';return;}
+    const freq={};evals.forEach(e=>(e.words||[]).forEach(w=>freq[w]=(freq[w]||0)+1));
     const sorted=Object.entries(freq).sort((a,b)=>b[1]-a[1]);
-    const top3=sorted.slice(0,3), rest=sorted.slice(3);
-    let html = top3.map(([w,c])=>`<div class="pi ok">${w}${c>1?' <span style="font-size:11px;color:var(--peach)">('+c+'명)</span>':''}</div>`).join('');
-    if (rest.length) html+=`<div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;">${rest.map(([w,c])=>`<span class="pchip">${w}${c>1?' '+c+'명':''}</span>`).join('')}</div>`;
-    html+=`<details style="margin-top:10px;"><summary style="font-size:12px;color:var(--muted);cursor:pointer;">${evals.length}명이 평가함 ▾</summary><div style="margin-top:6px;">${evals.map((e,i)=>`<div style="display:flex;align-items:flex-start;gap:6px;margin-bottom:3px;font-size:12px;"><span style="font-weight:800;color:var(--peach);min-width:42px;">친구${i+1}</span><div style="display:flex;flex-wrap:wrap;gap:3px;">${(e.words||[]).map(w=>`<span class="pchip">${w}</span>`).join('')}</div></div>`).join('')}</div></details>`;
-    box.innerHTML = html;
-  } catch(e) { box.innerHTML='<div style="font-size:12px;color:#e53e3e;">⚠️ 오류: '+e.message+'</div>'; }
+    box.innerHTML=sorted.slice(0,3).map(([w,c])=>`<div class="pi ok">${w}${c>1?' <span style="font-size:11px;color:var(--peach)">('+c+'명)</span>':''}</div>`).join('')
+      +(sorted.length>3?'<div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:3px;">'+sorted.slice(3).map(([w,c])=>`<span class="pchip">${w}${c>1?' '+c+'명':''}</span>`).join('')+'</div>':'')
+      +`<details style="margin-top:8px;"><summary style="font-size:12px;color:var(--muted);cursor:pointer;">${evals.length}명이 평가함 ▾</summary><div style="margin-top:5px;">${evals.map((e,i)=>`<div style="display:flex;gap:5px;margin-bottom:2px;font-size:12px;"><span style="font-weight:800;color:var(--peach);min-width:38px;">친구${i+1}</span><span>${(e.words||[]).join(', ')}</span></div>`).join('')}</div></details>`;
+  }catch(e){}
 }
 
-async function loadFriendBtns() {
-  const wrap = document.getElementById('s2-friends');
-  wrap.innerHTML = '<div style="color:var(--muted);font-size:13px;grid-column:1/-1">친구 목록 불러오는 중...</div>';
-  try {
-    const roster = await getRoster(true);
-    const names = (roster[curClass]||[]).filter(n=>n!==curName);
-    if (!names.length) { wrap.innerHTML='<div style="color:var(--muted);font-size:13px;grid-column:1/-1">같은 반 친구가 없습니다.</div>'; return; }
-    // 한 번에 전체 응답 가져오기 (개별 호출 X)
-    const allResp = await getAllResp(curClass);
-    const respMap = {};
-    allResp.forEach(r => respMap[r.name] = r);
-    wrap.innerHTML = '';
-    names.forEach(n => {
-      const ex = respMap[n];
-      const done = ex&&(ex.peerEvals||[]).some(e=>e.from===curName);
-      const b = document.createElement('button');
-      b.className = 'nb'+(done?' done':'');
-      b.innerHTML = n+(done?'<br><span style="font-size:11px;font-weight:700;">✓ 완료</span>':'');
-      b.onclick = () => gotoS3(n);
-      wrap.appendChild(b);
+/* 친구 평가 */
+async function loadFriendGrid(){
+  const wrap=document.getElementById('friend-grid');wrap.innerHTML='';
+  try{
+    const names=[...new Set(namesCache||[])].filter(n=>n!==curName);
+    if(!names.length){wrap.innerHTML='<div style="color:var(--muted);font-size:13px;grid-column:1/-1">같은 반 친구가 없습니다.</div>';return;}
+    const allR=await gas({action:'getAllResp'});
+    const rm={};(allR.responses||[]).forEach(r=>rm[r.name]=r);
+    names.forEach(n=>{
+      const done=rm[n]&&(rm[n].peerEvals||[]).some(e=>e.from===curName);
+      const b=document.createElement('button');b.className='nb'+(done?' done':'');
+      b.innerHTML=n+(done?'<br><span style="font-size:11px;font-weight:700;color:#1aaa9a;">✓ 완료</span>':'');
+      b.onclick=()=>gotoFriend(n);wrap.appendChild(b);
     });
-  } catch(e) { wrap.innerHTML='<div style="color:#e53e3e;font-size:13px;">⚠️ '+e.message+'</div>'; }
+  }catch(e){}
 }
 
-async function saveSelf() {
-  const picked = [...selfSel].slice(0,3);
-  const sum = document.getElementById('summary').value.trim();
-  if (!picked.length) { toast('❗ 낱말을 하나 이상 선택해 주세요!'); return; }
-  loading(true, '저장 중...');
-  try {
-    await gasGet({action:'saveResp', class:curClass, name:curName, selfPicked:picked.join(','), summary:sum});
-    respCache[curClass+'__'+curName] = null;
-    toast('✅ 자기 평가가 저장되었습니다!');
-  } catch(e) { toast('⚠️ 저장 오류: '+e.message); }
-  loading(false);
-}
-
-/* ════════════════════════════════════════
-   S3: 친구 평가
-════════════════════════════════════════ */
-async function gotoS3(friendName) {
-  curFriend = friendName;
-  document.getElementById('s3-title').textContent = friendName+' 친구 평가';
-  document.getElementById('s3-desc').innerHTML = `<strong style="color:var(--peach)">${friendName}</strong> 친구를 잘 표현하는 말을 클릭해 주세요.<br><span style="font-size:12px;color:var(--muted);">한 번→선택 / 다시 클릭→취소  |  익명 처리됩니다</span>`;
-  friendSel.clear();
-  show('sc-s3');
-
-  loading(true, '기존 평가 불러오는 중...');
-  try {
-    const ex = await getMyResp(curClass, curFriend);
-    if (ex) { const me=(ex.peerEvals||[]).find(e=>e.from===curName); if(me) me.words.forEach(t=>friendSel.add(t)); }
-  } catch(e) {}
-  loading(false);
-  buildFriendTraits();
-}
-
-function buildFriendTraits() {
-  const g = document.getElementById('s3-traits');
-  g.innerHTML = '';
-  TRAITS.forEach(t => {
-    const c = document.createElement('div');
-    const sel = friendSel.has(t);
-    c.className = 'tc'+(sel?' fsel':'');
-    c.innerHTML = '<span>'+t+'</span>'+(sel?'<div class="cm" style="background:var(--peach)">△</div>':'');
-    c.onclick = () => {
-      if (friendSel.has(t)) friendSel.delete(t); else friendSel.add(t);
-      const s = friendSel.has(t);
-      c.className = 'tc'+(s?' fsel':'');
-      c.innerHTML = '<span>'+t+'</span>'+(s?'<div class="cm" style="background:var(--peach)">△</div>':'');
+async function gotoFriend(name){
+  curFriend=name;friendSel.clear();
+  document.getElementById('ft').textContent=name+' 친구 평가';
+  document.getElementById('fd').innerHTML=`<strong style="color:var(--peach)">${name}</strong> 친구를 잘 표현하는 말을 클릭해 주세요. 결과는 익명으로 처리됩니다.`;
+  try{const d=await gas({action:'getMyResp',name:curFriend});if(d.data){const me=(d.data.peerEvals||[]).find(e=>e.from===curName);if(me)me.words.forEach(t=>friendSel.add(t));}}catch(e){}
+  const g=document.getElementById('ft-grid');g.innerHTML='';
+  TRAITS.forEach(t=>{
+    const sel=friendSel.has(t);const c=document.createElement('div');
+    c.className='tc'+(sel?' fsel':'');
+    c.innerHTML='<span>'+t+'</span>'+(sel?'<div class="cm" style="background:var(--peach)">△</div>':'');
+    c.onclick=()=>{
+      if(friendSel.has(t))friendSel.delete(t);else friendSel.add(t);
+      const s=friendSel.has(t);c.className='tc'+(s?' fsel':'');c.innerHTML='<span>'+t+'</span>'+(s?'<div class="cm" style="background:var(--peach)">△</div>':'');
     };
     g.appendChild(c);
   });
+  show('sc-friend');
 }
 
-async function saveFriend() {
-  const words = [...friendSel];
-  if (!words.length) { toast('❗ 낱말을 하나 이상 선택해 주세요!'); return; }
-  loading(true, '저장 중...');
-  try {
-    await gasGet({action:'saveResp', class:curClass, name:curFriend, peerFrom:curName, peerWords:words.join(',')});
-    respCache[curClass+'__'+curFriend] = null;
-    toast('💌 '+curFriend+' 친구 평가 저장 완료! (익명 처리됨)');
-    show('sc-s2');
-    await loadFriendBtns();
-    await renderPeerBox();
-  } catch(e) { toast('⚠️ 저장 오류: '+e.message); }
-  loading(false);
+async function saveFriend(){
+  const words=[...friendSel];if(!words.length){toast('❗ 낱말을 하나 이상 선택해 주세요!');return;}
+  lov(true,'저장 중...');
+  try{await gas({action:'saveResp',name:curFriend,peerFrom:curName,peerWords:words.join(',')});toast('💌 '+curFriend+' 친구 평가 저장 완료!');show('sc-main');await renderPeerBox();await loadFriendGrid();}
+  catch(e){toast('⚠️ '+e.message);}
+  lov(false);
 }
 
-/* ════════════════════════════════════════
-   AI 진로 분석
-════════════════════════════════════════ */
-function resetAI() {
-  document.getElementById('ai-btn-wrap').style.display='block';
-  document.getElementById('ai-ld').classList.remove('on');
-  document.getElementById('ai-res').classList.remove('on');
-  document.getElementById('ai-res').innerHTML='';
-  document.getElementById('ai-btn').disabled=false;
-}
+/* AI */
+function resetAI(){document.getElementById('ai-bw').style.display='block';document.getElementById('ai-ld').classList.remove('on');document.getElementById('ai-res').classList.remove('on');document.getElementById('ai-res').innerHTML='';document.getElementById('ai-btn').disabled=false;}
 
-async function runAI() {
-  const allSelf = [...selfSel];
-  if (!allSelf.length) { toast('❗ 먼저 낱말을 선택해 주세요!'); return; }
-  document.getElementById('ai-btn').disabled=true;
-  document.getElementById('ai-ld').classList.add('on');
-  document.getElementById('ai-res').classList.remove('on');
-
-  let peerWords=[];
-  try { const ex=await getMyResp(curClass,curName); peerWords=(ex&&ex.peerEvals?ex.peerEvals:[]).flatMap(e=>e.words||[]); } catch(e){}
-
-  const prompt=`초등학생 진로분석. JSON만 출력.
-자기선택:[${allSelf.join(',')}]
-친구평가:[${peerWords.length?peerWords.join(','):'없음'}]
-{"riasec":{"R":0~100,"I":0~100,"A":0~100,"S":0~100,"E":0~100,"C":0~100},"topType":"R/I/A/S/E/C중1개","topTypeName":"현실형/탐구형/예술형/사회형/진취형/관습형중1개","jobs":["직업1","직업2","직업3","직업4","직업5","직업6"],"comment":"따뜻한 2문장 설명"}`;
-
-  try {
-    const msg = document.getElementById('ai-ld-msg');
-    const call = async (retry=0) => {
-      if(msg) msg.textContent = retry===0?'AI가 분석 중이에요...':'잠시 후 재시도합니다... ('+retry+'/5)';
-      const url='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+GEMINI_KEY;
-      const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:.7,maxOutputTokens:512}})});
-      if(r.status===429){
-        if(retry>=5) throw new Error('요청이 많습니다. 1분 후 다시 시도해 주세요.');
-        await new Promise(res=>setTimeout(res,Math.min(5000*Math.pow(2,retry),60000)));
-        return call(retry+1);
-      }
-      if(!r.ok){const t=await r.text();throw new Error('HTTP '+r.status+': '+t.substring(0,200));}
+async function runAI(){
+  if(!selfSel.size){toast('❗ 먼저 낱말을 선택해 주세요!');return;}
+  document.getElementById('ai-btn').disabled=true;document.getElementById('ai-ld').classList.add('on');document.getElementById('ai-res').classList.remove('on');
+  let pw=[];try{const d=await gas({action:'getMyResp',name:curName});pw=(d.data&&d.data.peerEvals?d.data.peerEvals:[]).flatMap(e=>e.words||[]);}catch(e){}
+  const prompt=`초등학생 성격분석. JSON만 출력.
+내가선택:[${[...selfSel].join(',')}]
+친구평가:[${pw.length?pw.join(','):'없음'}]
+{"riasec":{"R":점수,"I":점수,"A":점수,"S":점수,"E":점수,"C":점수},"topType":"코드","topTypeName":"유형명","jobs":["직업1","직업2","직업3","직업4","직업5","직업6"],"comment":"따뜻하게 2문장"}`;
+  try{
+    const call=async(retry=0)=>{
+      const msg=document.getElementById('ai-msg');if(msg)msg.textContent=retry===0?'AI가 분석 중이에요...':'재시도 중... ('+retry+'/5)';
+      const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+GEMINI,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:.7,maxOutputTokens:512}})});
+      if(r.status===429){if(retry>=5)throw new Error('잠시 후 다시 시도해 주세요.');await new Promise(res=>setTimeout(res,Math.min(5000*Math.pow(2,retry),60000)));return call(retry+1);}
+      if(!r.ok)throw new Error('HTTP '+r.status);
       return r.json();
     };
     const data=await call();
     const raw=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
-    const m=raw.match(/\{[\s\S]*\}/);
-    if(!m) throw new Error('분석 결과를 읽을 수 없습니다.');
-    const p=JSON.parse(m[0]);
-    renderAI(p);
-  } catch(e) {
-    document.getElementById('ai-ld').classList.remove('on');
-    document.getElementById('ai-btn-wrap').style.display='block';
-    document.getElementById('ai-btn').disabled=false;
-    const res=document.getElementById('ai-res');
-    res.innerHTML=`<div style="background:rgba(255,100,100,.15);border:1.5px solid rgba(255,100,100,.3);border-radius:12px;padding:14px;font-size:12px;color:#ffaaaa;">⚠️ ${e.message}</div>`;
-    res.classList.add('on');
+    const m=raw.match(/\{[\s\S]*\}/);if(!m)throw new Error('분석 결과 없음');
+    const p=JSON.parse(m[0]);renderAI(p);
+  }catch(e){
+    document.getElementById('ai-ld').classList.remove('on');document.getElementById('ai-bw').style.display='block';document.getElementById('ai-btn').disabled=false;
+    const res=document.getElementById('ai-res');res.innerHTML=`<div style="background:rgba(255,100,100,.15);border-radius:10px;padding:12px;font-size:12px;color:#ffaaaa;">⚠️ ${e.message}</div>`;res.classList.add('on');
   }
 }
 
-function renderAI(d) {
-  document.getElementById('ai-ld').classList.remove('on');
-  document.getElementById('ai-btn-wrap').style.display='none';
-  const rs=d.riasec||{}, jobs=d.jobs||[], tt=d.topType||'S';
-  const sorted=Object.entries(rs).sort((a,b)=>b[1]-a[1]);
-  const mx=sorted[0]?.[1]||100;
-  const rcHtml=sorted.map(([k,v])=>`<div class="rc-card"><div class="rc-em">${RE[k]||'?'}</div><div class="rc-type" style="color:${RC[k]}">${k}</div><div class="rc-lbl">${RN[k]}</div><div class="rc-bw"><div class="rc-b" style="width:${(v/mx*100).toFixed(0)}%;background:${RC[k]};"></div></div><div style="font-size:11px;opacity:.6;margin-top:4px;text-align:right">${v}점</div></div>`).join('');
-  const topJ=jobs.slice(0,3), moreJ=jobs.slice(3);
+function renderAI(d){
+  document.getElementById('ai-ld').classList.remove('on');document.getElementById('ai-bw').style.display='none';
+  const RC={R:'#e67e22',I:'#27ae60',A:'#f39c12',S:'#9b59b6',E:'#e74c3c',C:'#3498db'};
+  const RE={R:'🔧',I:'🔬',A:'🎨',S:'🤝',E:'📢',C:'📋'};
+  const RN={R:'현실형',I:'탐구형',A:'예술형',S:'사회형',E:'진취형',C:'관습형'};
+  const rs=d.riasec||{},tt=d.topType||'S';
+  const sorted=Object.entries(rs).sort((a,b)=>b[1]-a[1]);const mx=sorted[0]?.[1]||100;
   const html=`
-    <div style="background:rgba(255,255,255,.1);border-radius:12px;padding:14px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
-      <div style="font-size:36px;">${RE[tt]||'✨'}</div>
-      <div><div style="font-size:11px;opacity:.6;margin-bottom:2px;">나의 주요 흥미 유형</div>
-      <div style="font-size:18px;font-weight:800;">${tt} — ${d.topTypeName||RN[tt]}</div></div>
-    </div>
-    <div style="font-size:12px;opacity:.6;margin-bottom:10px;font-weight:700;">RIASEC 흥미 유형 분석</div>
-    <div class="rc-row">${rcHtml}</div>
-    <div style="font-size:13px;font-weight:800;opacity:.7;margin-bottom:8px;">⭐ 잘 어울리는 직업</div>
-    <div class="jc">${topJ.map(j=>`<span class="jchip top">${j}</span>`).join('')}${moreJ.map(j=>`<span class="jchip">${j}</span>`).join('')}</div>
+    <div class="type-badge"><div style="font-size:28px;">${RE[tt]||'✨'}</div><div><div style="font-size:17px;font-weight:800;">${tt} — ${d.topTypeName||RN[tt]}</div><div style="font-size:11px;opacity:.6;">나의 주요 흥미 유형</div></div></div>
+    <div class="rc-grid">${sorted.map(([k,v])=>`<div class="rc-card"><div style="font-size:16px;">${RE[k]}</div><div style="font-size:12px;font-weight:800;color:${RC[k]}">${RN[k]}</div><div class="rc-bw"><div class="rc-bar" style="width:${(v/mx*100).toFixed(0)}%;background:${RC[k]};"></div></div></div>`).join('')}</div>
+    <div style="font-size:12px;opacity:.6;margin-bottom:8px;font-weight:700;">⭐ 어울리는 직업</div>
+    <div class="jobs-wrap">${(d.jobs||[]).map((j,i)=>`<span class="jc${i<3?' top':''}">${j}</span>`).join('')}</div>
     <div class="ai-comment">${d.comment||''}</div>
-    <button onclick="resetAI()" style="margin-top:14px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);color:#fff;padding:8px 16px;border-radius:10px;font-family:'Nanum Gothic',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">↺ 다시 분석하기</button>`;
-  const res=document.getElementById('ai-res');
-  res.innerHTML=html; res.classList.add('on');
+    <button onclick="resetAI()" style="margin-top:12px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);color:#fff;padding:7px 14px;border-radius:9px;font-family:'Nanum Gothic',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">↺ 다시 분석</button>`;
+  const res=document.getElementById('ai-res');res.innerHTML=html;res.classList.add('on');
 }
 
-/* ════════════════════════════════════════
-   교사: 탭
-════════════════════════════════════════ */
-function tTab(t) {
-  ['r','s','c'].forEach(x=>{
-    document.getElementById('tt-'+x).classList.toggle('on',x===t);
-    const p=document.getElementById('tp-'+x);
-    p.style.display=x===t?(x==='r'?'grid':'block'):'none';
+/* 단계1 저장 */
+async function saveP1(){
+  const picked=[...selfSel].slice(0,3);if(!picked.length){toast('❗ 낱말을 하나 이상 선택해 주세요!');return;}
+  lov(true,'저장 중...');
+  try{await gas({action:'saveResp',name:curName,selfPicked:picked.join(','),summary:document.getElementById('summary').value.trim()});toast('✅ 저장되었습니다!');goPhase(2);}
+  catch(e){toast('⚠️ '+e.message);}
+  lov(false);
+}
+
+/* 흥미 */
+function buildRiasecGrid(){
+  const g=document.getElementById('riasec-grid');g.innerHTML='';
+  RIASEC.forEach(({k,n,e,c,d})=>{
+    const sel=selRiasec.has(k);const b=document.createElement('div');b.className='riasec-btn';
+    b.style.cssText=`border-color:${sel?c:'var(--border)'};background:${sel?c+'22':'#fff'};`;
+    b.innerHTML=`<div style="font-size:22px;margin-bottom:4px;">${e}</div><div style="font-size:13px;font-weight:800;color:${sel?c:'var(--text)'}">${k} ${n}</div><div style="font-size:11px;color:var(--muted)">${d}</div>`;
+    b.onclick=()=>{if(selRiasec.has(k))selRiasec.delete(k);else selRiasec.add(k);buildRiasecGrid();};
+    g.appendChild(b);
   });
-  if(t==='r') renderRoster();
-  else if(t==='s') renderResponses();
-  else renderCloud();
 }
 
-/* ════════════════════════════════════════
-   교사: 명단 관리
-════════════════════════════════════════ */
-async function renderRoster() {
-  const wrap=document.getElementById('tp-r');
-  wrap.innerHTML='<div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--muted);">명단 불러오는 중...</div>';
-  let roster={};
-  try { roster=await getRoster(true); } catch(e){ wrap.innerHTML='<div style="color:#e53e3e;padding:20px;">⚠️ 오류: '+e.message+'</div>'; return; }
-  wrap.innerHTML='';
-  for(let i=1;i<=10;i++){
-    const cls=i+'반';
-    const names=roster[cls]||[];
-    const cp=document.createElement('div');
-    cp.className='cpanel';
-    cp.innerHTML=`<div class="chd"><span class="clbl">🏫 ${cls}</span><span style="font-size:13px;color:var(--muted);">${names.length}명</span></div>
-      <div class="tags" id="tags-${i}"></div>
-      <div class="ninr"><input class="nin" id="nin-${i}" type="text" placeholder="이름 입력 후 Enter (쉼표로 여러 명 동시 입력)" onkeydown="if(event.key==='Enter')addNames(${i})">
-      <button class="btn btn-sec btn-sm" onclick="addNames(${i})">+ 추가</button></div>`;
-    wrap.appendChild(cp);
-    const tagWrap=document.getElementById('tags-'+i);
-    if(!names.length){tagWrap.innerHTML='<span style="color:var(--muted);font-size:13px;">아직 학생이 없습니다</span>';}
-    else names.forEach(n=>{const tg=document.createElement('div');tg.className='tag';tg.innerHTML=n+' <span class="dl" onclick="delName('+i+',\''+n+'\')">✕</span>';tagWrap.appendChild(tg);});
+function handleImg(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=document.getElementById('upload-img');
+    img.src=e.target.result;img.style.display='block';
+    document.getElementById('upload-ph').style.display='none';
+    document.getElementById('upload-area').classList.add('has-img');
+  };
+  reader.readAsDataURL(file);
+}
+
+async function saveP2(){
+  lov(true,'저장 중...');
+  try{toast('✅ 저장되었습니다!');goPhase(3);}
+  catch(e){toast('⚠️ '+e.message);}
+  lov(false);
+}
+
+/* 적성 */
+function buildAptGrid(){
+  const g=document.getElementById('apt-grid');g.innerHTML='';
+  APTS.forEach(({k,e,c,j,ds})=>{
+    const card=document.createElement('div');card.className='apt-card';card.style.borderLeftColor=c;
+    card.innerHTML=`<div class="apt-head"><div style="font-size:22px;">${e}</div><div><div style="font-size:14px;font-weight:800;">${k}</div><div style="font-size:11px;color:var(--muted);">${j}</div></div></div>
+      <div class="apt-desc">${ds.map(d=>'• '+d).join('<br>')}</div>
+      <div class="stars" id="stars-${k}"></div>`;
+    g.appendChild(card);renderStars(k,aptScores[k]||0,c);
+  });
+}
+
+function renderStars(k,score,color){
+  const w=document.getElementById('stars-'+k);if(!w)return;w.innerHTML='';
+  for(let i=1;i<=3;i++){
+    const s=document.createElement('span');s.className='star'+(i<=score?' on':'');
+    s.textContent=i<=score?'★':'☆';if(i<=score)s.style.color=color;
+    s.onclick=()=>{aptScores[k]=aptScores[k]===i?0:i;renderStars(k,aptScores[k],color);};
+    w.appendChild(s);
   }
 }
 
-async function addNames(i){
-  const cls=i+'반';
-  const inp=document.getElementById('nin-'+i);
-  const raw=inp.value.trim(); if(!raw) return;
-  const names=raw.split(/[,，\s\n]+/).map(s=>s.trim()).filter(Boolean);
-  if(!names.length) return;
-  inp.value=''; toast('⏳ 저장 중...');
-  try { await gasGet({action:'addStudents', class:cls, names:names.join(',')}); rosterCache=null; toast('✅ '+cls+'에 '+names.length+'명 추가됨'); renderRoster(); }
-  catch(e){toast('⚠️ '+e.message);}
-}
-async function delName(i,name){
-  if(!confirm(name+' 학생을 삭제할까요?')) return;
-  toast('⏳ 삭제 중...');
-  try { await gasGet({action:'delStudent', class:i+'반', name}); rosterCache=null; toast('🗑 '+name+' 삭제됨'); renderRoster(); }
-  catch(e){toast('⚠️ '+e.message);}
+async function saveP3(){
+  lov(true,'저장 중...');
+  try{
+    const scores={};APTS.forEach(({k})=>scores[k]=aptScores[k]||0);
+    await gas({action:'saveResp',name:curName,aptitude:encodeURIComponent(JSON.stringify({scores,riasec:[...selRiasec]}))});
+    toast('🎉 모두 완료!');showFinal();goPhase(4);
+  }catch(e){toast('⚠️ '+e.message);}
+  lov(false);
 }
 
-/* ════════════════════════════════════════
-   교사: 제출 현황
-════════════════════════════════════════ */
+function showFinal(){
+  const topApt=Object.entries(aptScores).filter(([k,v])=>v>0).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  document.getElementById('final-sum').innerHTML=`
+    <div class="res-card"><div style="font-size:14px;font-weight:800;color:var(--sky);margin-bottom:10px;">🪞 나의 성격</div>
+      <div>${[...selfSel].slice(0,3).map(t=>`<span class="badge badge-sky">${t}</span>`).join('')||'<span style="color:#ccc">없음</span>'}</div></div>
+    ${selRiasec.size?`<div class="res-card"><div style="font-size:14px;font-weight:800;color:#9b7fe8;margin-bottom:10px;">🔍 나의 흥미 유형</div>
+      <div>${[...selRiasec].map(k=>{const r=RIASEC.find(x=>x.k===k);return`<span class="badge badge-mint">${r.e} ${k} ${r.n}</span>`;}).join('')}</div></div>`:''}
+    ${topApt.length?`<div class="res-card"><div style="font-size:14px;font-weight:800;color:var(--peach);margin-bottom:10px;">💪 나의 적성 (상위)</div>
+      <div>${topApt.map(([k,v])=>{const a=APTS.find(x=>x.k===k);return`<span class="badge badge-peach">${a.e} ${k} ${'★'.repeat(v)}</span>`;}).join('')}</div></div>`:''}
+    <button class="btn btn-pri" style="margin-top:10px;" onclick="loadNameScreen()">처음으로 돌아가기</button>`;
+}
+
+/* 교사 */
+function tTab(t){
+  ['r','s'].forEach(x=>{document.getElementById('tt-'+x).classList.toggle('on',x===t);document.getElementById('tp-'+x).style.display=x===t?'block':'none';});
+  if(t==='r')renderRoster();else renderResponses();
+}
+
+async function renderRoster(){
+  const w=document.getElementById('tp-r');w.innerHTML='<div style="color:var(--muted);padding:20px;text-align:center;">불러오는 중...</div>';
+  let names=[];
+  try{const d=await gas({action:'getNames'});names=[...new Set(d.names||[])];}catch(e){}
+  w.innerHTML=`<div class="card">
+    <div style="font-size:16px;font-weight:800;margin-bottom:14px;">📋 학생 명단 관리</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:8px;">이름을 입력하세요. 쉼표, 줄바꿈, 엑셀 붙여넣기 모두 가능합니다.</div>
+    <textarea class="nin" id="nin" placeholder="예) 홍길동, 홍길남&#10;엑셀에서 복사해서 붙여넣기도 가능합니다">${names.join(', ')}</textarea>
+    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+      <button class="btn btn-pri btn-sm" onclick="saveNames()">✅ 명단 저장</button>
+      <button class="btn btn-sm" style="background:#fff;border:2px solid #fc8181;color:#fc8181;" onclick="clearAll()">🗑 전체 초기화 (수업 종료 후)</button>
+    </div>
+    <div style="margin-top:16px;"><div style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:8px;">현재 등록된 학생 (${names.length}명)</div>
+      <div>${names.map(n=>`<span class="t-ntag">${n}</span>`).join('')||'<span style="color:#ccc;font-size:13px;">없음</span>'}</div>
+    </div></div>`;
+}
+
+async function saveNames(){
+  const raw=document.getElementById('nin').value.trim();if(!raw){toast('❗ 이름을 입력해 주세요');return;}
+  const names=[...new Set(raw.split(/[,，\s\n\t]+/).map(s=>s.trim()).filter(Boolean))];
+  lov(true,'저장 중...');
+  try{await gas({action:'setNames',names:names.join(',')});namesCache=null;toast('✅ '+names.length+'명 저장되었습니다!');renderRoster();}
+  catch(e){toast('⚠️ '+e.message);}
+  lov(false);
+}
+
+async function clearAll(){
+  if(!confirm('명단과 모든 응답 데이터를 초기화할까요?\n다음 반 수업 전에 사용하세요.'))return;
+  lov(true,'초기화 중...');
+  try{await gas({action:'clearAll'});namesCache=null;toast('🗑 초기화 완료!');renderRoster();}
+  catch(e){toast('⚠️ '+e.message);}
+  lov(false);
+}
+
 async function renderResponses(){
-  const wrap=document.getElementById('tp-s');
-  wrap.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
-    <div style="font-size:18px;font-weight:800;">학생 제출 현황</div>
-    <select class="fsel2" id="rf-cls" onchange="filterRes()">
-      <option value="">전체 반</option>${Array.from({length:10},(_,k)=>`<option value="${k+1}반">${k+1}반</option>`).join('')}
-    </select></div><div id="res-inner"><div style="text-align:center;padding:30px;color:var(--muted);">불러오는 중...</div></div>`;
-  filterRes();
-}
-async function filterRes(){
-  const cls=(document.getElementById('rf-cls')||{}).value||'';
-  const inner=document.getElementById('res-inner');
-  if(!inner) return;
-  inner.innerHTML='<div style="text-align:center;padding:30px;color:var(--muted);">불러오는 중...</div>';
-  try {
-    const all=await getAllResp(cls);
-    if(!all.length){inner.innerHTML='<div style="text-align:center;padding:50px;color:var(--muted);"><div style="font-size:56px;margin-bottom:14px;">🌱</div><p>아직 제출 데이터가 없습니다.</p></div>';return;}
-    inner.innerHTML=`<div class="resgrid">${all.map(r=>{
-      const peerHtml=(r.peerEvals&&r.peerEvals.length)?`<div class="rsec"><div class="rlbl">💬 친구들의 평가 (${r.peerEvals.length}명, 익명)</div><div class="rchips">${(()=>{const f={};r.peerEvals.forEach(e=>(e.words||[]).forEach(w=>f[w]=(f[w]||0)+1));return Object.entries(f).sort((a,b)=>b[1]-a[1]).map(([w,c])=>`<span class="rchip p">${w}${c>1?' ×'+c:''}</span>`).join('');})()}</div></div>`:`<div class="rsec"><div class="rlbl" style="color:#ddd;">💬 친구 평가 없음</div></div>`;
-      return `<div class="rescard"><div class="rname"><div class="av">${r.name[0]}</div>${r.class} ${r.name}</div>
-        <div class="rsec"><div class="rlbl">🪞 내가 생각하는 나</div><div class="rchips">${(r.selfPicked||[]).map(t=>`<span class="rchip s">${t}</span>`).join('')||'<span style="color:#ccc;font-size:12px;">없음</span>'}</div></div>
-        ${peerHtml}
-        ${r.summary?`<div class="rlbl" style="margin-bottom:3px;">✍️ 한 문장 소개</div><div class="rsumm">나는 ${r.summary} 사람입니다.</div>`:''}
-        <div class="rtime">${r.time||''}</div></div>`;
+  const w=document.getElementById('tp-s');w.innerHTML='<div style="text-align:center;padding:30px;color:var(--muted);">불러오는 중...</div>';
+  try{
+    const d=await gas({action:'getAllResp'});const all=d.responses||[];
+    if(!all.length){w.innerHTML='<div style="text-align:center;padding:50px;color:var(--muted);"><div style="font-size:56px;margin-bottom:14px;">🌱</div><p>아직 제출 데이터가 없습니다.</p></div>';return;}
+    w.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+      <div style="font-size:18px;font-weight:800;">학생 제출 현황 <span style="font-size:14px;font-weight:400;color:var(--muted);">${all.length}명</span></div>
+      <button class="btn btn-sm btn-sec" onclick="renderResponses()">🔄 새로고침</button>
+    </div>
+    <div class="rgrid">${all.map(r=>{
+      const apt=r.aptitude&&r.aptitude.scores?r.aptitude.scores:{};
+      const topApt=Object.entries(apt).filter(([k,v])=>v>0).sort((a,b)=>b[1]-a[1]).slice(0,3);
+      const ri=r.aptitude&&r.aptitude.riasec?r.aptitude.riasec:[];
+      const pf={};(r.peerEvals||[]).forEach(e=>(e.words||[]).forEach(w=>pf[w]=(pf[w]||0)+1));
+      const ptop=Object.entries(pf).sort((a,b)=>b[1]-a[1]).slice(0,5);
+      return `<div class="rcard">
+        <div class="rname"><div class="av">${r.name[0]}</div>${r.name}</div>
+        <div class="rsec"><div class="rlbl">🪞 성격 (내가 선택)</div>
+          <div class="rchips">${(r.selfPicked||[]).map(t=>`<span class="rchip s">${t}</span>`).join('')||'<span style="color:#ccc;font-size:12px;">없음</span>'}</div></div>
+        ${ptop.length?`<div class="rsec"><div class="rlbl">🦋 성격 (친구 평가 ${(r.peerEvals||[]).length}명)</div>
+          <div class="rchips">${ptop.map(([w,c])=>`<span class="rchip p">${w}${c>1?' ×'+c:''}</span>`).join('')}</div></div>`:''}
+        ${r.summary?`<div class="rsec"><div class="rlbl">✍️ 한 문장</div><div class="rsumm">나는 ${r.summary} 사람입니다.</div></div>`:''}
+        ${ri.length?`<div class="rsec"><div class="rlbl">🔍 흥미 유형</div>
+          <div class="rchips">${ri.map(k=>{const rv=RIASEC.find(x=>x.k===k);return`<span class="rchip p">${rv?rv.e+' ':''} ${k}</span>`;}).join('')}</div></div>`:''}
+        ${topApt.length?`<div class="rsec"><div class="rlbl">💪 적성 (상위)</div>
+          <div class="rchips">${topApt.map(([k,v])=>{const a=APTS.find(x=>x.k===k);return`<span class="rchip a">${a?a.e+' ':''} ${k} ${'★'.repeat(v)}</span>`;}).join('')}</div></div>`:''}
+        <div class="rtime">${r.time||''}</div>
+      </div>`;
     }).join('')}</div>`;
-  } catch(e){inner.innerHTML='<div style="color:#e53e3e;padding:20px;">⚠️ 오류: '+e.message+'</div>';}
+  }catch(e){w.innerHTML='<div style="color:#e53e3e;padding:20px;">⚠️ '+e.message+'</div>';}
 }
 
-/* ════════════════════════════════════════
-   교사: 낱말 현황
-════════════════════════════════════════ */
-async function renderCloud(){
-  const wrap=document.getElementById('tp-c');
-  wrap.innerHTML=`<div style="margin-bottom:16px;"><select class="fsel2" id="cf-cls" onchange="drawCloud()"><option value="">전체 반</option>${Array.from({length:10},(_,k)=>`<option value="${k+1}반">${k+1}반</option>`).join('')}</select></div>
-    <div class="wcsec"><div class="wctitle">🪞 내가 생각하는 나</div><div class="wc" id="wc-s"></div></div>
-    <div class="wcsec"><div class="wctitle">💬 친구들이 선택해 준 낱말</div><div class="wc" id="wc-p"></div></div>`;
-  drawCloud();
-}
-async function drawCloud(){
-  const cls=(document.getElementById('cf-cls')||{}).value||'';
-  try {
-    const all=await getAllResp(cls);
-    const sc={},pc={};
-    all.forEach(r=>{(r.selfPicked||[]).forEach(t=>sc[t]=(sc[t]||0)+1);(r.peerEvals||[]).forEach(e=>(e.words||[]).forEach(t=>pc[t]=(pc[t]||0)+1));});
-    wc('wc-s',sc,'#4aa8e8','#e8f5fd');
-    wc('wc-p',pc,'#9b7fe8','#f3f0ff');
-  } catch(e){ document.getElementById('wc-s').innerHTML='<span style="color:#e53e3e;">오류: '+e.message+'</span>'; }
-}
-function wc(id,counts,color,bg){
-  const el=document.getElementById(id); if(!el) return;
-  const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
-  if(!sorted.length){el.innerHTML='<span style="color:#ccc;font-size:13px;">데이터 없음</span>';return;}
-  const mx=sorted[0][1];
-  el.innerHTML=sorted.map(([w,c])=>`<span class="wcw" style="font-size:${12+Math.round(c/mx*16)}px;background:${bg};color:${color};opacity:${0.45+c/mx*0.55};border:1.5px solid ${color};">${w} <strong>${c}</strong></span>`).join('');
-}
-
-/* ════════════════════════════════════════
-   초기화
-════════════════════════════════════════ */
-initClassBtns();
+loadNameScreen();
 </script>
 </body>
 </html>
